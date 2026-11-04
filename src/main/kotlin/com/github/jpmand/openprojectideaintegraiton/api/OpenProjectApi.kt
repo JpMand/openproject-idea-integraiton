@@ -85,9 +85,14 @@ class OpenProjectApi(private val http: HttpClient, baseUrl: String) : AutoClosea
     ): HttpResponse {
         val response = http.request(url) {
             this.method = method
-            if (body != null) {
-                if (body is JsonObject) contentType(ContentType.Application.Json)
-                setBody(body)
+            when (body) {
+                null -> Unit
+                // The static type matters: as `Any`, Ktor would guess serializers per element and fail.
+                is JsonObject -> {
+                    contentType(ContentType.Application.Json)
+                    setBody(body)
+                }
+                else -> setBody(body)
             }
             configure()
         }

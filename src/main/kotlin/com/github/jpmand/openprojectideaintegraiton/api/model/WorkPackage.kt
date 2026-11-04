@@ -34,7 +34,8 @@ data class WorkPackage(
     @SerialName("_embedded") val embedded: JsonObject? = null,
     @Transient val raw: JsonObject = JsonObject(emptyMap()),
 ) {
-    val presentableId: String get() = displayId ?: "#$id"
+    /** "PROJ-12" when the server uses project-based ids, otherwise "#12" (servers without them send the plain id). */
+    val presentableId: String get() = displayId?.takeIf { it != id.toString() } ?: "#$id"
 
     val statusTitle: String? get() = links.title("status")
     val typeTitle: String? get() = links.title("type")

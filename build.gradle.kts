@@ -63,7 +63,35 @@ intellijPlatform {
     }
 }
 
+tasks {
+    test {
+        filter { excludeTestsMatching("*IntegrationTest") }
+    }
+}
+
 intellijPlatformTesting {
+    testIde {
+        // Tests against a real OpenProject: scripts/openproject-it.sh test (or set OPENPROJECT_IT_URL/_TOKEN).
+        register("integrationTest") {
+            plugins {
+                plugin("com.intellij.tasks", tasksPluginVersion)
+            }
+            task {
+                description = "Runs the *IntegrationTest classes against the OpenProject at OPENPROJECT_IT_URL."
+                group = "verification"
+                useJUnit()
+                filter { includeTestsMatching("*IntegrationTest") }
+                environment("OPENPROJECT_IT_URL", providers.environmentVariable("OPENPROJECT_IT_URL").getOrElse(""))
+                environment("OPENPROJECT_IT_TOKEN", providers.environmentVariable("OPENPROJECT_IT_TOKEN").getOrElse(""))
+                outputs.upToDateWhen { false }
+                testLogging {
+                    events("passed", "skipped", "failed")
+                    showStandardStreams = true
+                }
+            }
+        }
+    }
+
     runIde {
         // Manual checks against the IntelliJ IDEA 2026.3 RC: ./gradlew runIdeRc
         register("runIdeRc") {

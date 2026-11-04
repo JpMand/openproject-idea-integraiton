@@ -7,3 +7,4 @@
 - Initial scaffold created from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)
 - Build setup for IntelliJ IDEA 2026.2 and 2026.3, depending on the "Issue Trackers" (Tasks) plugin
 - OpenProject API v3 client (HAL+JSON) on the IDE-bundled Ktor client and kotlinx.serialization
+- Integration tests against OpenProject in Docker (scripts/openproject-it.sh)

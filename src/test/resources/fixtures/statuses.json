@@ -1,0 +1,824 @@
+{
+ "_type": "Collection",
+ "total": 45,
+ "count": 45,
+ "_embedded": {
+  "elements": [
+   {
+    "_type": "Status",
+    "id": 1,
+    "name": "new",
+    "isClosed": false,
+    "color": "#C3FAE8",
+    "isDefault": true,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 1,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/1",
+      "title": "new"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 65,
+    "name": "submitted",
+    "isClosed": false,
+    "color": "#D0BFFF",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 2,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/65",
+      "title": "submitted"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 151,
+    "name": "analysed",
+    "isClosed": false,
+    "color": "#BE4BDB",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 50,
+    "position": 3,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/151",
+      "title": "analysed"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 29,
+    "name": "needs clarification",
+    "isClosed": false,
+    "color": "#FCC2D7",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 4,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/29",
+      "title": "needs clarification"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 21,
+    "name": "in specification",
+    "isClosed": false,
+    "color": "#DBE4FF",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 5,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/21",
+      "title": "in specification"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 10,
+    "name": "specified",
+    "isClosed": false,
+    "color": "#63E6BE",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 6,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/10",
+      "title": "specified"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 11,
+    "name": "unconfirmed",
+    "isClosed": false,
+    "color": null,
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 7,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/11",
+      "title": "unconfirmed"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 7,
+    "name": "confirmed",
+    "isClosed": false,
+    "color": "#FFA8A8",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 8,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/7",
+      "title": "confirmed"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 12,
+    "name": "to be scheduled",
+    "isClosed": false,
+    "color": "#FFEC99",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 9,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/12",
+      "title": "to be scheduled"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 13,
+    "name": "scheduled",
+    "isClosed": false,
+    "color": "#D8F5A2",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 10,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/13",
+      "title": "scheduled"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 19,
+    "name": "in progress",
+    "isClosed": false,
+    "color": "#66D9E8",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 11,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/19",
+      "title": "in progress"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 4,
+    "name": "on hold",
+    "isClosed": false,
+    "color": "#FFC078",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 12,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/4",
+      "title": "on hold"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 2,
+    "name": "in development",
+    "isClosed": false,
+    "color": "#66D9E8",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 13,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/2",
+      "title": "in development"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 9,
+    "name": "needs review",
+    "isClosed": false,
+    "color": "#00CC33",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 14,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/9",
+      "title": "needs review"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 16,
+    "name": "in review",
+    "isClosed": false,
+    "color": "#D3F9D8",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 15,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/16",
+      "title": "in review"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 135,
+    "name": "review approved",
+    "isClosed": false,
+    "color": "#008025",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 16,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/135",
+      "title": "review approved"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 134,
+    "name": "review failed",
+    "isClosed": false,
+    "color": "#C92A2A",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 17,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/134",
+      "title": "review failed"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 8,
+    "name": "merged",
+    "isClosed": false,
+    "color": "#A5D8FF",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 18,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/8",
+      "title": "merged"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 27,
+    "name": "deployed",
+    "isClosed": true,
+    "color": "#12B886",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 19,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/27",
+      "title": "deployed"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 142,
+    "name": "on track",
+    "isClosed": false,
+    "color": "#6BB234",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 20,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/142",
+      "title": "on track"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 143,
+    "name": "at risk",
+    "isClosed": false,
+    "color": "#D90000",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 21,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/143",
+      "title": "at risk"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 17,
+    "name": "in test",
+    "isClosed": false,
+    "color": "#0CA678",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 22,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/17",
+      "title": "in test"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 23,
+    "name": "test failed",
+    "isClosed": false,
+    "color": "#C92A2A",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 23,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/23",
+      "title": "test failed"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 3,
+    "name": "tested",
+    "isClosed": true,
+    "color": "#087F5B",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 24,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/3",
+      "title": "tested"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 14,
+    "name": "resolved",
+    "isClosed": true,
+    "color": "#EBFBEE",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 100,
+    "position": 25,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/14",
+      "title": "resolved"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 28,
+    "name": "released",
+    "isClosed": true,
+    "color": "#3399CC",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 26,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/28",
+      "title": "released"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 139,
+    "name": "paid",
+    "isClosed": true,
+    "color": "#6BB234",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 100,
+    "position": 27,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/139",
+      "title": "paid"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 133,
+    "name": "decided",
+    "isClosed": true,
+    "color": "#A9E34B",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 100,
+    "position": 28,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/133",
+      "title": "decided"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 144,
+    "name": "contract signed by us",
+    "isClosed": false,
+    "color": null,
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 50,
+    "position": 29,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/144",
+      "title": "contract signed by us"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 136,
+    "name": "no service provided",
+    "isClosed": true,
+    "color": null,
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 100,
+    "position": 30,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/136",
+      "title": "no service provided"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 145,
+    "name": "Contract signed by other party",
+    "isClosed": false,
+    "color": null,
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 31,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/145",
+      "title": "Contract signed by other party"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 148,
+    "name": "offer reviewed",
+    "isClosed": false,
+    "color": "#00789B",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 25,
+    "position": 32,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/148",
+      "title": "offer reviewed"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 140,
+    "name": "offer sent out",
+    "isClosed": false,
+    "color": "#A4A4A4",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 33,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/140",
+      "title": "offer sent out"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 141,
+    "name": "purchase order received",
+    "isClosed": false,
+    "color": "#7C7C7C",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 34,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/141",
+      "title": "purchase order received"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 68,
+    "name": "invoice sent out",
+    "isClosed": false,
+    "color": "#7C7C7C",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 35,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/68",
+      "title": "invoice sent out"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 67,
+    "name": "timesheet sent out",
+    "isClosed": false,
+    "color": "#EDEDED",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 36,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/67",
+      "title": "timesheet sent out"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 100,
+    "name": "timesheet signed",
+    "isClosed": false,
+    "color": "#FFFF00",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 37,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/100",
+      "title": "timesheet signed"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 69,
+    "name": "payment received",
+    "isClosed": true,
+    "color": "#6BB234",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 100,
+    "position": 38,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/69",
+      "title": "payment received"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 146,
+    "name": "offer rejected",
+    "isClosed": true,
+    "color": "#EDEDED",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 39,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/146",
+      "title": "offer rejected"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 149,
+    "name": "waiting for verification",
+    "isClosed": false,
+    "color": "#FFCC00",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 40,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/149",
+      "title": "waiting for verification"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 150,
+    "name": "ready for publication",
+    "isClosed": false,
+    "color": "#B2F2BB",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 41,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/150",
+      "title": "ready for publication"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 6,
+    "name": "rejected",
+    "isClosed": true,
+    "color": "#FFA8A8",
+    "isDefault": false,
+    "isReadonly": true,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 42,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/6",
+      "title": "rejected"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 5,
+    "name": "closed",
+    "isClosed": true,
+    "color": "#DEE2E6",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 43,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/5",
+      "title": "closed"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 147,
+    "name": "moved to next quarter",
+    "isClosed": false,
+    "color": "#DA77F2",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 44,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/147",
+      "title": "moved to next quarter"
+     }
+    }
+   },
+   {
+    "_type": "Status",
+    "id": 152,
+    "name": "in maintenance",
+    "isClosed": false,
+    "color": "#EDA95A",
+    "isDefault": false,
+    "isReadonly": false,
+    "excludedFromTotals": false,
+    "defaultDoneRatio": 0,
+    "position": 45,
+    "_links": {
+     "self": {
+      "href": "/api/v3/statuses/152",
+      "title": "in maintenance"
+     }
+    }
+   }
+  ]
+ },
+ "_links": {
+  "self": {
+   "href": "/api/v3/statuses"
+  }
+ }
+}

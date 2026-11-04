@@ -1,0 +1,5 @@
+{
+ "_type": "Error",
+ "errorIdentifier": "urn:openproject-org:api:v3:errors:InvalidQuery",
+ "message": "Assignee filter has invalid values."
+}

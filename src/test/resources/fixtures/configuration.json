@@ -1,0 +1,125 @@
+{
+ "_type": "Configuration",
+ "maximumAttachmentFileSize": 4294967296,
+ "maximumAPIV3PageSize": 1000,
+ "perPageOptions": [
+  50,
+  100,
+  200
+ ],
+ "dateFormat": null,
+ "durationFormat": "days_and_hours",
+ "timeFormat": null,
+ "userDefaultTimezone": "Europe/Berlin",
+ "startOfWeek": 1,
+ "hoursPerDay": 8,
+ "daysPerMonth": 20,
+ "hostName": "community.openproject.org",
+ "activeFeatureFlags": [
+  "builtInOAuthApplications",
+  "wikiEnhancements",
+  "deployTargets",
+  "storageFilePickingSelectAll"
+ ],
+ "availableFeatures": [
+  "nextcloud_sso",
+  "scim_api",
+  "virus_scanning",
+  "xwiki_integration",
+  "calculated_values",
+  "capture_external_links",
+  "customize_life_cycle",
+  "ldap_groups",
+  "portfolio_management",
+  "project_creation_wizard",
+  "project_list_sharing",
+  "resource_management",
+  "weighted_item_lists",
+  "internal_comments",
+  "mcp_server",
+  "one_drive_sharepoint_file_storage",
+  "sso_auth_providers",
+  "time_entry_time_restrictions",
+  "work_package_sharing",
+  "work_package_subject_generation",
+  "baseline_comparison",
+  "board_view",
+  "conditional_highlighting",
+  "custom_actions",
+  "custom_field_hierarchies",
+  "date_alerts",
+  "define_custom_style",
+  "edit_attribute_groups",
+  "gantt_pdf_export",
+  "meeting_templates",
+  "multiple_active_sprints",
+  "placeholder_users",
+  "readonly_work_packages",
+  "sprint_sharing",
+  "team_planner_view",
+  "work_package_query_relation_columns"
+ ],
+ "triallingFeatures": [],
+ "allowedLinkProtocols": [
+  "http",
+  "https",
+  "mailto"
+ ],
+ "wikisAvailable": true,
+ "_embedded": {
+  "userPreferences": {
+   "_type": "UserPreferences",
+   "timeZone": "Europe/Berlin",
+   "disableKeyboardShortcuts": false,
+   "warnOnLeavingUnsaved": true,
+   "commentSortDescending": false,
+   "autoHidePopups": true,
+   "dailyReminders": {
+    "enabled": true,
+    "times": [
+     "08:00"
+    ]
+   },
+   "immediateReminders": {
+    "mentioned": true,
+    "personalReminder": true
+   },
+   "pauseReminders": {
+    "enabled": false
+   },
+   "workdays": [
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "notifications": [],
+   "_links": {
+    "self": {
+     "href": "/api/v3/users/100030/preferences"
+    },
+    "user": {
+     "href": "/api/v3/users/100030",
+     "title": "Anonymous"
+    },
+    "updateImmediately": {
+     "href": "/api/v3/users/100030/preferences",
+     "method": "patch"
+    }
+   }
+  }
+ },
+ "_links": {
+  "self": {
+   "href": "/api/v3/configuration"
+  },
+  "userPreferences": {
+   "href": "/api/v3/users/100030/preferences"
+  },
+  "prepareAttachment": {
+   "href": "/api/v3/attachments/prepare",
+   "method": "post"
+  }
+ }
+}

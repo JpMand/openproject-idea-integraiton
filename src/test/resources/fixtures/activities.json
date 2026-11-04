@@ -1,0 +1,241 @@
+{
+ "_type": "Collection",
+ "total": 35,
+ "count": 4,
+ "_embedded": {
+  "elements": [
+   {
+    "_type": "Activity::Comment",
+    "id": 222866,
+    "comment": {
+     "format": "markdown",
+     "raw": "Hi Victor,\n\nthanks for the suggestion. I find that very useful, however we have no immediate plans for it. We are open for pull requests for implementations of that feature.\n\nBest,  \nOliver",
+     "html": "<p class=\"op-uc-p\">Hi Victor,</p>\n<p class=\"op-uc-p\">thanks for the suggestion. I find that very useful, however we have no immediate plans for it. We are open for pull requests for implementations of that feature.</p>\n<p class=\"op-uc-p\">Best,<br>\nOliver</p>"
+    },
+    "details": [
+     {
+      "format": "custom",
+      "raw": "Description changed (/journals/222866/diff/description)",
+      "html": "<strong>Description</strong> changed (<a target=\"_top\" class=\"diff-details\" href=\"/journals/222866/diff/description?activity_page=work_packages%2F24971\">Details</a>)"
+     },
+     {
+      "format": "custom",
+      "raw": "Assignee deleted (OP Dev All)",
+      "html": "<strong>Assignee</strong> deleted (<strike><i>OP Dev All</i></strike>)"
+     },
+     {
+      "format": "custom",
+      "raw": "Target versions set to Wish List",
+      "html": "<strong>Target versions</strong> set to <i>Wish List</i>"
+     }
+    ],
+    "version": 3,
+    "internal": false,
+    "createdAt": "2017-04-12T11:17:41.750Z",
+    "updatedAt": "2017-04-12T11:17:41.750Z",
+    "_links": {
+     "attachments": {
+      "href": "/api/v3/activities/222866/attachments"
+     },
+     "prepareAttachment": {
+      "href": "/api/v3/activities/222866/attachments/prepare",
+      "method": "post"
+     },
+     "self": {
+      "href": "/api/v3/activities/222866"
+     },
+     "workPackage": {
+      "href": "/api/v3/work_packages/24971",
+      "title": "Backlogs should include tasks from subprojects"
+     },
+     "user": {
+      "href": "/api/v3/users/9177"
+     },
+     "emojiReactions": {
+      "href": "/api/v3/activities/222866/emoji_reactions"
+     }
+    }
+   },
+   {
+    "_type": "Activity::Comment",
+    "id": 247534,
+    "comment": {
+     "format": "markdown",
+     "raw": "Hello Oliver,  \nI just noticed that I would love that feature, too.  \nWe have a similar situation where this would be very nice to get an overall Burndown Chart, etc…\n\nViele Grüße  \nAndreas",
+     "html": "<p class=\"op-uc-p\">Hello Oliver,<br>\nI just noticed that I would love that feature, too.<br>\nWe have a similar situation where this would be very nice to get an overall Burndown Chart, etc…</p>\n<p class=\"op-uc-p\">Viele Grüße<br>\nAndreas</p>"
+    },
+    "details": [],
+    "version": 4,
+    "internal": false,
+    "createdAt": "2017-12-13T09:07:46.441Z",
+    "updatedAt": "2017-12-13T09:07:46.441Z",
+    "_links": {
+     "attachments": {
+      "href": "/api/v3/activities/247534/attachments"
+     },
+     "prepareAttachment": {
+      "href": "/api/v3/activities/247534/attachments/prepare",
+      "method": "post"
+     },
+     "self": {
+      "href": "/api/v3/activities/247534"
+     },
+     "workPackage": {
+      "href": "/api/v3/work_packages/24971",
+      "title": "Backlogs should include tasks from subprojects"
+     },
+     "user": {
+      "href": "/api/v3/users/44649"
+     },
+     "emojiReactions": {
+      "href": "/api/v3/activities/247534/emoji_reactions"
+     }
+    }
+   },
+   {
+    "_type": "Activity",
+    "id": 221883,
+    "comment": {
+     "format": "markdown",
+     "raw": "",
+     "html": ""
+    },
+    "details": [
+     {
+      "format": "custom",
+      "raw": "Type set to Feature",
+      "html": "<strong>Type</strong> set to <i>Feature</i>"
+     },
+     {
+      "format": "custom",
+      "raw": "Project deleted",
+      "html": "<strong>Project</strong> deleted"
+     },
+     {
+      "format": "custom",
+      "raw": "Subject set to Backlogs should include task from subprojects",
+      "html": "<strong>Subject</strong> set to <i>Backlogs should include task from subprojects</i>"
+     },
+     {
+      "format": "custom",
+      "raw": "Description set (/journals/221883/diff/description)",
+      "html": "<strong>Description</strong> set (<a target=\"_top\" class=\"diff-details\" href=\"/journals/221883/diff/description?activity_page=work_packages%2F24971\">Details</a>)"
+     },
+     {
+      "format": "custom",
+      "raw": "Status set to new",
+      "html": "<strong>Status</strong> set to <i>new</i>"
+     },
+     {
+      "format": "custom",
+      "raw": "Assignee set to OP Dev All",
+      "html": "<strong>Assignee</strong> set to <i>OP Dev All</i>"
+     },
+     {
+      "format": "custom",
+      "raw": "Priority set to Medium",
+      "html": "<strong>Priority</strong> set to <i>Medium</i>"
+     },
+     {
+      "format": "custom",
+      "raw": "Author set to Victor Calvo",
+      "html": "<strong>Author</strong> set to <i>Victor Calvo</i>"
+     },
+     {
+      "format": "custom",
+      "raw": "% Complete set to 0%",
+      "html": "<strong>% Complete</strong> set to <i>0%</i>"
+     },
+     {
+      "format": "custom",
+      "raw": "Scheduling mode set to Automatic",
+      "html": "<strong>Scheduling mode</strong> set to Automatic"
+     },
+     {
+      "format": "custom",
+      "raw": "Working days set to include non-working days",
+      "html": "<strong>Working days</strong> set to <i>include non-working days</i>"
+     },
+     {
+      "format": "custom",
+      "raw": "_You do not have permission to see this journal activity._",
+      "html": "<em>You do not have permission to see this journal activity.</em>"
+     }
+    ],
+    "version": 1,
+    "internal": false,
+    "createdAt": "2017-04-06T12:35:55.148Z",
+    "updatedAt": "2017-04-06T12:35:55.148Z",
+    "_links": {
+     "attachments": {
+      "href": "/api/v3/activities/221883/attachments"
+     },
+     "prepareAttachment": {
+      "href": "/api/v3/activities/221883/attachments/prepare",
+      "method": "post"
+     },
+     "self": {
+      "href": "/api/v3/activities/221883"
+     },
+     "workPackage": {
+      "href": "/api/v3/work_packages/24971",
+      "title": "Backlogs should include tasks from subprojects"
+     },
+     "user": {
+      "href": "/api/v3/users/41693"
+     },
+     "emojiReactions": {
+      "href": "/api/v3/activities/221883/emoji_reactions"
+     }
+    }
+   },
+   {
+    "_type": "Activity",
+    "id": 339767,
+    "comment": {
+     "format": "markdown",
+     "raw": "",
+     "html": ""
+    },
+    "details": [
+     {
+      "format": "custom",
+      "raw": "Votes set to 2",
+      "html": "<strong>Votes</strong> set to <i>2</i>"
+     }
+    ],
+    "version": 8,
+    "internal": false,
+    "createdAt": "2020-10-11T17:44:59.116Z",
+    "updatedAt": "2020-10-11T17:44:59.116Z",
+    "_links": {
+     "attachments": {
+      "href": "/api/v3/activities/339767/attachments"
+     },
+     "prepareAttachment": {
+      "href": "/api/v3/activities/339767/attachments/prepare",
+      "method": "post"
+     },
+     "self": {
+      "href": "/api/v3/activities/339767"
+     },
+     "workPackage": {
+      "href": "/api/v3/work_packages/24971",
+      "title": "Backlogs should include tasks from subprojects"
+     },
+     "user": {
+      "href": "/api/v3/users/3762"
+     },
+     "emojiReactions": {
+      "href": "/api/v3/activities/339767/emoji_reactions"
+     }
+    }
+   }
+  ]
+ },
+ "_links": {
+  "self": {
+   "href": "/api/v3/work_packages/24971/activities"
+  }
+ }
+}

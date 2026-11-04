@@ -192,6 +192,10 @@ class OpenProjectApi(private val http: HttpClient, baseUrl: String) : AutoClosea
         }.body())
     }
 
+    /** Users the work package can be assigned to. */
+    suspend fun availableAssignees(workPackage: WorkPackage): List<Principal> =
+        get<HalCollection<Principal>>(apiUrl("work_packages/${workPackage.id}/available_assignees")) { parameter("pageSize", 500) }.elements
+
     suspend fun deleteWorkPackage(workPackage: WorkPackage) {
         execute(HttpMethod.Delete, resolve(workPackage.links.href("self") ?: apiUrl("work_packages/${workPackage.id}")))
     }

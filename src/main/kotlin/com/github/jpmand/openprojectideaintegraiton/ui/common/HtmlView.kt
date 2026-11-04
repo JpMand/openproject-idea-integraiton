@@ -32,7 +32,7 @@ class HtmlView(
     }
 
     fun setHtml(html: String?) {
-        text = "<html><body>${html.orEmpty()}</body></html>"
+        text = "<html><head><style>$CSS</style></head><body>${html.orEmpty()}</body></html>"
         caretPosition = 0
     }
 
@@ -47,6 +47,10 @@ class HtmlView(
     }
 
     companion object {
+        /** OpenProject's markup classes (op-uc-*) carry no styles here; keep lists and paragraphs readable. */
+        private const val CSS = "ul { margin-left: 18px; list-style-type: disc; } ol { margin-left: 18px; } " +
+            "p { margin-top: 2px; margin-bottom: 6px; } pre, code { font-family: monospace; }"
+
         private val workPackageLink = Regex("""/work_packages/(\d+)(?:[/?#].*)?$""")
 
         fun workPackageId(url: String, baseUrl: String?): Long? {

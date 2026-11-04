@@ -68,6 +68,15 @@ intellijPlatform {
 val integrationTests = providers.gradleProperty("integrationTests").map { it != "false" }.getOrElse(false)
 
 tasks {
+    processResources {
+        // Stamps the plugin version for the User-Agent header (core/OpenProjectClientPool).
+        val pluginVersion = project.version.toString()
+        inputs.property("pluginVersion", pluginVersion)
+        filesMatching("**/core/plugin.properties") {
+            expand("version" to pluginVersion)
+        }
+    }
+
     test {
         filter {
             if (integrationTests) includeTestsMatching("*IntegrationTest") else excludeTestsMatching("*IntegrationTest")

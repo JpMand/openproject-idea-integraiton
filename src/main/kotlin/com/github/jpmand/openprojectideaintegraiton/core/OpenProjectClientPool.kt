@@ -4,15 +4,14 @@ import com.github.jpmand.openprojectideaintegraiton.api.OpenProjectApi
 import com.github.jpmand.openprojectideaintegraiton.api.OpenProjectClientConfig
 import com.github.jpmand.openprojectideaintegraiton.api.OpenProjectHttpClient
 import com.github.jpmand.openprojectideaintegraiton.api.OpenProjectUrls
-import com.intellij.ide.plugins.PluginManagerCore
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationInfo
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
-import com.intellij.openapi.extensions.PluginId
 import com.intellij.util.net.ssl.CertificateManager
 import java.net.Authenticator
 import java.security.MessageDigest
+import java.util.Properties
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -56,12 +55,17 @@ class OpenProjectClientPool : Disposable {
         MessageDigest.getInstance("SHA-256").digest(value.toByteArray()).joinToString("") { "%02x".format(it) }
 
     companion object {
-        const val PLUGIN_ID = "com.github.jpmand.openprojectideaintegraiton"
-
         fun getInstance(): OpenProjectClientPool = service()
 
+        /** The plugin version, stamped into plugin.properties by the build. */
+        private val pluginVersion: String by lazy {
+            runCatching {
+                OpenProjectClientPool::class.java.getResourceAsStream("plugin.properties")?.use { Properties().apply { load(it) }.getProperty("version") }
+            }.getOrNull()?.takeIf { it.isNotBlank() && !it.startsWith("$") } ?: "dev"
+        }
+
         fun userAgent(): String {
-            val version = PluginManagerCore.getPlugin(PluginId.getId(PLUGIN_ID))?.version ?: "dev"
+            val version = pluginVersion
             val build = runCatching { ApplicationInfo.getInstance().build.asString() }.getOrDefault("unknown")
             return "OpenProject-IntelliJ-Plugin/$version ($build)"
         }

@@ -25,6 +25,8 @@ class ActiveWorkPackageWidgetFactory : StatusBarWidgetFactory {
     override fun createWidget(project: Project): StatusBarWidget = ActiveWorkPackageWidget(project)
 }
 
+// No compatibility bridges: they would override StatusBarWidget's deprecated getPresentation(PlatformType).
+@JvmDefaultWithoutCompatibility
 class ActiveWorkPackageWidget(private val project: Project) : StatusBarWidget, StatusBarWidget.TextPresentation {
 
     private val cs = OpenProjectProjectScope.getInstance(project).childScope("ActiveWorkPackageWidget")

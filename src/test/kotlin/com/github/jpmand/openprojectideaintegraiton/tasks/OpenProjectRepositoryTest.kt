@@ -1,5 +1,6 @@
 package com.github.jpmand.openprojectideaintegraiton.tasks
 
+import com.github.jpmand.openprojectideaintegraiton.core.OpenProjectClientPool
 import com.intellij.tasks.TaskRepositoryType
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.intellij.util.xmlb.XmlSerializer
@@ -13,6 +14,11 @@ class OpenProjectRepositoryTest : BasePlatformTestCase() {
     fun `test repository type is registered`() {
         assertEquals("OpenProject", type().name)
         assertEquals(OpenProjectRepository::class.java, type().repositoryClass)
+    }
+
+    fun `test user agent carries the plugin version and IDE build`() {
+        val userAgent = OpenProjectClientPool.userAgent()
+        assertTrue(userAgent, Regex("""OpenProject-IntelliJ-Plugin/\d+\.\d+\.\d+\S* \(\w+-\d+\..+\)""").matches(userAgent))
     }
 
     fun `test settings survive xml serialization without the token`() {

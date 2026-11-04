@@ -36,6 +36,10 @@ suspend fun connect(project: Project, serverId: String?): Pair<OpenProjectServer
     server to server.repository.connection()
 }
 
+/** True when the user has to fix the Task Server configuration (no server, or the API token is rejected). */
+fun needsServerSettings(error: Throwable): Boolean =
+    error is NoServerConfiguredException || (error is OpenProjectApiException && error.isUnauthorized)
+
 /** A message for the user explaining why an OpenProject call failed. */
 fun describeError(error: Throwable): String = when (error) {
     is OpenProjectApiException -> error.message ?: OpenProjectBundle.message("error.unknown")

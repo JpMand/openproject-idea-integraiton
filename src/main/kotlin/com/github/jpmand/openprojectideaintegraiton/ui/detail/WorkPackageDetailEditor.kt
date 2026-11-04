@@ -1,6 +1,7 @@
 package com.github.jpmand.openprojectideaintegraiton.ui.detail
 
 import com.github.jpmand.openprojectideaintegraiton.OpenProjectBundle
+import com.github.jpmand.openprojectideaintegraiton.actions.notifyError
 import com.github.jpmand.openprojectideaintegraiton.api.hal.HalLink
 import com.github.jpmand.openprojectideaintegraiton.api.model.Attachment
 import com.github.jpmand.openprojectideaintegraiton.api.model.WorkPackage
@@ -154,10 +155,10 @@ class WorkPackageDetailEditor(project: Project, private val file: WorkPackageVir
                     if (controller.details.value == null) {
                         content.removeAll()
                         content.add(status, BorderLayout.CENTER)
-                        status.error(describeError(e)) { reload() }
+                        status.error(project, e) { reload() }
                         content.revalidate()
                     } else {
-                        notify(describeError(e), NotificationType.ERROR)
+                        notifyError(project, describeError(e), e)
                     }
                 }
             }
@@ -421,7 +422,7 @@ class WorkPackageDetailEditor(project: Project, private val file: WorkPackageVir
                 }
                 false
             } catch (e: Exception) {
-                withContext(Dispatchers.EDT) { notify(describeError(e), NotificationType.ERROR) }
+                withContext(Dispatchers.EDT) { notifyError(project, describeError(e), e) }
                 false
             }
             if (onDone != null) withContext(Dispatchers.EDT) { onDone(success) }

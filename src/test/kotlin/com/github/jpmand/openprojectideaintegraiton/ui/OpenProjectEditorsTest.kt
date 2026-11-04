@@ -94,7 +94,16 @@ class OpenProjectEditorsTest : BasePlatformTestCase() {
         assertTrue(tracker.isActive(server.id, workPackage.id))
         assertSame(repository, server.repository)
 
+        val widget = ActiveWorkPackageWidget(project)
+        try {
+            assertEquals("OP AGILE-1", widget.getText())
+            assertTrue(widget.getTooltipText()!!.contains(workPackage.subject))
+        } finally {
+            Disposer.dispose(widget)
+        }
+
         TaskManager.getManager(project).activateTask(TaskManager.getManager(project).localTasks.first { it.isDefault }, false)
         assertNull(tracker.active.value)
+        assertEquals("", ActiveWorkPackageWidget(project).also { Disposer.dispose(it) }.getText())
     }
 }

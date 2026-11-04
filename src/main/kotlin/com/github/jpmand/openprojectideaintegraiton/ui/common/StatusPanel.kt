@@ -1,6 +1,10 @@
 package com.github.jpmand.openprojectideaintegraiton.ui.common
 
 import com.github.jpmand.openprojectideaintegraiton.OpenProjectBundle
+import com.github.jpmand.openprojectideaintegraiton.core.OpenProjectServers
+import com.github.jpmand.openprojectideaintegraiton.core.describeError
+import com.github.jpmand.openprojectideaintegraiton.core.needsServerSettings
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.ui.AnimatedIcon
 import com.intellij.ui.components.ActionLink
@@ -30,6 +34,15 @@ class StatusPanel : JPanel(GridBagLayout()) {
     fun empty(message: String) = show(message, null, null)
 
     fun error(message: String, retry: () -> Unit) = show(message, OpenProjectBundle.message("status.retry"), retry)
+
+    /** Shows [error]; configuration problems link to the Task Server settings instead of offering a retry. */
+    fun error(project: Project, error: Throwable, retry: () -> Unit) {
+        if (needsServerSettings(error)) {
+            show(describeError(error), OpenProjectBundle.message("error.configure.server")) { OpenProjectServers.getInstance(project).openServerSettings() }
+        } else {
+            error(describeError(error), retry)
+        }
+    }
 
     fun show(message: String, actionText: String?, action: (() -> Unit)?) {
         label.icon = null

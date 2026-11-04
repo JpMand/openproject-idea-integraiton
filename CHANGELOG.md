@@ -12,3 +12,4 @@
 - Work package list and work package editor tabs (restored after restart), Log Time dialog, active task tracking and actions in Tools | OpenProject
 - Work package table: configurable columns (drag, Configure View), header sorting, search, open/closed and "assigned to me" quick filters, filter bar with all server filters, saved queries, paging, active task banner
 - Work package page: edit subject, status, description (Markdown with preview), assignee and priority; activity with comments; relations (add/remove); files (upload incl. drag & drop, download, open, delete); conflict detection
+- Status bar widget showing the active task's work package; "Configure Server…" links on missing server or rejected API token

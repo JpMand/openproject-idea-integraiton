@@ -33,6 +33,8 @@
         <fileEditorProvider implementation="com.github.jpmand.openprojectideaintegraiton.ui.WorkPackageListEditorProvider"/>
         <fileEditorProvider implementation="com.github.jpmand.openprojectideaintegraiton.ui.WorkPackageDetailEditorProvider"/>
         <fileIconProvider implementation="com.github.jpmand.openprojectideaintegraiton.ui.OpenProjectFileIconProvider"/>
+        <statusBarWidgetFactory id="OpenProject.ActiveWorkPackage"
+                                implementation="com.github.jpmand.openprojectideaintegraiton.ui.ActiveWorkPackageWidgetFactory"/>
     </extensions>
 
     <actions resource-bundle="messages.OpenProjectBundle">

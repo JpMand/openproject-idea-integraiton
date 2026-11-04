@@ -7,11 +7,13 @@ import com.github.jpmand.openprojectideaintegraiton.core.OpenProjectServers
 import com.github.jpmand.openprojectideaintegraiton.core.TimeEntries
 import com.github.jpmand.openprojectideaintegraiton.core.connect
 import com.github.jpmand.openprojectideaintegraiton.core.describeError
+import com.github.jpmand.openprojectideaintegraiton.core.needsServerSettings
 import com.github.jpmand.openprojectideaintegraiton.ui.OpenProjectDataKeys
 import com.github.jpmand.openprojectideaintegraiton.ui.WorkPackageRef
 import com.github.jpmand.openprojectideaintegraiton.vfs.OpenProjectFilesManager
 import com.intellij.icons.AllIcons
 import com.intellij.ide.BrowserUtil
+import com.intellij.notification.NotificationAction
 import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.actionSystem.ActionUpdateThread
@@ -29,9 +31,15 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.awt.datatransfer.StringSelection
 
-internal fun notifyError(project: Project, message: String) {
-    NotificationGroupManager.getInstance().getNotificationGroup("OpenProject")
-        .createNotification(message, NotificationType.ERROR).notify(project)
+internal fun notifyError(project: Project, message: String, cause: Throwable? = null) {
+    val notification = NotificationGroupManager.getInstance().getNotificationGroup("OpenProject")
+        .createNotification(message, NotificationType.ERROR)
+    if (cause != null && needsServerSettings(cause)) {
+        notification.addAction(NotificationAction.createSimpleExpiring(OpenProjectBundle.message("error.configure.server")) {
+            OpenProjectServers.getInstance(project).openServerSettings()
+        })
+    }
+    notification.notify(project)
 }
 
 /** Opens the work package table, asking which server when several are configured. */
@@ -106,7 +114,7 @@ class LogTimeAction : DumbAwareAction(AllIcons.Vcs.History) {
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
-                withContext(Dispatchers.EDT) { notifyError(project, describeError(e)) }
+                withContext(Dispatchers.EDT) { notifyError(project, describeError(e), e) }
             }
         }
     }

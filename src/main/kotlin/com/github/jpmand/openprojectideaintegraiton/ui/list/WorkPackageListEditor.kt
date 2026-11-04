@@ -244,11 +244,11 @@ class WorkPackageListEditor(project: Project, private val file: WorkPackageListV
                     queryError.text = e.message
                     queryError.isVisible = true
                 } else {
-                    showStatus { status.error(describeError(e)) { reload() } }
+                    showStatus { status.error(project, e) { reload() } }
                 }
             }
         } catch (e: Exception) {
-            withContext(Dispatchers.EDT) { showStatus { status.error(describeError(e)) { reload() } } }
+            withContext(Dispatchers.EDT) { showStatus { status.error(project, e) { reload() } } }
         } finally {
             withContext(Dispatchers.EDT + NonCancellable) { loadingLabel.isVisible = false }
         }

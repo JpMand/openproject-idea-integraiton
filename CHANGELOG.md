@@ -9,3 +9,4 @@
 - OpenProject API v3 client (HAL+JSON) on the IDE-bundled Ktor client and kotlinx.serialization
 - Integration tests against OpenProject in Docker (scripts/openproject-it.sh)
 - "OpenProject" task server for Tools | Tasks & Contexts: search (open/closed, assigned to me, project, saved query), state changes and time tracking
+- Work package list and work package editor tabs (restored after restart), Log Time dialog, active task tracking and actions in Tools | OpenProject

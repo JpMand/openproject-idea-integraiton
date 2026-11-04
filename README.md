@@ -1,6 +1,6 @@
 # OpenProject Integration for IntelliJ IDEA
 
-![Build](https://github.com/JpMand/openproject-idea-integraiton/workflows/Build/badge.svg)
+![Build](https://github.com/JpMand/openproject-idea-integration/workflows/Build/badge.svg)
 
 Work with [OpenProject](https://www.openproject.org) work packages without leaving the IDE:
 

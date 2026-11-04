@@ -1,7 +1,7 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.github.jpmand.openprojectideaintegraiton</id>
-    <name>OpenProject Integration</name>
+    <id>com.github.jpmand.openproject.idea</id>
+    <name>OpenProject</name>
     <vendor>jpmand</vendor>
     <description><![CDATA[
         <p>Work with <a href="https://www.openproject.org">OpenProject</a> work packages without leaving the IDE.</p>
@@ -26,30 +26,30 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <notificationGroup id="OpenProject" displayType="BALLOON" key="notification.group.name"/>
-        <tasks.repositoryType implementation="com.github.jpmand.openprojectideaintegraiton.tasks.OpenProjectRepositoryType"/>
+        <tasks.repositoryType implementation="com.github.jpmand.openproject.idea.tasks.OpenProjectRepositoryType"/>
 
         <virtualFileSystem key="openproject"
-                           implementationClass="com.github.jpmand.openprojectideaintegraiton.vfs.OpenProjectVirtualFileSystem"/>
-        <fileEditorProvider implementation="com.github.jpmand.openprojectideaintegraiton.ui.WorkPackageListEditorProvider"/>
-        <fileEditorProvider implementation="com.github.jpmand.openprojectideaintegraiton.ui.WorkPackageDetailEditorProvider"/>
-        <fileIconProvider implementation="com.github.jpmand.openprojectideaintegraiton.ui.OpenProjectFileIconProvider"/>
+                           implementationClass="com.github.jpmand.openproject.idea.vfs.OpenProjectVirtualFileSystem"/>
+        <fileEditorProvider implementation="com.github.jpmand.openproject.idea.ui.WorkPackageListEditorProvider"/>
+        <fileEditorProvider implementation="com.github.jpmand.openproject.idea.ui.WorkPackageDetailEditorProvider"/>
+        <fileIconProvider implementation="com.github.jpmand.openproject.idea.ui.OpenProjectFileIconProvider"/>
         <statusBarWidgetFactory id="OpenProject.ActiveWorkPackage"
-                                implementation="com.github.jpmand.openprojectideaintegraiton.ui.ActiveWorkPackageWidgetFactory"/>
+                                implementation="com.github.jpmand.openproject.idea.ui.ActiveWorkPackageWidgetFactory"/>
     </extensions>
 
     <actions resource-bundle="messages.OpenProjectBundle">
-        <action id="OpenProject.OpenWorkPackages" class="com.github.jpmand.openprojectideaintegraiton.actions.OpenWorkPackagesAction"
+        <action id="OpenProject.OpenWorkPackages" class="com.github.jpmand.openproject.idea.actions.OpenWorkPackagesAction"
                 icon="/icons/openproject.svg"/>
-        <action id="OpenProject.OpenActiveWorkPackage" class="com.github.jpmand.openprojectideaintegraiton.actions.OpenActiveWorkPackageAction"/>
-        <action id="OpenProject.LogTime" class="com.github.jpmand.openprojectideaintegraiton.actions.LogTimeAction"/>
-        <action id="OpenProject.OpenWorkPackage" class="com.github.jpmand.openprojectideaintegraiton.actions.OpenWorkPackageAction"/>
-        <action id="OpenProject.OpenInBrowser" class="com.github.jpmand.openprojectideaintegraiton.actions.OpenWorkPackageInBrowserAction"
+        <action id="OpenProject.OpenActiveWorkPackage" class="com.github.jpmand.openproject.idea.actions.OpenActiveWorkPackageAction"/>
+        <action id="OpenProject.LogTime" class="com.github.jpmand.openproject.idea.actions.LogTimeAction"/>
+        <action id="OpenProject.OpenWorkPackage" class="com.github.jpmand.openproject.idea.actions.OpenWorkPackageAction"/>
+        <action id="OpenProject.OpenInBrowser" class="com.github.jpmand.openproject.idea.actions.OpenWorkPackageInBrowserAction"
                 icon="AllIcons.General.Web"/>
-        <action id="OpenProject.CopyLink" class="com.github.jpmand.openprojectideaintegraiton.actions.CopyWorkPackageLinkAction"
+        <action id="OpenProject.CopyLink" class="com.github.jpmand.openproject.idea.actions.CopyWorkPackageLinkAction"
                 icon="AllIcons.Actions.Copy"/>
-        <action id="OpenProject.StartWorking" class="com.github.jpmand.openprojectideaintegraiton.actions.StartWorkingAction"
+        <action id="OpenProject.StartWorking" class="com.github.jpmand.openproject.idea.actions.StartWorkingAction"
                 icon="AllIcons.Actions.Execute"/>
-        <action id="OpenProject.Refresh" class="com.github.jpmand.openprojectideaintegraiton.actions.RefreshAction"/>
+        <action id="OpenProject.Refresh" class="com.github.jpmand.openproject.idea.actions.RefreshAction"/>
 
         <group id="OpenProject.ToolsMenu" popup="true" icon="/icons/openproject.svg">
             <reference ref="OpenProject.OpenWorkPackages"/>

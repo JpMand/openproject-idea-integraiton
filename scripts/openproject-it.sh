@@ -4,7 +4,7 @@
 #   scripts/openproject-it.sh up      start (or create) the container and wait until the API answers
 #   scripts/openproject-it.sh token   create an API token for the seeded "admin" user and print it
 #   scripts/openproject-it.sh env     print OPENPROJECT_IT_URL / OPENPROJECT_IT_TOKEN exports (eval-able)
-#   scripts/openproject-it.sh test    up + token + ./gradlew integrationTest (extra args go to Gradle)
+#   scripts/openproject-it.sh test    up + token + ./gradlew test -PintegrationTests (extra args go to Gradle)
 #   scripts/openproject-it.sh logs    follow the container log
 #   scripts/openproject-it.sh down    stop and remove the container
 #
@@ -91,7 +91,7 @@ case "${1:-}" in
   test)
     shift
     up
-    OPENPROJECT_IT_URL="$URL" OPENPROJECT_IT_TOKEN="$(token)" "$(dirname "$0")/../gradlew" -p "$(dirname "$0")/.." integrationTest "$@"
+    OPENPROJECT_IT_URL="$URL" OPENPROJECT_IT_TOKEN="$(token)" "$(dirname "$0")/../gradlew" -p "$(dirname "$0")/.." test -PintegrationTests "$@"
     ;;
   logs) docker logs -f "$NAME" ;;
   down)

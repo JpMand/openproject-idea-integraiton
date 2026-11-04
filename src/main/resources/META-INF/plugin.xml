@@ -26,5 +26,6 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <notificationGroup id="OpenProject" displayType="BALLOON" key="notification.group.name"/>
+        <tasks.repositoryType implementation="com.github.jpmand.openprojectideaintegraiton.tasks.OpenProjectRepositoryType"/>
     </extensions>
 </idea-plugin>

@@ -208,9 +208,8 @@ class OpenProjectApiIntegrationTest {
         }
         val entry = api.createTimeEntry(payload)
         assertEquals("PT1H30M", entry.hours)
-        val entries = api.timeEntries(listOf(FilterSpec(if (linkName == "entity") "entity_id" else "work_package", "=", listOf(created.id.toString()))))
-            .ifEmpty { api.timeEntries(listOf(FilterSpec("workPackage", "=", listOf(created.id.toString())))) }
-        note("time entries found by filter: ${entries.size}")
+        val entries = OpenProjectIntegration.timeEntriesOf(api, created.id)
+        assertTrue(entries.any { it.id == entry.id })
         api.deleteTimeEntry(entry)
     }
 

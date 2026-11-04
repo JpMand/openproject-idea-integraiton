@@ -1,11 +1,13 @@
 package com.github.jpmand.openprojectideaintegraiton.it
 
+import com.github.jpmand.openprojectideaintegraiton.api.FilterSpec
 import com.github.jpmand.openprojectideaintegraiton.api.Filters
 import com.github.jpmand.openprojectideaintegraiton.api.OpenProjectApi
 import com.github.jpmand.openprojectideaintegraiton.api.OpenProjectClientConfig
 import com.github.jpmand.openprojectideaintegraiton.api.OpenProjectHttpClient
 import com.github.jpmand.openprojectideaintegraiton.api.WorkPackageQuery
 import com.github.jpmand.openprojectideaintegraiton.api.model.Project
+import com.github.jpmand.openprojectideaintegraiton.api.model.TimeEntry
 import com.github.jpmand.openprojectideaintegraiton.api.model.WorkPackage
 import com.github.jpmand.openprojectideaintegraiton.api.model.WorkPackageType
 import kotlinx.coroutines.runBlocking
@@ -47,6 +49,11 @@ object OpenProjectIntegration {
             }
         })
     }
+
+    /** Time entries of a work package; the filter is "entity_id" on OpenProject 17+ and "work_package" before. */
+    suspend fun timeEntriesOf(api: OpenProjectApi, workPackageId: Long): List<TimeEntry> =
+        runCatching { api.timeEntries(listOf(FilterSpec("entity_id", "=", listOf(workPackageId.toString())))) }
+            .getOrElse { api.timeEntries(listOf(FilterSpec("work_package", "=", listOf(workPackageId.toString())))) }
 
     /** Deletes work packages left over by earlier runs. */
     fun cleanUp(api: OpenProjectApi, prefix: String) = runBlocking {

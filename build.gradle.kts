@@ -63,35 +63,28 @@ intellijPlatform {
     }
 }
 
+// With -PintegrationTests the test task runs the *IntegrationTest classes against the OpenProject at
+// OPENPROJECT_IT_URL instead of the unit tests: scripts/openproject-it.sh test
+val integrationTests = providers.gradleProperty("integrationTests").map { it != "false" }.getOrElse(false)
+
 tasks {
     test {
-        filter { excludeTestsMatching("*IntegrationTest") }
+        filter {
+            if (integrationTests) includeTestsMatching("*IntegrationTest") else excludeTestsMatching("*IntegrationTest")
+        }
+        if (integrationTests) {
+            environment("OPENPROJECT_IT_URL", providers.environmentVariable("OPENPROJECT_IT_URL").getOrElse(""))
+            environment("OPENPROJECT_IT_TOKEN", providers.environmentVariable("OPENPROJECT_IT_TOKEN").getOrElse(""))
+            outputs.upToDateWhen { false }
+            testLogging {
+                events("passed", "skipped", "failed")
+                showStandardStreams = true
+            }
+        }
     }
 }
 
 intellijPlatformTesting {
-    testIde {
-        // Tests against a real OpenProject: scripts/openproject-it.sh test (or set OPENPROJECT_IT_URL/_TOKEN).
-        register("integrationTest") {
-            plugins {
-                plugin("com.intellij.tasks", tasksPluginVersion)
-            }
-            task {
-                description = "Runs the *IntegrationTest classes against the OpenProject at OPENPROJECT_IT_URL."
-                group = "verification"
-                useJUnit()
-                filter { includeTestsMatching("*IntegrationTest") }
-                environment("OPENPROJECT_IT_URL", providers.environmentVariable("OPENPROJECT_IT_URL").getOrElse(""))
-                environment("OPENPROJECT_IT_TOKEN", providers.environmentVariable("OPENPROJECT_IT_TOKEN").getOrElse(""))
-                outputs.upToDateWhen { false }
-                testLogging {
-                    events("passed", "skipped", "failed")
-                    showStandardStreams = true
-                }
-            }
-        }
-    }
-
     runIde {
         // Manual checks against the IntelliJ IDEA 2026.3 RC: ./gradlew runIdeRc
         register("runIdeRc") {

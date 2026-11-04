@@ -71,9 +71,6 @@
             <reference ref="OpenProject.OpenInBrowser"/>
             <reference ref="OpenProject.CopyLink"/>
         </group>
-        <group id="OpenProject.WorkPackageListToolbar">
-            <reference ref="OpenProject.Refresh"/>
-        </group>
         <group id="OpenProject.WorkPackagePopup">
             <reference ref="OpenProject.OpenWorkPackage"/>
             <reference ref="OpenProject.StartWorking"/>

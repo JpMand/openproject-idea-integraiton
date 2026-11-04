@@ -83,6 +83,8 @@ data class FilterInstanceSchema(
     /** Display name when the server provides one (via the `filter` allowed values), otherwise null. */
     val displayName: String?,
     val operatorValueTypes: Map<String, String?>,
+    /** Allowed values per operator when the server lists them (e.g. custom field options). */
+    val operatorAllowedValues: Map<String, List<HalLink>> = emptyMap(),
 ) {
     companion object {
         private const val OPERATOR_PREFIX = "/api/v3/queries/operators/"
@@ -92,15 +94,17 @@ data class FilterInstanceSchema(
             val id = schema.links["self"]?.id.orEmpty()
             val displayName = schema["filter"]?.allowedValueLinks?.firstOrNull()?.title
             val operators = linkedMapOf<String, String?>()
+            val allowed = linkedMapOf<String, List<HalLink>>()
             (json["_dependencies"] as? JsonArray)?.forEach { dependency ->
                 val dependencies = (dependency as? JsonObject)?.get("dependencies") as? JsonObject ?: return@forEach
                 dependencies.forEach { (operatorHref, valuesSchema) ->
                     val operator = URLDecoder.decode(operatorHref.substringAfter(OPERATOR_PREFIX), StandardCharsets.UTF_8)
                     val values = (valuesSchema as? JsonObject)?.get("values") as? JsonObject
                     operators[operator] = (values?.get("type") as? JsonPrimitive)?.contentOrNull
+                    values?.let { SchemaField.from("values", it).allowedOptions }?.takeIf { it.isNotEmpty() }?.let { allowed[operator] = it }
                 }
             }
-            return FilterInstanceSchema(id, displayName, operators)
+            return FilterInstanceSchema(id, displayName, operators, allowed)
         }
 
         fun listFrom(collection: JsonObject): List<FilterInstanceSchema> =

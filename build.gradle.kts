@@ -33,10 +33,10 @@ dependencies {
 
         plugin("com.intellij.tasks", tasksPluginVersion)
         if (platformBranch >= 263) {
-            // 2026.3 moved the Tasks and VCS modules into bundled plugins.
-            bundledPlugins("com.intellij.platform.tasks", "com.intellij.platform.vcs")
+            // 2026.3 moved the Tasks modules into a bundled plugin.
+            bundledPlugin("com.intellij.platform.tasks")
         } else {
-            bundledModules("intellij.platform.tasks", "intellij.platform.tasks.impl", "intellij.platform.vcs.impl")
+            bundledModules("intellij.platform.tasks", "intellij.platform.tasks.impl")
         }
         // Ktor client and kotlinx.serialization are provided by the IDE; never bundle them.
         bundledModule("intellij.libraries.ktor.client")

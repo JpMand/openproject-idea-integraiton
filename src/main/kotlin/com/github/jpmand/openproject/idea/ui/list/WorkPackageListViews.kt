@@ -11,7 +11,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.util.xmlb.annotations.Tag
 import com.intellij.util.xmlb.annotations.XMap
 
-/** Remembers the table configuration per server in the workspace file (not shared through VCS). */
+/** Remembers the configuration of each work package list (per tool window tab) in the workspace file (not shared through VCS). */
 @Service(Service.Level.PROJECT)
 @State(name = "OpenProjectWorkPackageViews", storages = [Storage(StoragePathMacros.WORKSPACE_FILE)])
 class WorkPackageListViews : PersistentStateComponent<WorkPackageListViews.ViewsState> {
@@ -40,8 +40,11 @@ class WorkPackageListViews : PersistentStateComponent<WorkPackageListViews.Views
         this.state = state
     }
 
-    fun get(serverId: String): ListViewState {
-        val bean = state.views[serverId] ?: return ListViewState()
+    fun contains(key: String): Boolean = key in state.views
+
+    /** The view stored under [key] (the server id for a server's main list, see the tool window tabs). */
+    fun get(key: String, defaults: ListViewState = ListViewState()): ListViewState {
+        val bean = state.views[key] ?: return defaults
         return ListViewState(
             columns = bean.columns.split(',').map(String::trim).filter(String::isNotEmpty).ifEmpty { ListViewState.DEFAULT_COLUMNS },
             widths = bean.widths.split(',').mapNotNull { entry ->
@@ -49,15 +52,19 @@ class WorkPackageListViews : PersistentStateComponent<WorkPackageListViews.Views
                 width.toIntOrNull()?.let { column to it }
             }.toMap(),
             sortBy = Filters.sortFromJson(bean.sortBy).ifEmpty { ListViewState.DEFAULT_SORT },
-            filters = if (bean.filters.isBlank()) listOf(Filters.openStatus()) else Filters.fromJson(bean.filters),
+            filters = if (bean.filters.isBlank()) defaults.filters else Filters.fromJson(bean.filters),
             search = bean.search,
             pageSize = bean.pageSize.coerceIn(1, 1000),
             savedQueryId = bean.savedQueryId,
         )
     }
 
-    fun put(serverId: String, view: ListViewState) {
-        state.views[serverId] = ViewBean().apply {
+    fun remove(key: String) {
+        state.views.remove(key)
+    }
+
+    fun put(key: String, view: ListViewState) {
+        state.views[key] = ViewBean().apply {
             columns = view.columns.joinToString(",")
             widths = view.widths.entries.joinToString(",") { "${it.key}=${it.value}" }
             sortBy = Filters.sortToJson(view.sortBy)

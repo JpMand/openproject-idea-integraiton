@@ -11,16 +11,18 @@ import com.github.jpmand.openproject.idea.api.model.WorkPackage
 import com.github.jpmand.openproject.idea.core.ActiveWorkPackage
 import com.github.jpmand.openproject.idea.core.ActiveWorkPackageTracker
 import com.github.jpmand.openproject.idea.core.OpenProjectConnection
+import com.github.jpmand.openproject.idea.core.OpenProjectProjectScope
 import com.github.jpmand.openproject.idea.core.OpenProjectServer
+import com.github.jpmand.openproject.idea.core.OpenProjectServers
 import com.github.jpmand.openproject.idea.core.connect
 import com.github.jpmand.openproject.idea.core.describeError
 import com.github.jpmand.openproject.idea.ui.OpenProjectDataKeys
-import com.github.jpmand.openproject.idea.ui.OpenProjectFileEditor
 import com.github.jpmand.openproject.idea.ui.WorkPackageRef
 import com.github.jpmand.openproject.idea.ui.common.StatusPanel
-import com.github.jpmand.openproject.idea.vfs.OpenProjectFilesManager
-import com.github.jpmand.openproject.idea.vfs.WorkPackageListVirtualFile
+import com.github.jpmand.openproject.idea.ui.detail.WorkPackageDetailPanel
+import com.github.jpmand.openproject.idea.ui.toolwindow.OpenProjectToolWindowManager
 import com.intellij.icons.AllIcons
+import com.intellij.openapi.Disposable
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.ActionPlaces
 import com.intellij.openapi.actionSystem.ActionUpdateThread
@@ -33,27 +35,29 @@ import com.intellij.openapi.project.DumbAwareAction
 import com.intellij.openapi.project.DumbAwareToggleAction
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ComboBox
+import com.intellij.openapi.util.Disposer
 import com.intellij.ui.AnimatedIcon
 import com.intellij.ui.DocumentAdapter
 import com.intellij.ui.DoubleClickListener
 import com.intellij.ui.JBColor
+import com.intellij.ui.OnePixelSplitter
 import com.intellij.ui.PopupHandler
 import com.intellij.ui.ScrollPaneFactory
 import com.intellij.ui.SearchTextField
 import com.intellij.ui.TableSpeedSearch
 import com.intellij.ui.components.ActionLink
-import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.components.JBLabel
-import com.intellij.ui.dsl.listCellRenderer.textListCellRenderer
 import com.intellij.ui.table.TableView
 import com.intellij.util.ui.ColumnInfo
 import com.intellij.util.ui.JBUI
 import com.intellij.util.ui.ListTableModel
 import com.intellij.util.ui.UIUtil
+import com.intellij.util.ui.WrapLayout
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
@@ -88,12 +92,21 @@ import javax.swing.table.DefaultTableCellRenderer
 import javax.swing.table.TableCellRenderer
 
 /**
- * The work package table of a server, modelled on OpenProject's own table: configurable columns (header drag,
- * Configure View), server-side sorting by header click, global search, quick filters, the full filter bar,
- * saved OpenProject queries and paging. The active task's work package is highlighted and shown in a banner.
+ * A work package table of a server, modelled on OpenProject's own table: configurable columns (header drag,
+ * Configure View), server-side sorting by header click, global search, quick filter dropdowns, the full filter
+ * bar, saved OpenProject queries and paging. Clicking a row previews the work package on the right; double-click
+ * or "Open in New Tab" opens it in a tab of its own. The active task's work package is highlighted and shown in a
+ * banner.
+ *
+ * [requestedServerId] null means the first configured server; the view is stored under [viewKey] (null: the
+ * server id, i.e. the server's main list).
  */
 @OptIn(FlowPreview::class)
-class WorkPackageListEditor(project: Project, private val file: WorkPackageListVirtualFile) : OpenProjectFileEditor(project, file) {
+class WorkPackageListPanel(
+    private val project: Project,
+    private val requestedServerId: String?,
+    private val viewKey: String?,
+) : JPanel(BorderLayout()), Disposable {
 
     private data class SavedView(val id: Long, val name: String) {
         override fun toString() = name
@@ -104,8 +117,15 @@ class WorkPackageListEditor(project: Project, private val file: WorkPackageListV
         override fun getRenderer(item: WorkPackage?): TableCellRenderer = cellRenderer
     }
 
+    private val cs = OpenProjectProjectScope.getInstance(project).childScope("WorkPackageListPanel")
     private val views = WorkPackageListViews.getInstance(project)
-    private val viewState = MutableStateFlow(views.get(file.serverId).copy(page = 1))
+    private val initialServer = OpenProjectServers.getInstance(project).find(requestedServerId)
+
+    /** The server shown; null until one is configured. */
+    @Volatile var serverId: String? = initialServer?.id ?: requestedServerId
+        private set
+    private val storageKey: String? get() = viewKey ?: serverId
+    private val viewState = MutableStateFlow(initialState())
 
     @Volatile private var server: OpenProjectServer? = null
     @Volatile private var connection: OpenProjectConnection? = null
@@ -132,10 +152,9 @@ class WorkPackageListEditor(project: Project, private val file: WorkPackageListV
         textEditor.emptyText.text = OpenProjectBundle.message("list.search.hint")
         textEditor.columns = 22
     }
-    private val statusCombo = ComboBox(DefaultComboBoxModel(StatusMode.entries.toTypedArray())).apply {
-        renderer = textListCellRenderer { it?.let { mode -> OpenProjectBundle.message("list.status.${mode.name.lowercase()}") } ?: "" }
+    private val quickFilters = QuickFilterDef.ALL.map { def ->
+        QuickFilterLink(def, cs, ::loadResourceOptions) { filter -> viewState.update { ListQueries.withQuickFilter(it, def.name, filter) } }
     }
-    private val assignedToMe = JBCheckBox(OpenProjectBundle.message("list.assigned.to.me"))
     private val viewsCombo = ComboBox(DefaultComboBoxModel(arrayOf(defaultView()))).apply {
         toolTipText = OpenProjectBundle.message("list.views.tooltip")
     }
@@ -159,31 +178,39 @@ class WorkPackageListEditor(project: Project, private val file: WorkPackageListV
     private val center = JPanel(BorderLayout())
     private val footerLabel = JBLabel()
     private val loadingLabel = JBLabel(AnimatedIcon.Default.INSTANCE).apply { isVisible = false }
+    private var preview: WorkPackageDetailPanel? = null
+    private var restoringSelection = false
+    private val splitter = OnePixelSplitter(false, "OpenProject.List.Preview", 0.55f)
     private val previousLink = ActionLink(OpenProjectBundle.message("list.page.previous")) { viewState.update { it.copy(page = (it.page - 1).coerceAtLeast(1)) } }
     private val nextLink = ActionLink(OpenProjectBundle.message("list.page.next")) { viewState.update { it.copy(page = it.page + 1) } }
 
-    private val root: JComponent = UiDataProvider.wrapComponent(JPanel(BorderLayout()).apply {
-        add(JPanel().apply {
-            layout = BoxLayout(this, BoxLayout.Y_AXIS)
-            add(header())
-            add(filterPanel)
-            add(queryError)
-            add(banner)
-        }, BorderLayout.NORTH)
-        add(center, BorderLayout.CENTER)
-        add(footer(), BorderLayout.SOUTH)
-    }) { sink ->
-        val selected = table.selectedObject
-        val server = server
-        sink[OpenProjectDataKeys.WORK_PACKAGE] = if (selected != null && server != null) WorkPackageRef(server, selected) else null
-        sink[OpenProjectDataKeys.REFRESHER] = Runnable { reload() }
-    }
-
     init {
+        val listArea = JPanel(BorderLayout()).apply {
+            add(center, BorderLayout.CENTER)
+            add(footer(), BorderLayout.SOUTH)
+        }
+        splitter.firstComponent = listArea
+        add(UiDataProvider.wrapComponent(JPanel(BorderLayout()).apply {
+            add(JPanel().apply {
+                layout = BoxLayout(this, BoxLayout.Y_AXIS)
+                add(header())
+                add(filterPanel)
+                add(queryError)
+                add(banner)
+            }, BorderLayout.NORTH)
+            add(splitter, BorderLayout.CENTER)
+        }) { sink ->
+            val selected = table.selectedObject
+            val server = server
+            sink[OpenProjectDataKeys.WORK_PACKAGE] = if (selected != null && server != null) WorkPackageRef(server, selected) else null
+            sink[OpenProjectDataKeys.REFRESHER] = Runnable { reload() }
+            sink[OpenProjectDataKeys.LIST_PANEL] = this
+        }, BorderLayout.CENTER)
+
         installTableBehaviour()
         installControls()
         rebuildColumns(viewState.value)
-        showFilters = viewState.value.filters.any { it.name != "status" }
+        showFilters = viewState.value.filters.any { it.name !in QUICK_FILTER_NAMES }
         filterPanel.isVisible = showFilters
         center.add(status, BorderLayout.CENTER)
         status.loading()
@@ -193,7 +220,7 @@ class WorkPackageListEditor(project: Project, private val file: WorkPackageListV
         }
         cs.launch(Dispatchers.EDT) {
             viewState.collect { state ->
-                views.put(file.serverId, state)
+                storageKey?.let { views.put(it, state) }
                 syncControls(state)
                 if (state.columns != columnIds) rebuildColumns(state)
                 table.tableHeader.repaint()
@@ -201,7 +228,7 @@ class WorkPackageListEditor(project: Project, private val file: WorkPackageListV
         }
         cs.launch {
             ActiveWorkPackageTracker.getInstance(project).active.collect { value ->
-                active = value?.takeIf { it.serverId == file.serverId }
+                active = value?.takeIf { it.serverId == serverId }
                 withContext(Dispatchers.EDT) {
                     banner.show(active)
                     table.repaint()
@@ -210,7 +237,18 @@ class WorkPackageListEditor(project: Project, private val file: WorkPackageListV
         }
     }
 
+    private fun initialState(): ListViewState {
+        val key = storageKey ?: return defaults()
+        return views.get(key, defaults()).copy(page = 1)
+    }
+
+    /** A new view: the open work packages of the project configured for the Task Server. */
+    private fun defaults(): ListViewState = ListViewState.defaults(projectId())
+
+    private fun projectId(): Long = (server ?: OpenProjectServers.getInstance(project).find(serverId))?.repository?.projectId ?: 0
+
     fun reload() {
+        adoptConfiguredServer()
         connection?.invalidate()
         cs.launch { load(ListQueries.toQuery(viewState.value)) }
     }
@@ -220,7 +258,7 @@ class WorkPackageListEditor(project: Project, private val file: WorkPackageListV
     private suspend fun load(query: WorkPackageQuery) {
         withContext(Dispatchers.EDT) { loadingLabel.isVisible = true }
         try {
-            val (server, connection) = connect(project, file.serverId)
+            val (server, connection) = connect(project, serverId)
             this.server = server
             this.connection = connection
             val loadedMetadata = ListMetadata.load(connection)
@@ -259,7 +297,12 @@ class WorkPackageListEditor(project: Project, private val file: WorkPackageListV
         queryError.isVisible = false
         val selectedId = table.selectedObject?.id
         model.items = page.elements
-        selectedId?.let { id -> model.items.indexOfFirst { it.id == id }.takeIf { it >= 0 }?.let { table.selectionModel.setSelectionInterval(it, it) } }
+        restoringSelection = true
+        try {
+            selectedId?.let { id -> model.items.indexOfFirst { it.id == id }.takeIf { it >= 0 }?.let { table.selectionModel.setSelectionInterval(it, it) } }
+        } finally {
+            restoringSelection = false
+        }
         val pages = ListQueries.pageCount(page.total, page.pageSize)
         val from = if (page.total == 0) 0 else (page.page - 1) * page.pageSize + 1
         val to = ((page.page - 1) * page.pageSize + page.elements.size)
@@ -271,8 +314,11 @@ class WorkPackageListEditor(project: Project, private val file: WorkPackageListV
         if (page.elements.isEmpty()) showStatus { status.empty(OpenProjectBundle.message("list.empty")) } else showTable()
     }
 
+    private suspend fun loadResourceOptions(elementType: String): List<ValueOption> =
+        loadOptions(FilterMeta(elementType, elementType, emptyMap()), "=", elementType)
+
     private suspend fun loadOptions(filter: FilterMeta, operator: String, elementType: String): List<ValueOption> {
-        val connection = connection ?: connect(project, file.serverId).second
+        val connection = connection ?: connect(project, serverId).second
         fun named(id: Long, name: String) = ValueOption(id.toString(), name)
         return when (elementType) {
             "Status" -> connection.statuses().map { named(it.id, it.name) }
@@ -305,12 +351,12 @@ class WorkPackageListEditor(project: Project, private val file: WorkPackageListV
 
     private fun applySavedView(view: SavedView) {
         if (view.id == 0L) {
-            viewState.update { ListViewState(widths = it.widths, pageSize = it.pageSize) }
+            viewState.update { ListQueries.reset(it, defaults()) }
             return
         }
         cs.launch {
             try {
-                val connection = connection ?: connect(project, file.serverId).second
+                val connection = connection ?: connect(project, serverId).second
                 val query = connection.api.query(view.id)
                 val columns = query.links.list("columns").mapNotNull { it.id }
                 val sortBy = query.links.list("sortBy").mapNotNull { it.id }.map { SortSpec(it.substringBeforeLast('-'), !it.endsWith("-desc")) }
@@ -318,7 +364,8 @@ class WorkPackageListEditor(project: Project, private val file: WorkPackageListV
                     it.copy(
                         columns = columns.ifEmpty { it.columns },
                         sortBy = sortBy.ifEmpty { ListViewState.DEFAULT_SORT },
-                        filters = Filters.fromQueryFilters(query.filters),
+                        // A query of a project shows that project; others get the Task Server's project, like new views.
+                        filters = ListQueries.withDefaultProject(Filters.fromQueryFilters(query.filters), query.links["project"]?.id?.toLongOrNull() ?: projectId()),
                         search = "",
                         page = 1,
                         savedQueryId = view.id,
@@ -359,20 +406,29 @@ class WorkPackageListEditor(project: Project, private val file: WorkPackageListV
             },
             object : DumbAwareAction(OpenProjectBundle.message("list.reset"), null, AllIcons.General.Reset) {
                 override fun getActionUpdateThread() = ActionUpdateThread.EDT
-                override fun actionPerformed(e: AnActionEvent) = viewState.update { ListViewState(widths = it.widths, pageSize = it.pageSize) }
+                override fun actionPerformed(e: AnActionEvent) = viewState.update { ListQueries.reset(it, defaults()) }
+            },
+            object : DumbAwareAction(OpenProjectBundle.message("list.open.as.tab"), OpenProjectBundle.message("list.open.as.tab.description"), AllIcons.Actions.OpenNewTab) {
+                override fun getActionUpdateThread() = ActionUpdateThread.EDT
+                override fun actionPerformed(e: AnActionEvent) = openAsNewTab()
             },
             Separator.getInstance(),
             ActionManager.getInstance().getAction("OpenProject.LogTime"),
         )
-        val toolbar = ActionManager.getInstance().createActionToolbar(ActionPlaces.EDITOR_TOOLBAR, group, true)
+        val toolbar = ActionManager.getInstance().createActionToolbar("OpenProject.WorkPackageList", group, true)
         toolbar.targetComponent = table
-        val controls = JPanel(FlowLayout(FlowLayout.LEFT, JBUI.scale(8), JBUI.scale(2))).apply {
+        val controls = JPanel(WrapLayout(FlowLayout.LEFT, JBUI.scale(12), JBUI.scale(3))).apply {
             isOpaque = false
             add(searchField)
-            add(statusCombo)
-            add(assignedToMe)
-            add(JBLabel(OpenProjectBundle.message("list.views")))
-            add(viewsCombo)
+            quickFilters.forEach(::add)
+            add(JPanel(FlowLayout(FlowLayout.LEFT, 0, 0)).apply {
+                isOpaque = false
+                add(JBLabel(OpenProjectBundle.message("list.views")).apply {
+                    foreground = UIUtil.getContextHelpForeground()
+                    border = JBUI.Borders.emptyRight(4)
+                })
+                add(viewsCombo)
+            })
         }
         return JPanel(BorderLayout()).apply {
             border = JBUI.Borders.customLineBottom(JBColor.border())
@@ -395,12 +451,6 @@ class WorkPackageListEditor(project: Project, private val file: WorkPackageListV
                 if (!syncing) viewState.update { ListQueries.withSearch(it, searchField.text) }
             }
         })
-        statusCombo.addActionListener {
-            if (!syncing) (statusCombo.selectedItem as? StatusMode)?.let { mode -> viewState.update { ListQueries.withStatusMode(it, mode) } }
-        }
-        assignedToMe.addActionListener {
-            if (!syncing) viewState.update { ListQueries.withAssignedToMe(it, assignedToMe.isSelected) }
-        }
         viewsCombo.addActionListener {
             if (!syncing) (viewsCombo.selectedItem as? SavedView)?.let(::applySavedView)
         }
@@ -410,8 +460,7 @@ class WorkPackageListEditor(project: Project, private val file: WorkPackageListV
         syncing = true
         try {
             if (searchField.text != state.search && !searchField.textEditor.hasFocus()) searchField.text = state.search
-            statusCombo.selectedItem = ListQueries.statusMode(state)
-            assignedToMe.isSelected = ListQueries.isAssignedToMe(state)
+            quickFilters.forEach { it.show(state.filters) }
             if (state.savedQueryId == 0L && (viewsCombo.selectedItem as? SavedView)?.id != 0L) viewsCombo.selectedIndex = 0
             filterBar.setFilters(state.filters)
         } finally {
@@ -421,6 +470,14 @@ class WorkPackageListEditor(project: Project, private val file: WorkPackageListV
 
     private fun installTableBehaviour() {
         TableSpeedSearch.installOn(table)
+        table.selectionModel.addListSelectionListener { e ->
+            if (!e.valueIsAdjusting && !restoringSelection && preview != null) table.selectedObject?.let { showPreview(it.id) }
+        }
+        table.addMouseListener(object : MouseAdapter() {
+            override fun mouseClicked(e: MouseEvent) {
+                if (SwingUtilities.isLeftMouseButton(e) && e.clickCount == 1) table.selectedObject?.let { showPreview(it.id) }
+            }
+        })
         object : DoubleClickListener() {
             override fun onDoubleClick(event: MouseEvent): Boolean = openSelected()
         }.installOn(table)
@@ -429,7 +486,7 @@ class WorkPackageListEditor(project: Project, private val file: WorkPackageListV
                 if (e.keyCode == KeyEvent.VK_ENTER && openSelected()) e.consume()
             }
         })
-        PopupHandler.installPopupMenu(table, "OpenProject.WorkPackagePopup", "OpenProject.WorkPackageList")
+        PopupHandler.installPopupMenu(table, "OpenProject.WorkPackagePopup", "OpenProject.WorkPackageListPopup")
 
         val header = table.tableHeader
         val original = header.defaultRenderer
@@ -532,8 +589,47 @@ class WorkPackageListEditor(project: Project, private val file: WorkPackageListV
 
     private fun openSelected(): Boolean {
         val selected = table.selectedObject ?: return false
-        OpenProjectFilesManager.getInstance(project).openWorkPackage(file.serverId, selected.id)
+        val serverId = serverId ?: return false
+        OpenProjectToolWindowManager.getInstance(project).openWorkPackage(serverId, selected.id)
         return true
+    }
+
+    /** Shows [workPackageId] next to the list ("Open on the Right"); a row click does the same. */
+    fun showPreview(workPackageId: Long) {
+        val serverId = serverId ?: return
+        val current = preview
+        if (current != null && current.workPackageId == workPackageId && current.serverId == serverId) return
+        current?.let(Disposer::dispose)
+        val panel = WorkPackageDetailPanel(project, serverId, workPackageId, WorkPackageDetailPanel.Layout.PREVIEW, onClose = ::closePreview)
+        Disposer.register(this, panel)
+        preview = panel
+        splitter.secondComponent = panel
+        splitter.revalidate()
+    }
+
+    fun closePreview() {
+        preview?.let(Disposer::dispose)
+        preview = null
+        splitter.secondComponent = null
+        splitter.revalidate()
+        table.requestFocusInWindow()
+    }
+
+    /** Opens the current filters, sorting and columns in a new list tab. */
+    private fun openAsNewTab() {
+        val serverId = serverId ?: return
+        val title = (viewsCombo.selectedItem as? SavedView)?.takeIf { it.id != 0L }?.name?.removePrefix("★ ")
+            ?: viewState.value.search.trim().takeIf { it.isNotEmpty() }
+        OpenProjectToolWindowManager.getInstance(project).openList(serverId, viewState.value.copy(page = 1), title)
+    }
+
+    /** A server configured after the list was opened (empty main list) is picked up on refresh. */
+    private fun adoptConfiguredServer() {
+        if (serverId != null && initialServer != null) return
+        val found = OpenProjectServers.getInstance(project).find(requestedServerId) ?: return
+        if (found.id == serverId) return
+        serverId = found.id
+        viewState.value = initialState()
     }
 
     private fun locate(workPackageId: Long) {
@@ -590,7 +686,7 @@ class WorkPackageListEditor(project: Project, private val file: WorkPackageListV
             border = JBUI.Borders.customLineBottom(JBUI.CurrentTheme.Banner.INFO_BORDER_COLOR)
             add(label)
             add(ActionLink(OpenProjectBundle.message("list.active.open")) {
-                active?.let { OpenProjectFilesManager.getInstance(project).openWorkPackage(it.serverId, it.workPackageId) }
+                active?.let { OpenProjectToolWindowManager.getInstance(project).openWorkPackage(it.serverId, it.workPackageId) }
             })
             add(ActionLink(OpenProjectBundle.message("list.active.log.time")) { e ->
                 val action = ActionManager.getInstance().getAction("OpenProject.LogTime")
@@ -621,9 +717,23 @@ class WorkPackageListEditor(project: Project, private val file: WorkPackageListV
     @TestOnly
     internal fun visibleColumnTitles(): List<String> = (0 until table.columnCount).map { table.getColumnName(it) }
 
-    override fun getComponent(): JComponent = root
+    @TestOnly
+    internal fun preview(): WorkPackageDetailPanel? = preview
 
-    override fun getPreferredFocusedComponent(): JComponent = table
+    @TestOnly
+    internal fun quickFilterTexts(): List<String> = quickFilters.map { it.text() }
 
-    override fun getName(): String = OpenProjectBundle.message("list.editor.name")
+    @TestOnly
+    internal fun select(workPackageId: Long) {
+        val index = model.items.indexOfFirst { it.id == workPackageId }
+        table.selectionModel.setSelectionInterval(index, index)
+    }
+
+    override fun dispose() {
+        cs.cancel()
+    }
+
+    private companion object {
+        val QUICK_FILTER_NAMES = QuickFilterDef.ALL.map { it.name }.toSet()
+    }
 }

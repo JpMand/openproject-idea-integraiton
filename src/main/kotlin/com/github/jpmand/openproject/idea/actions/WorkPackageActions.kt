@@ -10,7 +10,7 @@ import com.github.jpmand.openproject.idea.core.describeError
 import com.github.jpmand.openproject.idea.core.needsServerSettings
 import com.github.jpmand.openproject.idea.ui.OpenProjectDataKeys
 import com.github.jpmand.openproject.idea.ui.WorkPackageRef
-import com.github.jpmand.openproject.idea.vfs.OpenProjectFilesManager
+import com.github.jpmand.openproject.idea.ui.toolwindow.OpenProjectToolWindowManager
 import com.intellij.icons.AllIcons
 import com.intellij.ide.BrowserUtil
 import com.intellij.notification.NotificationAction
@@ -22,14 +22,12 @@ import com.intellij.openapi.application.EDT
 import com.intellij.openapi.ide.CopyPasteManager
 import com.intellij.openapi.project.DumbAwareAction
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.ui.popup.JBPopupFactory
-import com.intellij.openapi.ui.popup.PopupStep
-import com.intellij.openapi.ui.popup.util.BaseListPopupStep
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.awt.datatransfer.StringSelection
+import javax.swing.JComponent
 
 internal fun notifyError(project: Project, message: String, cause: Throwable? = null) {
     val notification = NotificationGroupManager.getInstance().getNotificationGroup("OpenProject")
@@ -42,30 +40,17 @@ internal fun notifyError(project: Project, message: String, cause: Throwable? = 
     notification.notify(project)
 }
 
-/** Opens the work package table, asking which server when several are configured. */
-class OpenWorkPackagesAction : DumbAwareAction() {
+/** "+" after the tool window tabs: a new work package list. */
+class NewWorkPackageListAction : DumbAwareAction() {
     override fun getActionUpdateThread() = ActionUpdateThread.BGT
 
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.project ?: return
-        val servers = OpenProjectServers.getInstance(project).servers()
-        when (servers.size) {
-            0 -> OpenProjectServers.getInstance(project).openServerSettings()
-            1 -> OpenProjectFilesManager.getInstance(project).openList(servers.single().id)
-            else -> JBPopupFactory.getInstance().createListPopup(object : BaseListPopupStep<String>(
-                OpenProjectBundle.message("action.choose.server"), servers.map { it.id },
-            ) {
-                override fun getTextFor(value: String) = servers.first { it.id == value }.displayName
-                override fun onChosen(selectedValue: String, finalChoice: Boolean): PopupStep<*>? {
-                    OpenProjectFilesManager.getInstance(project).openList(selectedValue)
-                    return FINAL_CHOICE
-                }
-            }).showCenteredInCurrentWindow(project)
-        }
+        OpenProjectToolWindowManager.getInstance(project).newListTab(e.inputEvent?.component as? JComponent)
     }
 }
 
-/** Opens the page of the active task's work package. */
+/** Opens the tab of the active task's work package. */
 class OpenActiveWorkPackageAction : DumbAwareAction() {
     override fun getActionUpdateThread() = ActionUpdateThread.BGT
 
@@ -76,7 +61,7 @@ class OpenActiveWorkPackageAction : DumbAwareAction() {
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.project ?: return
         val active = ActiveWorkPackageTracker.getInstance(project).active.value ?: return
-        OpenProjectFilesManager.getInstance(project).openWorkPackage(active.serverId, active.workPackageId)
+        OpenProjectToolWindowManager.getInstance(project).openWorkPackage(active.serverId, active.workPackageId)
     }
 }
 
@@ -137,9 +122,22 @@ abstract class WorkPackageAction : DumbAwareAction() {
     abstract fun perform(project: Project, ref: WorkPackageRef, e: AnActionEvent)
 }
 
-class OpenWorkPackageAction : WorkPackageAction() {
+/** Opens the work package in a tool window tab of its own. */
+class OpenInNewTabAction : WorkPackageAction() {
     override fun perform(project: Project, ref: WorkPackageRef, e: AnActionEvent) =
-        OpenProjectFilesManager.getInstance(project).openWorkPackage(ref.server.id, ref.workPackage.id)
+        OpenProjectToolWindowManager.getInstance(project).openWorkPackage(ref.server.id, ref.workPackage.id)
+}
+
+/** Shows the selected work package next to the list. */
+class OpenOnTheRightAction : WorkPackageAction() {
+    override fun update(e: AnActionEvent) {
+        super.update(e)
+        if (e.getData(OpenProjectDataKeys.LIST_PANEL) == null) e.presentation.isEnabledAndVisible = false
+    }
+
+    override fun perform(project: Project, ref: WorkPackageRef, e: AnActionEvent) {
+        e.getData(OpenProjectDataKeys.LIST_PANEL)?.showPreview(ref.workPackage.id)
+    }
 }
 
 class OpenWorkPackageInBrowserAction : WorkPackageAction() {

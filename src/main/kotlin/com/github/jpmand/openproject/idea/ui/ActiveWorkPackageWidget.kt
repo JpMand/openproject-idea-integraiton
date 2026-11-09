@@ -3,7 +3,7 @@ package com.github.jpmand.openproject.idea.ui
 import com.github.jpmand.openproject.idea.OpenProjectBundle
 import com.github.jpmand.openproject.idea.core.ActiveWorkPackageTracker
 import com.github.jpmand.openproject.idea.core.OpenProjectProjectScope
-import com.github.jpmand.openproject.idea.vfs.OpenProjectFilesManager
+import com.github.jpmand.openproject.idea.ui.toolwindow.OpenProjectToolWindowManager
 import com.intellij.openapi.application.EDT
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.StatusBar
@@ -51,7 +51,7 @@ class ActiveWorkPackageWidget(private val project: Project) : StatusBarWidget, S
     override fun getAlignment(): Float = 0f
 
     override fun getClickConsumer(): Consumer<MouseEvent> = Consumer {
-        tracker.active.value?.let { OpenProjectFilesManager.getInstance(project).openWorkPackage(it.serverId, it.workPackageId) }
+        tracker.active.value?.let { OpenProjectToolWindowManager.getInstance(project).openWorkPackage(it.serverId, it.workPackageId) }
     }
 
     override fun dispose() {

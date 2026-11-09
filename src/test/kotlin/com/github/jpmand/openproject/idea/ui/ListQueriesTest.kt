@@ -5,6 +5,7 @@ import com.github.jpmand.openproject.idea.api.Filters
 import com.github.jpmand.openproject.idea.api.SortSpec
 import com.github.jpmand.openproject.idea.ui.list.ListQueries
 import com.github.jpmand.openproject.idea.ui.list.ListViewState
+import com.github.jpmand.openproject.idea.ui.list.QuickFilterDef
 import com.github.jpmand.openproject.idea.ui.list.StatusMode
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -79,5 +80,44 @@ class ListQueriesTest {
         assertEquals(listOf("subject", "id"), ListQueries.withColumns(initial, listOf("subject", "id", "subject")).columns)
         assertEquals(1, ListQueries.pageCount(0, 50))
         assertEquals(3, ListQueries.pageCount(101, 50))
+    }
+
+    @Test
+    fun `new views filter by the Task Server's project`() {
+        assertEquals(listOf(Filters.project(7), Filters.openStatus()), ListViewState.defaults(7).filters)
+        assertEquals(listOf(Filters.openStatus()), ListViewState.defaults(0).filters)
+        assertEquals(listOf(Filters.project(7), Filters.closedStatus()), ListQueries.withDefaultProject(listOf(Filters.closedStatus()), 7))
+        val own = listOf(Filters.project(3))
+        assertEquals(own, ListQueries.withDefaultProject(own, 7))
+        assertEquals(own, ListQueries.withDefaultProject(own, 0))
+    }
+
+    @Test
+    fun `reset goes back to the defaults but keeps the layout`() {
+        val changed = initial.copy(columns = listOf("id", "subject"), widths = mapOf("id" to 40), pageSize = 20, search = "x", filters = emptyList())
+        val reset = ListQueries.reset(changed, ListViewState.defaults(7))
+        assertEquals(ListViewState.defaults(7).filters, reset.filters)
+        assertEquals("", reset.search)
+        assertEquals(listOf("id", "subject"), reset.columns)
+        assertEquals(20, reset.pageSize)
+    }
+
+    @Test
+    fun `quick filters set one filter in place`() {
+        val state = ListViewState.defaults(7)
+        val bug = FilterSpec("type", "=", listOf("1"))
+        val withType = ListQueries.withQuickFilter(state, "type", bug)
+        assertEquals(listOf(Filters.project(7), Filters.openStatus(), bug), withType.filters)
+
+        val allProjects = ListQueries.withQuickFilter(withType, "project", null)
+        assertEquals(listOf(Filters.openStatus(), bug), allProjects.filters)
+        val otherProject = ListQueries.withQuickFilter(withType, "project", Filters.project(8))
+        assertEquals(listOf(Filters.project(8), Filters.openStatus(), bug), otherProject.filters)
+
+        assertEquals("Open", QuickFilterDef.STATUS.selected(listOf(Filters.openStatus()))?.title)
+        assertEquals("All statuses", QuickFilterDef.STATUS.selected(emptyList())?.title)
+        assertEquals("Any", QuickFilterDef.TYPE.selected(emptyList())?.title)
+        assertEquals(null, QuickFilterDef.TYPE.selected(listOf(bug)))
+        assertEquals("Unassigned", QuickFilterDef.ASSIGNEE.selected(listOf(FilterSpec("assignee", "!*")))?.title)
     }
 }

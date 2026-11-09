@@ -3,6 +3,12 @@
 # openproject-idea-integraiton Changelog
 
 ## [Unreleased]
+### Changed
+- Work package lists and work packages open in the new OpenProject tool window (bottom) instead of editor tabs: a row click previews the work package next to the list, "Open in New Tab" opens it in a tab (properties left, activity/relations/files right), "Open as New Tab" and "+" open more lists
+- Quick filter dropdowns (project, type, status, priority, assignee) above the list
+- New lists, "Reset" and saved queries without a project filter use the project configured for the task server
+- Removed the "Work Packages…" action (the tool window replaces it)
+
 ### Added
 - Initial scaffold created from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)
 - Build setup for IntelliJ IDEA 2026.2 and 2026.3, depending on the "Issue Trackers" (Tasks) plugin

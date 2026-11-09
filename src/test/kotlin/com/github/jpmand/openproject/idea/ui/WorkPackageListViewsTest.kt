@@ -30,5 +30,8 @@ class WorkPackageListViewsTest : BasePlatformTestCase() {
         // the page is not persisted
         assertEquals(view.copy(page = 1), restored.get("https://op.example.com"))
         assertEquals(ListViewState(), restored.get("https://other.example.com"))
+        assertEquals(ListViewState.defaults(4), restored.get("https://other.example.com#tab", ListViewState.defaults(4)))
+        restored.remove("https://op.example.com")
+        assertFalse(restored.contains("https://op.example.com"))
     }
 }

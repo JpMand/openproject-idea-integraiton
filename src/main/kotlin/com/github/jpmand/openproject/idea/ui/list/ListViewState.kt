@@ -21,6 +21,10 @@ data class ListViewState(
     companion object {
         val DEFAULT_COLUMNS = listOf("id", "subject", "type", "status", "assignee", "priority", "updatedAt")
         val DEFAULT_SORT = listOf(SortSpec("updatedAt", ascending = false))
+
+        /** A new view: open work packages of the Task Server's project ([projectId] 0 = all projects). */
+        fun defaults(projectId: Long): ListViewState =
+            ListViewState(filters = listOfNotNull(projectId.takeIf { it > 0 }?.let(Filters::project), Filters.openStatus()))
     }
 }
 
@@ -81,6 +85,26 @@ object ListQueries {
 
     fun withFilters(state: ListViewState, filters: List<FilterSpec>): ListViewState =
         if (filters == state.filters) state else state.copy(filters = filters, page = 1, savedQueryId = 0)
+
+    /** Sets the filter named [name] (quick filter dropdowns) to [filter], or removes it; keeps its position. */
+    fun withQuickFilter(state: ListViewState, name: String, filter: FilterSpec?): ListViewState {
+        val index = state.filters.indexOfFirst { it.name == name }
+        val others = state.filters.filter { it.name != name }
+        val filters = when {
+            filter == null -> others
+            index < 0 -> others + filter
+            else -> others.toMutableList().apply { add(index.coerceAtMost(size), filter) }
+        }
+        return withFilters(state, filters)
+    }
+
+    /** Back to [defaults], keeping the column layout and page size. */
+    fun reset(state: ListViewState, defaults: ListViewState): ListViewState =
+        defaults.copy(columns = state.columns, widths = state.widths, pageSize = state.pageSize)
+
+    /** Adds the default project filter to filters that have none (saved queries, older views). */
+    fun withDefaultProject(filters: List<FilterSpec>, projectId: Long): List<FilterSpec> =
+        if (projectId <= 0 || filters.any { it.name == "project" }) filters else listOf(Filters.project(projectId)) + filters
 
     fun withSearch(state: ListViewState, search: String): ListViewState =
         if (search == state.search) state else state.copy(search = search, page = 1)

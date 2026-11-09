@@ -5,9 +5,8 @@ import com.github.jpmand.openproject.idea.core.OpenProjectServers
 import com.github.jpmand.openproject.idea.core.TimeEntries
 import com.github.jpmand.openproject.idea.tasks.OpenProjectRepository
 import com.github.jpmand.openproject.idea.tasks.OpenProjectRepositoryType
-import com.github.jpmand.openproject.idea.ui.detail.WorkPackageDetailEditor
-import com.github.jpmand.openproject.idea.ui.list.WorkPackageListEditor
-import com.github.jpmand.openproject.idea.vfs.OpenProjectFilesManager
+import com.github.jpmand.openproject.idea.ui.detail.WorkPackageDetailPanel
+import com.github.jpmand.openproject.idea.ui.list.WorkPackageListPanel
 import com.intellij.openapi.util.Disposer
 import com.intellij.tasks.TaskManager
 import com.intellij.tasks.TaskRepositoryType
@@ -17,8 +16,8 @@ import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import kotlinx.coroutines.runBlocking
 import java.time.Duration
 
-/** The editors and shared services against a real OpenProject configured as a Task Server. */
-class EditorsIntegrationTest : BasePlatformTestCase() {
+/** The tool window panels and shared services against a real OpenProject configured as a Task Server. */
+class ToolWindowIntegrationTest : BasePlatformTestCase() {
 
     private lateinit var serverId: String
 
@@ -50,26 +49,34 @@ class EditorsIntegrationTest : BasePlatformTestCase() {
         runBlocking { OpenProjectIntegration.createWorkPackage(api, PREFIX + subject) }
     }
 
-    fun `test detail editor loads the work package`() {
-        val workPackage = create("detail editor")
-        val file = OpenProjectFilesManager.getInstance(project).workPackageFile(serverId, workPackage.id)
-        val editor = WorkPackageDetailEditor(project, file)
+    fun `test work package tab loads the work package`() {
+        val workPackage = create("detail panel")
+        var title = ""
+        val panel = WorkPackageDetailPanel(project, serverId, workPackage.id, WorkPackageDetailPanel.Layout.TAB, onTitle = { title = it })
         try {
-            PlatformTestUtil.waitWithEventsDispatching("work package did not load", { file.presentableName.contains("detail editor") }, 60)
-            assertEquals("${workPackage.presentableId} ${workPackage.subject}", file.presentableName)
+            PlatformTestUtil.waitWithEventsDispatching("work package did not load", { title.contains("detail panel") }, 60)
+            assertEquals("${workPackage.presentableId} ${workPackage.subject}", title)
         } finally {
-            Disposer.dispose(editor)
+            Disposer.dispose(panel)
         }
     }
 
-    fun `test list editor loads open work packages`() {
-        val workPackage = create("list editor")
-        val editor = WorkPackageListEditor(project, OpenProjectFilesManager.getInstance(project).listFile(serverId))
+    fun `test list loads open work packages and previews a click`() {
+        val workPackage = create("list panel")
+        val panel = WorkPackageListPanel(project, serverId, null)
         try {
-            PlatformTestUtil.waitWithEventsDispatching("list did not load", { editor.loadedWorkPackages().isNotEmpty() }, 60)
-            assertTrue(editor.loadedWorkPackages().any { it.id == workPackage.id })
+            PlatformTestUtil.waitWithEventsDispatching("list did not load", { panel.loadedWorkPackages().any { it.id == workPackage.id } }, 60)
+            panel.showPreview(workPackage.id)
+            val preview = panel.preview()!!
+            assertTrue(preview.isPreview())
+            PlatformTestUtil.waitWithEventsDispatching("preview did not load", { preview.details()?.workPackage?.id == workPackage.id }, 60)
+            // a row click while the preview is open follows the selection
+            panel.select(panel.loadedWorkPackages().first { it.id != workPackage.id }.id)
+            assertNotSame(preview, panel.preview())
+            panel.closePreview()
+            assertNull(panel.preview())
         } finally {
-            Disposer.dispose(editor)
+            Disposer.dispose(panel)
         }
     }
 
@@ -82,13 +89,13 @@ class EditorsIntegrationTest : BasePlatformTestCase() {
         val connection = server.repository.connection()
         val entry = runBlocking {
             val fresh = connection.api.workPackage(workPackage.id)
-            TimeEntries.log(connection.api, fresh, TimeEntries.Draft(Duration.ofMinutes(20), comment = "from the editor"))
+            TimeEntries.log(connection.api, fresh, TimeEntries.Draft(Duration.ofMinutes(20), comment = "from the tool window"))
         }
         assertEquals("PT20M", entry.hours)
         TaskManager.getManager(project).activateTask(TaskManager.getManager(project).localTasks.first { it.isDefault }, false)
     }
 
     private companion object {
-        const val PREFIX = "IT-editors "
+        const val PREFIX = "IT-toolwindow "
     }
 }

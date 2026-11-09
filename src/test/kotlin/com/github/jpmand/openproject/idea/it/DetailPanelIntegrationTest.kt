@@ -7,8 +7,7 @@ import com.github.jpmand.openproject.idea.tasks.OpenProjectRepository
 import com.github.jpmand.openproject.idea.tasks.OpenProjectRepositoryType
 import com.github.jpmand.openproject.idea.ui.detail.ConcurrentChangeException
 import com.github.jpmand.openproject.idea.ui.detail.RelationsPanel
-import com.github.jpmand.openproject.idea.ui.detail.WorkPackageDetailEditor
-import com.github.jpmand.openproject.idea.vfs.OpenProjectFilesManager
+import com.github.jpmand.openproject.idea.ui.detail.WorkPackageDetailPanel
 import com.intellij.openapi.util.Disposer
 import com.intellij.tasks.TaskManager
 import com.intellij.tasks.TaskRepositoryType
@@ -19,11 +18,11 @@ import kotlinx.coroutines.runBlocking
 import java.io.ByteArrayOutputStream
 
 /** The work package page against a real OpenProject: every edit it offers. */
-class DetailEditorIntegrationTest : BasePlatformTestCase() {
+class DetailPanelIntegrationTest : BasePlatformTestCase() {
 
     private lateinit var serverId: String
     private lateinit var workPackage: WorkPackage
-    private lateinit var editor: WorkPackageDetailEditor
+    private lateinit var editor: WorkPackageDetailPanel
 
     override fun setUp() {
         super.setUp()
@@ -39,7 +38,7 @@ class DetailEditorIntegrationTest : BasePlatformTestCase() {
             OpenProjectIntegration.cleanUp(api, PREFIX)
             workPackage = runBlocking { OpenProjectIntegration.createWorkPackage(api, PREFIX + "page") }
         }
-        editor = WorkPackageDetailEditor(project, OpenProjectFilesManager.getInstance(project).workPackageFile(serverId, workPackage.id))
+        editor = WorkPackageDetailPanel(project, serverId, workPackage.id, WorkPackageDetailPanel.Layout.TAB)
         PlatformTestUtil.waitWithEventsDispatching("details", { editor.details() != null }, 60)
     }
 

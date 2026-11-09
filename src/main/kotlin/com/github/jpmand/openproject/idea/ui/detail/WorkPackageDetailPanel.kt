@@ -6,21 +6,25 @@ import com.github.jpmand.openproject.idea.api.hal.HalLink
 import com.github.jpmand.openproject.idea.api.model.Attachment
 import com.github.jpmand.openproject.idea.api.model.WorkPackage
 import com.github.jpmand.openproject.idea.core.ActiveWorkPackageTracker
+import com.github.jpmand.openproject.idea.core.OpenProjectProjectScope
 import com.github.jpmand.openproject.idea.core.describeError
 import com.github.jpmand.openproject.idea.ui.OpenProjectDataKeys
-import com.github.jpmand.openproject.idea.ui.OpenProjectFileEditor
 import com.github.jpmand.openproject.idea.ui.common.HtmlView
 import com.github.jpmand.openproject.idea.ui.common.MarkdownField
 import com.github.jpmand.openproject.idea.ui.common.StatusPanel
 import com.github.jpmand.openproject.idea.ui.list.WorkPackageCells
-import com.github.jpmand.openproject.idea.vfs.OpenProjectFilesManager
-import com.github.jpmand.openproject.idea.vfs.WorkPackageVirtualFile
+import com.github.jpmand.openproject.idea.ui.toolwindow.OpenProjectToolWindowManager
 import com.intellij.icons.AllIcons
+import com.intellij.openapi.Disposable
 import com.intellij.notification.NotificationAction
 import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.actionSystem.ActionGroup
 import com.intellij.openapi.actionSystem.ActionManager
+import com.intellij.openapi.actionSystem.ActionUpdateThread
+import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.actionSystem.DefaultActionGroup
+import com.intellij.openapi.actionSystem.Separator
 import com.intellij.openapi.actionSystem.UiDataProvider
 import com.intellij.openapi.application.EDT
 import com.intellij.openapi.fileChooser.FileChooser
@@ -28,6 +32,7 @@ import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory
 import com.intellij.openapi.fileChooser.FileChooserFactory
 import com.intellij.openapi.fileChooser.FileSaverDescriptor
 import com.intellij.openapi.fileEditor.OpenFileDescriptor
+import com.intellij.openapi.project.DumbAwareAction
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.popup.JBPopupFactory
 import com.intellij.openapi.util.io.FileUtil
@@ -47,6 +52,7 @@ import com.intellij.util.ui.UIUtil
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jetbrains.annotations.TestOnly
@@ -63,12 +69,27 @@ import javax.swing.JComponent
 import javax.swing.JPanel
 
 /**
- * The page of one work package: editable subject, status, description and attributes, plus its activity
- * (with a comment box), relations and files.
+ * One work package: editable subject, status, description and attributes, plus its activity (with a comment box),
+ * relations and files. [Layout.PREVIEW] stacks everything vertically (the preview next to the work package list);
+ * [Layout.TAB] puts subject, description and properties on the left and the activity/relations/files tabs on the
+ * right (a tool window tab of its own).
  */
-class WorkPackageDetailEditor(project: Project, private val file: WorkPackageVirtualFile) : OpenProjectFileEditor(project, file) {
+class WorkPackageDetailPanel(
+    private val project: Project,
+    val serverId: String,
+    val workPackageId: Long,
+    private val layout: Layout,
+    /** Called with "#12 Subject" whenever the work package is (re)loaded. */
+    private val onTitle: (String) -> Unit = {},
+    /** Shows a close button in the toolbar (the preview). */
+    private val onClose: (() -> Unit)? = null,
+) : JPanel(BorderLayout()), Disposable {
 
-    val controller = WorkPackageDetailController(project, file.serverId, file.workPackageId)
+    enum class Layout { PREVIEW, TAB }
+
+    private val cs = OpenProjectProjectScope.getInstance(project).childScope("WorkPackageDetailPanel")
+
+    val controller = WorkPackageDetailController(project, serverId, workPackageId)
 
     private var loadJob: Job? = null
     private var editingDescription = false
@@ -99,7 +120,7 @@ class WorkPackageDetailEditor(project: Project, private val file: WorkPackageVir
     // tabs and properties
     private val activityPanel = ActivityPanel(project, ::html) { text, internal, done -> comment(text, internal, done) }
     private val relationsPanel = RelationsPanel(
-        onOpen = { id -> OpenProjectFilesManager.getInstance(project).openWorkPackage(file.serverId, id) },
+        onOpen = { id -> OpenProjectToolWindowManager.getInstance(project).openWorkPackage(serverId, id) },
         onDelete = { relation -> perform { controller.deleteRelation(relation) } },
         onAdd = ::addRelation,
     )
@@ -113,19 +134,21 @@ class WorkPackageDetailEditor(project: Project, private val file: WorkPackageVir
     private val tabs = JBTabbedPane()
     private val properties = PropertiesPanel(::chooseAssignee, ::choosePriority)
 
-    private val root: JComponent = UiDataProvider.wrapComponent(JPanel(BorderLayout()).apply {
-        add(toolbar(), BorderLayout.NORTH)
-        add(content, BorderLayout.CENTER)
-    }) { sink ->
-        sink[OpenProjectDataKeys.WORK_PACKAGE] = controller.details.value?.ref
-        sink[OpenProjectDataKeys.REFRESHER] = Runnable { reload() }
+    init {
+        add(UiDataProvider.wrapComponent(JPanel(BorderLayout()).apply {
+            add(toolbar(), BorderLayout.NORTH)
+            add(content, BorderLayout.CENTER)
+        }) { sink ->
+            sink[OpenProjectDataKeys.WORK_PACKAGE] = controller.details.value?.ref
+            sink[OpenProjectDataKeys.REFRESHER] = Runnable { reload() }
+        }, BorderLayout.CENTER)
     }
 
     init {
         content.add(status, BorderLayout.CENTER)
-        tabs.addTab(OpenProjectBundle.message("detail.tab.activity"), activityPanel)
-        tabs.addTab(OpenProjectBundle.message("detail.tab.relations"), relationsPanel)
-        tabs.addTab(OpenProjectBundle.message("detail.tab.files"), filesPanel)
+        tabs.addTab(OpenProjectBundle.message("detail.tab.activity"), scrolled(activityPanel))
+        tabs.addTab(OpenProjectBundle.message("detail.tab.relations"), scrolled(relationsPanel))
+        tabs.addTab(OpenProjectBundle.message("detail.tab.files"), filesPanel.apply { border = JBUI.Borders.empty(8, 12) })
         reload()
         cs.launch {
             controller.details.collect { details ->
@@ -135,7 +158,7 @@ class WorkPackageDetailEditor(project: Project, private val file: WorkPackageVir
         cs.launch {
             ActiveWorkPackageTracker.getInstance(project).active.collect { active ->
                 withContext(Dispatchers.EDT) {
-                    activeBadge.isVisible = active?.serverId == file.serverId && active.workPackageId == file.workPackageId
+                    activeBadge.isVisible = active?.serverId == serverId && active.workPackageId == workPackageId
                 }
             }
         }
@@ -169,7 +192,7 @@ class WorkPackageDetailEditor(project: Project, private val file: WorkPackageVir
 
     private fun show(details: WorkPackageDetails) {
         val workPackage = details.workPackage
-        file.updateTitle("${workPackage.presentableId} ${workPackage.subject}")
+        onTitle("${workPackage.presentableId} ${workPackage.subject}")
         if (content.getComponent(0) === status) {
             content.removeAll()
             content.add(page(), BorderLayout.CENTER)
@@ -197,7 +220,7 @@ class WorkPackageDetailEditor(project: Project, private val file: WorkPackageVir
     private fun page(): JComponent {
         val main = JPanel().apply {
             layout = BoxLayout(this, BoxLayout.Y_AXIS)
-            border = JBUI.Borders.empty(12, 16)
+            border = JBUI.Borders.empty(10, 14)
             add(idLabel)
             add(subjectRow)
             add(row(JBLabel(OpenProjectBundle.message("detail.status")), statusLink, attributeLine, activeBadge).apply {
@@ -207,14 +230,27 @@ class WorkPackageDetailEditor(project: Project, private val file: WorkPackageVir
                 border = JBUI.Borders.emptyTop(14)
             })
             add(descriptionPanel)
-            add(tabs.apply { border = JBUI.Borders.emptyTop(14) })
+            add(properties.apply { border = JBUI.Borders.emptyTop(14) })
         }
         main.components.forEach { (it as? JComponent)?.alignmentX = 0f }
-        return OnePixelSplitter(false, 0.74f).apply {
-            firstComponent = JBScrollPane(main).apply { border = JBUI.Borders.empty() }
-            secondComponent = JBScrollPane(properties).apply { border = JBUI.Borders.customLineLeft(JBColor.border()) }
+        val left = JBScrollPane(main).apply { border = JBUI.Borders.empty() }
+        return when (layout) {
+            Layout.PREVIEW -> OnePixelSplitter(true, "OpenProject.Preview.Split", 0.55f).apply {
+                firstComponent = left
+                secondComponent = tabs
+            }
+            Layout.TAB -> OnePixelSplitter(false, "OpenProject.WorkPackageTab.Split", 0.55f).apply {
+                firstComponent = left
+                secondComponent = tabs
+            }
         }
     }
+
+    private fun scrolled(component: JComponent): JComponent =
+        JBScrollPane(JPanel(BorderLayout()).apply {
+            border = JBUI.Borders.empty(8, 12)
+            add(component, BorderLayout.NORTH)
+        }).apply { border = JBUI.Borders.empty() }
 
     /** Left-aligned components with a gap after each (no leading gap, unlike FlowLayout's hgap). */
     private fun row(vararg components: JComponent): JPanel = JPanel(FlowLayout(FlowLayout.LEFT, 0, 0)).apply {
@@ -438,7 +474,7 @@ class WorkPackageDetailEditor(project: Project, private val file: WorkPackageVir
     }
 
     private fun html(): HtmlView = HtmlView({ controller.details.value?.server?.id }) { id ->
-        OpenProjectFilesManager.getInstance(project).openWorkPackage(file.serverId, id)
+        OpenProjectToolWindowManager.getInstance(project).openWorkPackage(serverId, id)
     }
 
     private val imageTag = Regex("""<img\b[^>]*>""", RegexOption.IGNORE_CASE)
@@ -463,18 +499,33 @@ class WorkPackageDetailEditor(project: Project, private val file: WorkPackageVir
     }
 
     private fun toolbar(): JComponent {
-        val group = ActionManager.getInstance().getAction("OpenProject.WorkPackageToolbar") as ActionGroup
-        val toolbar = ActionManager.getInstance().createActionToolbar("OpenProject.WorkPackage", group, true)
+        val actions = ActionManager.getInstance()
+        val group = when (layout) {
+            Layout.TAB -> actions.getAction("OpenProject.WorkPackageToolbar") as ActionGroup
+            Layout.PREVIEW -> DefaultActionGroup().apply {
+                add(actions.getAction("OpenProject.OpenInNewTab"))
+                add(actions.getAction("OpenProject.WorkPackageToolbar") as ActionGroup)
+                onClose?.let { close ->
+                    add(Separator.getInstance())
+                    add(object : DumbAwareAction(OpenProjectBundle.message("preview.close"), null, AllIcons.Actions.Close) {
+                        override fun getActionUpdateThread() = ActionUpdateThread.EDT
+                        override fun actionPerformed(e: AnActionEvent) = close()
+                    })
+                }
+            }
+        }
+        val toolbar = actions.createActionToolbar("OpenProject.WorkPackage", group, true)
         toolbar.targetComponent = content
-        return toolbar.component
+        return toolbar.component.apply { border = JBUI.Borders.customLineBottom(JBColor.border()) }
     }
 
     @TestOnly
     internal fun details(): WorkPackageDetails? = controller.details.value
 
-    override fun getComponent(): JComponent = root
+    @TestOnly
+    internal fun isPreview(): Boolean = layout == Layout.PREVIEW
 
-    override fun getPreferredFocusedComponent(): JComponent = content
-
-    override fun getName(): String = OpenProjectBundle.message("detail.editor.name")
+    override fun dispose() {
+        cs.cancel()
+    }
 }

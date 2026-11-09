@@ -1,6 +1,7 @@
 package com.github.jpmand.openproject.idea.it
 
 import com.github.jpmand.openproject.idea.api.FilterSpec
+import com.github.jpmand.openproject.idea.api.Filters
 import com.github.jpmand.openproject.idea.api.SortSpec
 import com.github.jpmand.openproject.idea.api.WorkPackagePatch
 import com.github.jpmand.openproject.idea.api.model.WorkPackage
@@ -10,9 +11,8 @@ import com.github.jpmand.openproject.idea.tasks.OpenProjectRepositoryType
 import com.github.jpmand.openproject.idea.ui.list.ListQueries
 import com.github.jpmand.openproject.idea.ui.list.ListViewState
 import com.github.jpmand.openproject.idea.ui.list.StatusMode
-import com.github.jpmand.openproject.idea.ui.list.WorkPackageListEditor
+import com.github.jpmand.openproject.idea.ui.list.WorkPackageListPanel
 import com.github.jpmand.openproject.idea.ui.list.WorkPackageListViews
-import com.github.jpmand.openproject.idea.vfs.OpenProjectFilesManager
 import com.intellij.openapi.util.Disposer
 import com.intellij.tasks.TaskManager
 import com.intellij.tasks.TaskRepositoryType
@@ -22,10 +22,10 @@ import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import kotlinx.coroutines.runBlocking
 
 /** The work package table against a real OpenProject: search, filters, sorting, paging and columns. */
-class ListEditorIntegrationTest : BasePlatformTestCase() {
+class ListPanelIntegrationTest : BasePlatformTestCase() {
 
     private lateinit var serverId: String
-    private lateinit var editor: WorkPackageListEditor
+    private lateinit var editor: WorkPackageListPanel
     private val created = mutableListOf<WorkPackage>()
 
     override fun setUp() {
@@ -53,7 +53,7 @@ class ListEditorIntegrationTest : BasePlatformTestCase() {
             }
         }
         WorkPackageListViews.getInstance(project).put(serverId, ListViewState(search = PREFIX))
-        editor = WorkPackageListEditor(project, OpenProjectFilesManager.getInstance(project).listFile(serverId))
+        editor = WorkPackageListPanel(project, serverId, null)
     }
 
     override fun tearDown() {
@@ -95,6 +95,18 @@ class ListEditorIntegrationTest : BasePlatformTestCase() {
         assertEquals(typeHref, editor.loadedWorkPackages().single().links.href("type"))
         editor.updateViewState { ListQueries.withFilters(it, it.filters.filter { filter -> filter.name != "id" }) }
 
+        // quick filter dropdowns: the work packages' project, then another one
+        val projectId = created[0].links["project"]!!.id!!.toLong()
+        editor.updateViewState { ListQueries.withQuickFilter(it, "project", Filters.project(projectId)) }
+        waitFor("project filter") { loadedIds() == ids }
+        editor.updateViewState { ListQueries.withQuickFilter(it, "project", Filters.project(projectId + 1000)) }
+        waitFor("other project") { editor.loadedWorkPackages().isEmpty() }
+        editor.updateViewState { ListQueries.withQuickFilter(it, "project", null) }
+        waitFor("all projects") { loadedIds() == ids }
+        editor.updateViewState { ListQueries.withQuickFilter(it, "assignee", FilterSpec("assignee", "!*")) }
+        waitFor("unassigned") { loadedIds() == ids - created[0].id }
+        editor.updateViewState { ListQueries.withQuickFilter(it, "assignee", null) }
+
         editor.updateViewState { ListQueries.withStatusMode(it, StatusMode.CLOSED) }
         waitFor("no closed work packages") { editor.loadedWorkPackages().isEmpty() }
         editor.updateViewState { ListQueries.withStatusMode(it, StatusMode.OPEN) }
@@ -104,7 +116,7 @@ class ListEditorIntegrationTest : BasePlatformTestCase() {
         editor.updateViewState { it.copy(page = 2) }
         waitFor("second page") { editor.loadedWorkPackages().size == 1 }
 
-        // the view is remembered for the next time the list is opened
+        // the view is remembered for the next time the list is shown
         assertEquals(2, WorkPackageListViews.getInstance(project).get(serverId).pageSize)
     }
 

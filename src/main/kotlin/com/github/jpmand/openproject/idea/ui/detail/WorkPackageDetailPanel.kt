@@ -49,6 +49,7 @@ import com.intellij.ui.dsl.listCellRenderer.textListCellRenderer
 import com.intellij.util.ui.JBFont
 import com.intellij.util.ui.JBUI
 import com.intellij.util.ui.UIUtil
+import com.intellij.util.ui.WrapLayout
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -233,7 +234,8 @@ class WorkPackageDetailPanel(
             add(properties.apply { border = JBUI.Borders.emptyTop(14) })
         }
         main.components.forEach { (it as? JComponent)?.alignmentX = 0f }
-        val left = JBScrollPane(main).apply { border = JBUI.Borders.empty() }
+        // Top-aligned: the column keeps its height instead of spreading over the visible area.
+        val left = JBScrollPane(JPanel(BorderLayout()).apply { add(main, BorderLayout.NORTH) }).apply { border = JBUI.Borders.empty() }
         return when (layout) {
             Layout.PREVIEW -> OnePixelSplitter(true, "OpenProject.Preview.Split", 0.55f).apply {
                 firstComponent = left
@@ -252,8 +254,8 @@ class WorkPackageDetailPanel(
             add(component, BorderLayout.NORTH)
         }).apply { border = JBUI.Borders.empty() }
 
-    /** Left-aligned components with a gap after each (no leading gap, unlike FlowLayout's hgap). */
-    private fun row(vararg components: JComponent): JPanel = JPanel(FlowLayout(FlowLayout.LEFT, 0, 0)).apply {
+    /** Left-aligned components with a gap after each (no leading gap, unlike FlowLayout's hgap); wraps when narrow. */
+    private fun row(vararg components: JComponent): JPanel = JPanel(WrapLayout(FlowLayout.LEFT, 0, 0)).apply {
         isOpaque = false
         components.forEach { add(it.apply { border = JBUI.Borders.emptyRight(12) }) }
     }

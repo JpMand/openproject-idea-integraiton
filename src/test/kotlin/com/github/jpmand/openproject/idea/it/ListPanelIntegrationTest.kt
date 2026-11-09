@@ -25,6 +25,7 @@ import kotlinx.coroutines.runBlocking
 class ListPanelIntegrationTest : BasePlatformTestCase() {
 
     private lateinit var serverId: String
+    private var otherProjectId = 0L
     private lateinit var editor: WorkPackageListPanel
     private val created = mutableListOf<WorkPackage>()
 
@@ -42,6 +43,8 @@ class ListPanelIntegrationTest : BasePlatformTestCase() {
             OpenProjectIntegration.cleanUp(api, PREFIX)
             runBlocking {
                 val me = api.me()
+                // the work packages are created in the demo project
+                otherProjectId = api.projects().first { it.identifier != "demo-project" }.id
                 repeat(3) { index ->
                     val workPackage = OpenProjectIntegration.createWorkPackage(api, "$PREFIX$index")
                     created += if (index == 0) {
@@ -59,6 +62,7 @@ class ListPanelIntegrationTest : BasePlatformTestCase() {
     override fun tearDown() {
         try {
             if (::editor.isInitialized) Disposer.dispose(editor)
+            if (::serverId.isInitialized) WorkPackageListViews.getInstance(project).remove(serverId)
             if (OpenProjectIntegration.url != null) {
                 OpenProjectIntegration.newApi().use { OpenProjectIntegration.cleanUp(it, PREFIX) }
                 (TaskManager.getManager(project) as TaskManagerImpl).setRepositories(emptyList<OpenProjectRepository>())
@@ -99,7 +103,7 @@ class ListPanelIntegrationTest : BasePlatformTestCase() {
         val projectId = created[0].links["project"]!!.id!!.toLong()
         editor.updateViewState { ListQueries.withQuickFilter(it, "project", Filters.project(projectId)) }
         waitFor("project filter") { loadedIds() == ids }
-        editor.updateViewState { ListQueries.withQuickFilter(it, "project", Filters.project(projectId + 1000)) }
+        editor.updateViewState { ListQueries.withQuickFilter(it, "project", Filters.project(otherProjectId)) }
         waitFor("other project") { editor.loadedWorkPackages().isEmpty() }
         editor.updateViewState { ListQueries.withQuickFilter(it, "project", null) }
         waitFor("all projects") { loadedIds() == ids }

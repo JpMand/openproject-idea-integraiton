@@ -279,8 +279,12 @@ class WorkPackageListPanel(
         } catch (e: OpenProjectApiException) {
             withContext(Dispatchers.EDT) {
                 if (e.errorIdentifier == OpenProjectApiException.INVALID_QUERY || e.status == 400) {
+                    // The rows of the previous query would not match the filters shown.
                     queryError.text = e.message
                     queryError.isVisible = true
+                    model.items = emptyList()
+                    footerLabel.text = ""
+                    showStatus { status.empty(OpenProjectBundle.message("list.empty")) }
                 } else {
                     showStatus { status.error(project, e) { reload() } }
                 }

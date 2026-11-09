@@ -56,9 +56,9 @@ class PropertiesPanel(
             }
             add(valueComponent, constraints.apply { gridx = 1; weightx = 1.0 })
         }
+        // Takes the remaining height only; the extra width belongs to the value column.
         constraints.gridy++
-        constraints.weighty = 1.0
-        add(JPanel().apply { isOpaque = false }, constraints.apply { gridx = 0 })
+        add(JPanel().apply { isOpaque = false }, constraints.apply { gridx = 0; gridwidth = 2; weightx = 0.0; weighty = 1.0 })
         revalidate()
         repaint()
     }

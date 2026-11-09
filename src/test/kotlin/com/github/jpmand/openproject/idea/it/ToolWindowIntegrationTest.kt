@@ -7,6 +7,7 @@ import com.github.jpmand.openproject.idea.tasks.OpenProjectRepository
 import com.github.jpmand.openproject.idea.tasks.OpenProjectRepositoryType
 import com.github.jpmand.openproject.idea.ui.detail.WorkPackageDetailPanel
 import com.github.jpmand.openproject.idea.ui.list.WorkPackageListPanel
+import com.github.jpmand.openproject.idea.ui.list.WorkPackageListViews
 import com.intellij.openapi.util.Disposer
 import com.intellij.tasks.TaskManager
 import com.intellij.tasks.TaskRepositoryType
@@ -31,6 +32,8 @@ class ToolWindowIntegrationTest : BasePlatformTestCase() {
         }
         (TaskManager.getManager(project) as TaskManagerImpl).setRepositories(listOf(repository))
         serverId = OpenProjectServers.getInstance(project).servers().single().id
+        // The light project is shared by the test classes; start from a default list.
+        WorkPackageListViews.getInstance(project).remove(serverId)
         OpenProjectIntegration.newApi().use { OpenProjectIntegration.cleanUp(it, PREFIX) }
     }
 

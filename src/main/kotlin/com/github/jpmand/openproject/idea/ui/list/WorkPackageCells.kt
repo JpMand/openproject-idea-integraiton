@@ -10,11 +10,13 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.doubleOrNull
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+import kotlin.math.roundToInt
 
 /**
  * Display values of work package attributes for table columns. Columns are OpenProject query column ids, which
@@ -27,6 +29,18 @@ object WorkPackageCells {
     private val isoDate = Regex("""^\d{4}-\d{2}-\d{2}$""")
     private val isoDateTime = Regex("""^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.*Z$""")
     private val isoDuration = Regex("""^P(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?$""")
+
+    private val PERCENTAGE_COLUMNS = setOf("percentageDone", "derivedPercentageDone")
+
+    fun isPercentage(column: String): Boolean = column in PERCENTAGE_COLUMNS
+
+    /** The value of a percentage column (0..100, rounded), null when the work package has none. */
+    fun percentage(workPackage: WorkPackage, column: String): Int? =
+        (workPackage.raw[column] as? JsonPrimitive)?.takeUnless { it.isString }?.doubleOrNull?.roundToInt()?.coerceIn(0, 100)
+
+    /** The text of a table cell: like [text], but an empty percentage shows as 0%. */
+    fun tableText(workPackage: WorkPackage, column: String, zone: ZoneId = ZoneId.systemDefault()): String =
+        if (isPercentage(column)) "${percentage(workPackage, column) ?: 0}%" else text(workPackage, column, zone)
 
     fun text(workPackage: WorkPackage, column: String, zone: ZoneId = ZoneId.systemDefault()): String {
         when (column) {

@@ -10,7 +10,8 @@ Work with [OpenProject](https://www.openproject.org) work packages without leavi
 - **OpenProject tool window** (bottom) with the work package table, like the table in OpenProject: configurable
   columns (order and visibility), sorting by column headers, a global search box, quick filter dropdowns for project,
   type, status, priority and assignee, a filter bar with every filter the server offers (dates, custom fields, …),
-  saved queries and paging. Lists start with the project configured for the task server.
+  saved queries and paging; % Complete is drawn as a progress bar. Lists start with the project configured for the
+  task server.
 - **More lists in tabs**: *Open as New Tab* keeps the current filters in a tab of their own; <kbd>+</kbd> after the
   last tab opens a fresh list.
 - **Work package preview and tabs**: clicking a work package shows it next to the list; *Open in New Tab* opens it in a

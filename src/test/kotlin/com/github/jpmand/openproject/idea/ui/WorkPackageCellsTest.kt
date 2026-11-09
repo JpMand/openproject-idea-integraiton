@@ -4,8 +4,10 @@ import com.github.jpmand.openproject.idea.api.Fixtures
 import com.github.jpmand.openproject.idea.api.OpenProjectApi
 import com.github.jpmand.openproject.idea.ui.common.HtmlView
 import com.github.jpmand.openproject.idea.ui.list.WorkPackageCells
+import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -31,6 +33,28 @@ class WorkPackageCellsTest {
         assertEquals("✓", WorkPackageCells.format(JsonPrimitive(true)))
         assertEquals("", WorkPackageCells.format(JsonPrimitive(false)))
         assertEquals("42", WorkPackageCells.format(JsonPrimitive(42)))
+    }
+
+    private fun withProgress(done: JsonPrimitive?, derived: JsonPrimitive? = null) = OpenProjectApi.decodeWorkPackage(
+        JsonObject(Fixtures.json("work_package.json") + listOfNotNull(done?.let { "percentageDone" to it }, derived?.let { "derivedPercentageDone" to it })),
+    )
+
+    @Test
+    fun `percentages show 0 percent in the table when unset`() {
+        assertEquals("0%", WorkPackageCells.tableText(workPackage, "percentageDone"))
+        assertEquals("0%", WorkPackageCells.tableText(workPackage, "derivedPercentageDone"))
+        assertNull(WorkPackageCells.percentage(workPackage, "percentageDone"))
+        // the work package page still leaves an unset value out
+        assertEquals("", WorkPackageCells.text(workPackage, "percentageDone"))
+
+        val halfDone = withProgress(JsonPrimitive(50), JsonPrimitive(33.4))
+        assertEquals(50, WorkPackageCells.percentage(halfDone, "percentageDone"))
+        assertEquals("50%", WorkPackageCells.tableText(halfDone, "percentageDone"))
+        assertEquals("33%", WorkPackageCells.tableText(halfDone, "derivedPercentageDone"))
+        assertEquals(100, WorkPackageCells.percentage(withProgress(JsonPrimitive(130)), "percentageDone"))
+        assertEquals("AGILE-1", WorkPackageCells.tableText(halfDone, "id"))
+        assertTrue(WorkPackageCells.isPercentage("derivedPercentageDone"))
+        assertFalse(WorkPackageCells.isPercentage("storyPoints"))
     }
 
     @Test

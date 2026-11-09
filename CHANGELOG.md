@@ -8,6 +8,7 @@
 - Quick filter dropdowns (project, type, status, priority, assignee) above the list
 - New lists, "Reset" and saved queries without a project filter use the project configured for the task server
 - Removed the "Work Packages…" action (the tool window replaces it)
+- "% Complete" and "Total % complete" columns show a progress bar behind the value, and 0% when the work package has none
 
 ### Added
 - Initial scaffold created from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)

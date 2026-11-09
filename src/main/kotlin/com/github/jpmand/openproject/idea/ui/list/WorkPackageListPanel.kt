@@ -68,9 +68,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jetbrains.annotations.TestOnly
 import java.awt.BorderLayout
-import java.awt.Component
 import java.awt.FlowLayout
-import java.awt.Font
 import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
 import java.awt.event.MouseAdapter
@@ -88,7 +86,6 @@ import javax.swing.event.DocumentEvent
 import javax.swing.event.ListSelectionEvent
 import javax.swing.event.TableColumnModelEvent
 import javax.swing.event.TableColumnModelListener
-import javax.swing.table.DefaultTableCellRenderer
 import javax.swing.table.TableCellRenderer
 
 /**
@@ -113,7 +110,7 @@ class WorkPackageListPanel(
     }
 
     private inner class Column(val id: String, title: String) : ColumnInfo<WorkPackage, String>(title) {
-        override fun valueOf(item: WorkPackage): String = WorkPackageCells.text(item, id)
+        override fun valueOf(item: WorkPackage): String = WorkPackageCells.tableText(item, id)
         override fun getRenderer(item: WorkPackage?): TableCellRenderer = cellRenderer
     }
 
@@ -146,7 +143,11 @@ class WorkPackageListPanel(
         tableHeader.reorderingAllowed = true
         autoResizeMode = JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS
     }
-    private val cellRenderer = ActiveAwareRenderer()
+    private val cellRenderer = WorkPackageCellRenderer(
+        itemAt = { table, row -> model.items.getOrNull(table.convertRowIndexToModel(row)) },
+        columnAt = { table, column -> columnIds.getOrNull(table.convertColumnIndexToModel(column)) },
+        isActive = { it.id == active?.workPackageId },
+    )
 
     private val searchField = SearchTextField(false).apply {
         textEditor.emptyText.text = OpenProjectBundle.message("list.search.hint")
@@ -581,7 +582,7 @@ class WorkPackageListPanel(
         when (column) {
             "id" -> 70
             "subject" -> 360
-            "percentageDone" -> 60
+            "percentageDone", "derivedPercentageDone" -> 90
             else -> 120
         },
     )
@@ -667,19 +668,6 @@ class WorkPackageListPanel(
     }
 
     private fun defaultView() = SavedView(0, OpenProjectBundle.message("list.views.default"))
-
-    /** Bold rows and a marker for the work package of the active task. */
-    private inner class ActiveAwareRenderer : DefaultTableCellRenderer() {
-        override fun getTableCellRendererComponent(table: JTable, value: Any?, selected: Boolean, focused: Boolean, row: Int, column: Int): Component {
-            super.getTableCellRendererComponent(table, value, selected, false, row, column)
-            val item = model.items.getOrNull(table.convertRowIndexToModel(row))
-            val isActive = item != null && item.id == active?.workPackageId
-            font = if (isActive) font.deriveFont(Font.BOLD) else font.deriveFont(Font.PLAIN)
-            icon = if (isActive && table.convertColumnIndexToModel(column) == 0) AllIcons.Vcs.History else null
-            border = JBUI.Borders.empty(0, 6)
-            return this
-        }
-    }
 
     /** "Working on #12 Subject" with shortcuts, shown while the active task is a work package of this server. */
     private inner class ActiveBanner : JPanel(FlowLayout(FlowLayout.LEFT, JBUI.scale(10), JBUI.scale(4))) {

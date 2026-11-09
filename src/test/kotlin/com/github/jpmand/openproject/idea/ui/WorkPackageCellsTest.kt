@@ -57,6 +57,22 @@ class WorkPackageCellsTest {
         assertFalse(WorkPackageCells.isPercentage("storyPoints"))
     }
 
+    private fun withTimes(spent: String?, work: String?) = OpenProjectApi.decodeWorkPackage(
+        JsonObject(Fixtures.json("work_package.json") + listOfNotNull(spent?.let { "spentTime" to JsonPrimitive(it) }, work?.let { "estimatedTime" to JsonPrimitive(it) })),
+    )
+
+    @Test
+    fun `spent time over the work is possible overtime`() {
+        assertTrue(WorkPackageCells.isOvertime(withTimes("PT2H30M", "PT2H")))
+        assertTrue(WorkPackageCells.isOvertime(withTimes("P1DT1H", "PT8H")))
+        assertFalse(WorkPackageCells.isOvertime(withTimes("PT2H", "PT2H")))
+        assertFalse(WorkPackageCells.isOvertime(withTimes("PT1H", "PT2H")))
+        // without planned work (or without time spent) there is nothing to compare
+        assertFalse(WorkPackageCells.isOvertime(withTimes("PT5H", null)))
+        assertFalse(WorkPackageCells.isOvertime(withTimes(null, "PT2H")))
+        assertFalse(WorkPackageCells.isOvertime(workPackage))
+    }
+
     @Test
     fun `links to work packages of the same server are recognized`() {
         assertEquals(12L, HtmlView.workPackageId("https://op.example.com/work_packages/12/activity", "https://op.example.com"))

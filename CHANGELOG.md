@@ -9,6 +9,7 @@
 - New lists, "Reset" and saved queries without a project filter use the project configured for the task server
 - Removed the "Work Packages…" action (the tool window replaces it)
 - "% Complete" and "Total % complete" columns show a progress bar behind the value, and 0% when the work package has none
+- "Spent time" cells turn red when more time was spent than the work (possible overtime); the tooltip shows both
 
 ### Added
 - Initial scaffold created from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)

@@ -32,6 +32,20 @@ object WorkPackageCells {
 
     private val PERCENTAGE_COLUMNS = setOf("percentageDone", "derivedPercentageDone")
 
+    /** Attribute ids of the spent time and of the planned work ("Work", OpenProject's estimated time). */
+    const val SPENT_TIME = "spentTime"
+    const val WORK = "estimatedTime"
+
+    /** More time was spent on the work package than its work: possible overtime. False when either is unset. */
+    fun isOvertime(workPackage: WorkPackage): Boolean {
+        val spent = duration(workPackage, SPENT_TIME) ?: return false
+        val work = duration(workPackage, WORK) ?: return false
+        return spent > work
+    }
+
+    private fun duration(workPackage: WorkPackage, attribute: String) =
+        (workPackage.raw[attribute] as? JsonPrimitive)?.takeIf { it.isString }?.contentOrNull?.let(Durations::parseIso)
+
     fun isPercentage(column: String): Boolean = column in PERCENTAGE_COLUMNS
 
     /** The value of a percentage column (0..100, rounded), null when the work package has none. */

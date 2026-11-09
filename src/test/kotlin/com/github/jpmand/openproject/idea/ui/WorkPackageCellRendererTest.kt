@@ -21,11 +21,16 @@ class WorkPackageCellRendererTest : BasePlatformTestCase() {
         return OpenProjectApi.decodeWorkPackage(JsonObject(json + listOfNotNull(percentageDone?.let { "percentageDone" to JsonPrimitive(it) })))
     }
 
-    /** Paints the "% Complete" cell of [item] (200 x 20 px) and returns the image. */
-    private fun paint(item: WorkPackage, columnId: String = "percentageDone"): Pair<BufferedImage, JLabel> {
-        val table = JBTable(DefaultTableModel(arrayOf(arrayOf<Any>(WorkPackageCells.tableText(item, columnId))), arrayOf("% Complete")))
+    private fun times(spent: String, work: String?): WorkPackage {
+        val json = Fixtures.json("work_package.json")
+        return OpenProjectApi.decodeWorkPackage(JsonObject(json + listOfNotNull("spentTime" to JsonPrimitive(spent), work?.let { "estimatedTime" to JsonPrimitive(it) })))
+    }
+
+    /** Paints the [columnId] cell of [item] (200 x 20 px) and returns the image. */
+    private fun paint(item: WorkPackage, columnId: String = "percentageDone", selected: Boolean = false): Pair<BufferedImage, JLabel> {
+        val table = JBTable(DefaultTableModel(arrayOf(arrayOf<Any>(WorkPackageCells.tableText(item, columnId))), arrayOf(columnId)))
         val renderer = WorkPackageCellRenderer({ _, _ -> item }, { _, _ -> columnId }, { false })
-        val label = renderer.getTableCellRendererComponent(table, WorkPackageCells.tableText(item, columnId), false, false, 0, 0) as JLabel
+        val label = renderer.getTableCellRendererComponent(table, WorkPackageCells.tableText(item, columnId), selected, false, 0, 0) as JLabel
         label.setSize(200, 20)
         val image = BufferedImage(200, 20, BufferedImage.TYPE_INT_RGB)
         val graphics = image.createGraphics()
@@ -57,5 +62,30 @@ class WorkPackageCellRendererTest : BasePlatformTestCase() {
         val (image, label) = paint(workPackage(80), columnId = "subject")
         assertEquals(JLabel.LEADING, label.horizontalAlignment)
         assertFalse(isBar(image.getRGB(10, 3)))
+    }
+
+    fun `test spent time over the work is highlighted`() {
+        val (image, label) = paint(times("PT3H", "PT2H"), columnId = "spentTime")
+        assertEquals(WorkPackageCellRenderer.OVERTIME, Color(image.getRGB(2, 2)))
+        assertEquals(WorkPackageCellRenderer.OVERTIME, Color(image.getRGB(195, 17)))
+        assertTrue(label.toolTipText.contains("3h"))
+        assertTrue(label.toolTipText.contains("2h"))
+    }
+
+    fun `test spent time within the work is not highlighted`() {
+        val (image, label) = paint(times("PT1H", "PT2H"), columnId = "spentTime")
+        assertFalse(WorkPackageCellRenderer.OVERTIME == Color(image.getRGB(2, 2)))
+        assertNull(label.toolTipText)
+        val (noWork, _) = paint(times("PT9H", null), columnId = "spentTime")
+        assertFalse(WorkPackageCellRenderer.OVERTIME == Color(noWork.getRGB(2, 2)))
+        // only the spent time cell is marked
+        val (otherColumn, _) = paint(times("PT3H", "PT2H"), columnId = "estimatedTime")
+        assertFalse(WorkPackageCellRenderer.OVERTIME == Color(otherColumn.getRGB(2, 2)))
+    }
+
+    fun `test selected overtime cell keeps the selection with a red edge`() {
+        val (image, _) = paint(times("PT3H", "PT2H"), columnId = "spentTime", selected = true)
+        assertEquals(WorkPackageCellRenderer.OVERTIME_EDGE, Color(image.getRGB(1, 10)))
+        assertFalse(WorkPackageCellRenderer.OVERTIME == Color(image.getRGB(150, 10)))
     }
 }

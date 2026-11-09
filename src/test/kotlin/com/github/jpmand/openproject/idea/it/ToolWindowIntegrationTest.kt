@@ -69,6 +69,8 @@ class ToolWindowIntegrationTest : BasePlatformTestCase() {
         val panel = WorkPackageListPanel(project, serverId, null)
         try {
             PlatformTestUtil.waitWithEventsDispatching("list did not load", { panel.loadedWorkPackages().any { it.id == workPackage.id } }, 60)
+            assertNotNull("status color", panel.statusColor(panel.loadedWorkPackages().first { it.id == workPackage.id }))
+            assertTrue(panel.columnMinimumWidths().getValue("updatedAt") > panel.columnMinimumWidths().getValue("subject"))
             panel.showPreview(workPackage.id)
             val preview = panel.preview()!!
             assertTrue(preview.isPreview())

@@ -13,6 +13,7 @@ import com.github.jpmand.openproject.idea.core.OpenProjectConnection
 import com.github.jpmand.openproject.idea.core.OpenProjectServer
 import com.github.jpmand.openproject.idea.core.connect
 import com.github.jpmand.openproject.idea.ui.WorkPackageRef
+import com.github.jpmand.openproject.idea.ui.common.StatusColors
 import com.intellij.openapi.project.Project
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -23,6 +24,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import java.awt.Color
 import java.io.OutputStream
 import kotlin.time.Duration.Companion.minutes
 
@@ -36,7 +38,11 @@ data class WorkPackageDetails(
     val attachments: List<Attachment>,
     /** Display names of the users in [activities] (activity links carry no titles). */
     val userNames: Map<String, String> = emptyMap(),
+    /** Status id -> OpenProject color, for the status badge and chooser. */
+    val statusColors: Map<Long, Color> = emptyMap(),
 ) {
+    val statusColor: Color? get() = StatusColors.of(workPackage, statusColors)
+
     val ref: WorkPackageRef get() = WorkPackageRef(server, workPackage)
     val canEdit: Boolean get() = workPackage.links.has("update") || workPackage.links.has("updateImmediately")
     val canComment: Boolean get() = workPackage.links.has("addComment")
@@ -76,6 +82,7 @@ class WorkPackageDetailController(private val project: Project, private val serv
         val activities = async { runCatching { api.activities(workPackage) }.getOrDefault(emptyList()) }
         val relations = async { runCatching { api.relations(workPackage) }.getOrDefault(emptyList()) }
         val attachments = async { runCatching { api.attachments(workPackage) }.getOrDefault(emptyList()) }
+        val statusColors = async { runCatching { StatusColors.of(connection.statuses()) }.getOrDefault(emptyMap()) }
         val loadedActivities = activities.await()
         val userNames = loadedActivities.mapNotNull { it.links.href("user") }.distinct()
             .map { href -> async { href to runCatching { connection.cached("principal:$href", 60.minutes) { api.getJson(href) } }.getOrNull() } }
@@ -84,7 +91,7 @@ class WorkPackageDetailController(private val project: Project, private val serv
                 ((json?.get("name") as? JsonPrimitive)?.contentOrNull)?.let { href to it }
             }
             .toMap()
-        WorkPackageDetails(server, workPackage, schema.await(), loadedActivities, relations.await(), attachments.await(), userNames)
+        WorkPackageDetails(server, workPackage, schema.await(), loadedActivities, relations.await(), attachments.await(), userNames, statusColors.await())
             .also { _details.value = it }
     }
 

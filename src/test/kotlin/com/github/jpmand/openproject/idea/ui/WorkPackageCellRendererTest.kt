@@ -26,10 +26,16 @@ class WorkPackageCellRendererTest : BasePlatformTestCase() {
         return OpenProjectApi.decodeWorkPackage(JsonObject(json + listOfNotNull("spentTime" to JsonPrimitive(spent), work?.let { "estimatedTime" to JsonPrimitive(it) })))
     }
 
+    private val statusColor = Color(0x1098AD)
+
     /** Paints the [columnId] cell of [item] (200 x 20 px) and returns the image. */
-    private fun paint(item: WorkPackage, columnId: String = "percentageDone", selected: Boolean = false): Pair<BufferedImage, JLabel> {
+    private fun paint(
+        item: WorkPackage,
+        columnId: String = "percentageDone",
+        selected: Boolean = false,
+        renderer: WorkPackageCellRenderer = WorkPackageCellRenderer({ _, _ -> item }, { _, _ -> columnId }, { false }, { statusColor }),
+    ): Pair<BufferedImage, JLabel> {
         val table = JBTable(DefaultTableModel(arrayOf(arrayOf<Any>(WorkPackageCells.tableText(item, columnId))), arrayOf(columnId)))
-        val renderer = WorkPackageCellRenderer({ _, _ -> item }, { _, _ -> columnId }, { false })
         val label = renderer.getTableCellRendererComponent(table, WorkPackageCells.tableText(item, columnId), selected, false, 0, 0) as JLabel
         label.setSize(200, 20)
         val image = BufferedImage(200, 20, BufferedImage.TYPE_INT_RGB)
@@ -87,5 +93,28 @@ class WorkPackageCellRendererTest : BasePlatformTestCase() {
         val (image, _) = paint(times("PT3H", "PT2H"), columnId = "spentTime", selected = true)
         assertEquals(WorkPackageCellRenderer.OVERTIME_EDGE, Color(image.getRGB(1, 10)))
         assertFalse(WorkPackageCellRenderer.OVERTIME == Color(image.getRGB(150, 10)))
+    }
+
+    fun `test status cells use the status color`() {
+        val item = workPackage(null)
+        val (image, label) = paint(item, columnId = "status")
+        assertEquals(statusColor, Color(image.getRGB(2, 2)))
+        assertEquals(statusColor, Color(image.getRGB(195, 17)))
+        assertEquals(Color.WHITE, label.foreground)
+
+        val (selected, _) = paint(item, columnId = "status", selected = true)
+        assertEquals(statusColor, Color(selected.getRGB(1, 10)))
+        assertFalse(statusColor == Color(selected.getRGB(150, 10)))
+    }
+
+    fun `test colors of a status cell do not leak into the next cell`() {
+        val item = workPackage(null)
+        var column = "status"
+        val renderer = WorkPackageCellRenderer({ _, _ -> item }, { _, _ -> column }, { false }, { statusColor })
+        paint(item, columnId = "status", renderer = renderer)
+        column = "subject"
+        val (image, label) = paint(item, columnId = "subject", renderer = renderer)
+        assertFalse(statusColor == Color(image.getRGB(2, 2)))
+        assertFalse(Color.WHITE == label.foreground)
     }
 }

@@ -3,10 +3,12 @@ package com.github.jpmand.openproject.idea.ui.list
 import com.github.jpmand.openproject.idea.OpenProjectBundle
 import com.github.jpmand.openproject.idea.api.FilterSpec
 import com.github.jpmand.openproject.idea.api.Filters
+import com.github.jpmand.openproject.idea.ui.common.swatchListRenderer
 import com.intellij.icons.AllIcons
 import com.intellij.openapi.application.EDT
 import com.intellij.openapi.ui.ComboBox
 import com.intellij.openapi.ui.popup.JBPopupFactory
+import com.intellij.openapi.util.text.StringUtil
 import com.intellij.ui.CheckBoxList
 import com.intellij.ui.InplaceButton
 import com.intellij.ui.ListSpeedSearch
@@ -192,7 +194,7 @@ class FilterBar(
         val current = rows.getOrNull(index) ?: return
         if (!multi) {
             JBPopupFactory.getInstance().createPopupChooserBuilder(options)
-                .setRenderer(textListCellRenderer { it?.title ?: "" })
+                .setRenderer(swatchListRenderer<ValueOption>({ it.title }, { it.color }))
                 .setNamerForFiltering { it.title }
                 .setItemChosenCallback { update(index, current.copy(values = listOf(it.id)), rebuildRow = true) }
                 .createPopup()
@@ -200,9 +202,9 @@ class FilterBar(
             return
         }
         val list = CheckBoxList<ValueOption>()
-        options.forEach { list.addItem(it, it.title, it.id in current.values) }
+        options.forEach { list.addItem(it, label(it), it.id in current.values) }
         list.selectionMode = ListSelectionModel.SINGLE_SELECTION
-        ListSpeedSearch.installOn(list) { it.text }
+        ListSpeedSearch.installOn(list) { StringUtil.removeHtmlTags(it.text) }
         JBPopupFactory.getInstance()
             .createComponentPopupBuilder(ScrollPaneFactory.createScrollPane(list).apply { preferredSize = JBUI.size(280, 300) }, list)
             .setRequestFocus(true)
@@ -215,6 +217,13 @@ class FilterBar(
             }
             .createPopup()
             .showUnderneathOf(anchor)
+    }
+
+    /** The option's title, after a square in its color (statuses). */
+    private fun label(option: ValueOption): String {
+        val color = option.color ?: return option.title
+        val hex = "#%06X".format(color.rgb and 0xFFFFFF)
+        return "<html><font color='$hex'>&#9632;</font>&nbsp;${StringUtil.escapeXmlEntities(option.title)}</html>"
     }
 
     private fun chooseFilter(anchor: JComponent) {

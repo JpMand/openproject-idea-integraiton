@@ -1,6 +1,7 @@
 package com.github.jpmand.openproject.idea.ui.detail
 
 import com.github.jpmand.openproject.idea.OpenProjectBundle
+import com.github.jpmand.openproject.idea.ui.common.StatusBadge
 import com.github.jpmand.openproject.idea.ui.list.Labels
 import com.github.jpmand.openproject.idea.ui.list.WorkPackageCells
 import com.intellij.openapi.util.text.StringUtil
@@ -45,7 +46,9 @@ class PropertiesPanel(
             constraints.gridy++
             val name = schemaFields[attribute]?.name ?: Labels.humanize(attribute)
             add(JBLabel(name).apply { foreground = UIUtil.getContextHelpForeground() }, constraints.apply { gridx = 0; weightx = 0.0 })
-            val valueComponent: JComponent = if (editable) {
+            val valueComponent: JComponent = if (attribute == "status" && details.statusColor != null) {
+                StatusBadge(value, details.statusColor)
+            } else if (editable) {
                 val text = value.ifBlank { OpenProjectBundle.message("detail.unassigned") }
                 ActionLink(text) { e ->
                     val anchor = e.source as JComponent

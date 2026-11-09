@@ -10,6 +10,8 @@
 - Removed the "Work Packages…" action (the tool window replaces it)
 - "% Complete" and "Total % complete" columns show a progress bar behind the value, and 0% when the work package has none
 - "Spent time" cells turn red when more time was spent than the work (possible overtime); the tooltip shows both
+- Statuses in their OpenProject colors: status cells of the list, the Status filter dropdowns, and a status badge in the work package preview and tab
+- The list scrolls horizontally when its columns do not fit; columns keep a minimum width for percentages, durations and dates
 
 ### Added
 - Initial scaffold created from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)

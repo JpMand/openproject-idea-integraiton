@@ -18,7 +18,7 @@ data class FilterMeta(
     val allowedValues: Map<String, List<HalLink>> = emptyMap(),
 )
 
-data class ValueOption(val id: String, val title: String) {
+data class ValueOption(val id: String, val title: String, val color: java.awt.Color? = null) {
     override fun toString(): String = title
 }
 

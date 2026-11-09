@@ -40,6 +40,8 @@ class DetailPanelIntegrationTest : BasePlatformTestCase() {
         }
         editor = WorkPackageDetailPanel(project, serverId, workPackage.id, WorkPackageDetailPanel.Layout.TAB)
         PlatformTestUtil.waitWithEventsDispatching("details", { editor.details() != null }, 60)
+        // seeded statuses have colors, shown as the status badge
+        assertNotNull(editor.details()!!.statusColor)
     }
 
     override fun tearDown() {

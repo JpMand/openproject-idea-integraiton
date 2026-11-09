@@ -18,6 +18,7 @@ import com.github.jpmand.openproject.idea.core.connect
 import com.github.jpmand.openproject.idea.core.describeError
 import com.github.jpmand.openproject.idea.ui.OpenProjectDataKeys
 import com.github.jpmand.openproject.idea.ui.WorkPackageRef
+import com.github.jpmand.openproject.idea.ui.common.StatusColors
 import com.github.jpmand.openproject.idea.ui.common.StatusPanel
 import com.github.jpmand.openproject.idea.ui.detail.WorkPackageDetailPanel
 import com.github.jpmand.openproject.idea.ui.toolwindow.OpenProjectToolWindowManager
@@ -47,7 +48,6 @@ import com.intellij.ui.SearchTextField
 import com.intellij.ui.TableSpeedSearch
 import com.intellij.ui.components.ActionLink
 import com.intellij.ui.components.JBLabel
-import com.intellij.ui.table.TableView
 import com.intellij.util.ui.ColumnInfo
 import com.intellij.util.ui.JBUI
 import com.intellij.util.ui.ListTableModel
@@ -68,6 +68,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jetbrains.annotations.TestOnly
 import java.awt.BorderLayout
+import java.awt.Color
 import java.awt.FlowLayout
 import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
@@ -137,7 +138,7 @@ class WorkPackageListPanel(
     @Volatile private var pageSizes: List<Int> = listOf(20, 50, 100)
 
     private val model = ListTableModel<WorkPackage>()
-    private val table = TableView(model).apply {
+    private val table = WorkPackageTable(model).apply {
         setSelectionMode(ListSelectionModel.SINGLE_SELECTION)
         setShowGrid(false)
         tableHeader.reorderingAllowed = true
@@ -147,7 +148,14 @@ class WorkPackageListPanel(
         itemAt = { table, row -> model.items.getOrNull(table.convertRowIndexToModel(row)) },
         columnAt = { table, column -> columnIds.getOrNull(table.convertColumnIndexToModel(column)) },
         isActive = { it.id == active?.workPackageId },
+        statusColor = { StatusColors.of(it, statusColors) },
     )
+
+    /** Status id -> OpenProject color. */
+    @Volatile private var statusColors: Map<Long, Color> = emptyMap()
+
+    /** Attribute -> type from the work package schemas of the loaded pages (custom field column widths). */
+    private var schemaTypes: Map<String, String> = emptyMap()
 
     private val searchField = SearchTextField(false).apply {
         textEditor.emptyText.text = OpenProjectBundle.message("list.search.hint")
@@ -267,10 +275,16 @@ class WorkPackageListPanel(
             val metadataChanged = loadedMetadata !== metadata
             metadata = loadedMetadata
             val page = connection.api.workPackages(query)
+            runCatching { connection.statuses() }.getOrNull()?.let { statusColors = StatusColors.of(it) }
             withContext(Dispatchers.EDT) {
+                val types = schemaTypes + page.schemas.flatMap { it.fields.values }.associate { it.attribute to it.type }.filterKeys { it !in schemaTypes }
+                val typesChanged = types != schemaTypes
+                schemaTypes = types
                 if (metadataChanged) {
                     filterBar.refreshMetadata()
                     rebuildColumns(viewState.value)
+                } else if (typesChanged) {
+                    applyMinimumWidths()
                 }
                 if (!savedViewsLoaded) loadSavedViews(connection)
                 show(page)
@@ -326,7 +340,7 @@ class WorkPackageListPanel(
         val connection = connection ?: connect(project, serverId).second
         fun named(id: Long, name: String) = ValueOption(id.toString(), name)
         return when (elementType) {
-            "Status" -> connection.statuses().map { named(it.id, it.name) }
+            "Status" -> connection.statuses().map { ValueOption(it.id.toString(), it.name, StatusColors.parse(it.color)) }
             "Type" -> connection.types().map { named(it.id, it.name) }
             "Priority" -> connection.priorities().map { named(it.id, it.name) }
             "Project" -> connection.projects().map { named(it.id, it.name) }
@@ -571,7 +585,26 @@ class WorkPackageListPanel(
             table.setModelAndUpdateColumns(model)
             state.columns.forEachIndexed { index, id ->
                 val column = table.columnModel.getColumn(index)
-                column.preferredWidth = state.widths[id] ?: defaultWidth(id)
+                column.minWidth = minimumWidth(id)
+                column.preferredWidth = maxOf(state.widths[id] ?: defaultWidth(id), column.minWidth)
+            }
+        } finally {
+            updatingColumns = false
+        }
+    }
+
+    /** Values must stay readable: a column is never narrower than its typical value (percent, duration, date). */
+    private fun minimumWidth(column: String): Int =
+        ColumnWidths.minWidth(ColumnWidths.kind(column, schemaTypes[column]), table.getFontMetrics(table.font))
+
+    private fun applyMinimumWidths() {
+        updatingColumns = true
+        try {
+            for (view in 0 until table.columnCount) {
+                val column = table.columnModel.getColumn(view)
+                val id = columnIds.getOrNull(column.modelIndex) ?: continue
+                column.minWidth = minimumWidth(id)
+                if (column.preferredWidth < column.minWidth) column.preferredWidth = column.minWidth
             }
         } finally {
             updatingColumns = false
@@ -711,6 +744,13 @@ class WorkPackageListPanel(
 
     @TestOnly
     internal fun preview(): WorkPackageDetailPanel? = preview
+
+    @TestOnly
+    internal fun statusColor(workPackage: WorkPackage): Color? = StatusColors.of(workPackage, statusColors)
+
+    @TestOnly
+    internal fun columnMinimumWidths(): Map<String, Int> =
+        (0 until table.columnCount).associate { columnIds[table.columnModel.getColumn(it).modelIndex] to table.columnModel.getColumn(it).minWidth }
 
     @TestOnly
     internal fun quickFilterTexts(): List<String> = quickFilters.map { it.text() }

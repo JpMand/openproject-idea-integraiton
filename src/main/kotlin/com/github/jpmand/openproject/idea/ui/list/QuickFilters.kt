@@ -3,11 +3,11 @@ package com.github.jpmand.openproject.idea.ui.list
 import com.github.jpmand.openproject.idea.OpenProjectBundle
 import com.github.jpmand.openproject.idea.api.FilterSpec
 import com.github.jpmand.openproject.idea.api.Filters
+import com.github.jpmand.openproject.idea.ui.common.swatchListRenderer
 import com.intellij.openapi.application.EDT
 import com.intellij.openapi.ui.popup.JBPopupFactory
 import com.intellij.ui.components.ActionLink
 import com.intellij.ui.components.JBLabel
-import com.intellij.ui.dsl.listCellRenderer.textListCellRenderer
 import com.intellij.util.ui.JBUI
 import com.intellij.util.ui.UIUtil
 import kotlinx.coroutines.CancellationException
@@ -18,8 +18,8 @@ import kotlinx.coroutines.withContext
 import java.awt.FlowLayout
 import javax.swing.JPanel
 
-/** One entry of a quick filter dropdown; a null [filter] removes the filter ("Any"). */
-data class QuickChoice(val title: String, val filter: FilterSpec?)
+/** One entry of a quick filter dropdown; a null [filter] removes the filter ("Any"). [color]: e.g. a status color. */
+data class QuickChoice(val title: String, val filter: FilterSpec?, val color: java.awt.Color? = null)
 
 /** A dropdown above the table that sets one filter ([name]) to a single value, like the issue trackers' filter rows. */
 data class QuickFilterDef(
@@ -37,7 +37,7 @@ data class QuickFilterDef(
         else -> specials.firstOrNull { it.filter == filters[0] }
     }
 
-    fun valueChoice(option: ValueOption) = QuickChoice(option.title, FilterSpec(name, "=", listOf(option.id)))
+    fun valueChoice(option: ValueOption) = QuickChoice(option.title, FilterSpec(name, "=", listOf(option.id)), option.color)
 
     companion object {
         private fun message(key: String) = OpenProjectBundle.message(key)
@@ -138,7 +138,7 @@ class QuickFilterLink(
                 val choices = def.specials + loaded.filter { it.id !in specialIds }.map(def::valueChoice)
                 val selected = def.selected(current) ?: choices.firstOrNull { current.singleOrNull() == it.filter }
                 JBPopupFactory.getInstance().createPopupChooserBuilder(choices)
-                    .setRenderer(textListCellRenderer { it?.title ?: "" })
+                    .setRenderer(swatchListRenderer<QuickChoice>({ it.title }, { it.color }))
                     .setNamerForFiltering { it.title }
                     .also { builder -> selected?.let { builder.setSelectedValue(it, true) } }
                     .setItemChosenCallback { choice ->

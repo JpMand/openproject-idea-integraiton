@@ -11,7 +11,9 @@ import com.github.jpmand.openproject.idea.core.describeError
 import com.github.jpmand.openproject.idea.ui.OpenProjectDataKeys
 import com.github.jpmand.openproject.idea.ui.common.HtmlView
 import com.github.jpmand.openproject.idea.ui.common.MarkdownField
+import com.github.jpmand.openproject.idea.ui.common.StatusBadge
 import com.github.jpmand.openproject.idea.ui.common.StatusPanel
+import com.github.jpmand.openproject.idea.ui.common.swatchListRenderer
 import com.github.jpmand.openproject.idea.ui.list.WorkPackageCells
 import com.github.jpmand.openproject.idea.ui.toolwindow.OpenProjectToolWindowManager
 import com.intellij.icons.AllIcons
@@ -45,7 +47,6 @@ import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBTabbedPane
 import com.intellij.ui.components.JBTextField
-import com.intellij.ui.dsl.listCellRenderer.textListCellRenderer
 import com.intellij.util.ui.JBFont
 import com.intellij.util.ui.JBUI
 import com.intellij.util.ui.UIUtil
@@ -58,16 +59,24 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jetbrains.annotations.TestOnly
 import java.awt.BorderLayout
+import java.awt.Color
+import java.awt.Dimension
+import java.awt.Cursor
 import java.awt.FlowLayout
 import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
+import java.awt.event.MouseAdapter
+import java.awt.event.MouseEvent
 import java.io.File
 import java.net.URLConnection
 import java.util.concurrent.ConcurrentHashMap
+import javax.swing.Box
 import javax.swing.BoxLayout
 import javax.swing.JButton
 import javax.swing.JComponent
 import javax.swing.JPanel
+import javax.swing.SwingConstants
+import javax.swing.SwingUtilities
 
 /**
  * One work package: editable subject, status, description and attributes, plus its activity (with a comment box),
@@ -106,7 +115,15 @@ class WorkPackageDetailPanel(
     private val subjectLabel = JBLabel().apply { font = JBFont.h2().asBold(); border = JBUI.Borders.emptyRight(6) }
     private val subjectEdit = InplaceButton(OpenProjectBundle.message("detail.subject.edit"), AllIcons.Actions.Edit) { editSubject() }
     private val subjectRow = JPanel(FlowLayout(FlowLayout.LEFT, 0, 0)).apply { isOpaque = false }
-    private val statusLink = ActionLink("") { e -> chooseStatus(e.source as JComponent) }.apply { setDropDownLinkIcon() }
+    private val statusBadge = StatusBadge().apply {
+        icon = AllIcons.General.ChevronDown
+        horizontalTextPosition = SwingConstants.LEFT
+        addMouseListener(object : MouseAdapter() {
+            override fun mouseClicked(e: MouseEvent) {
+                if (controller.details.value?.canEdit == true && SwingUtilities.isLeftMouseButton(e)) chooseStatus(this@apply)
+            }
+        })
+    }
     private val attributeLine = JBLabel()
     private val activeBadge = JBLabel(OpenProjectBundle.message("detail.active.task"), AllIcons.Vcs.History, JBLabel.LEFT).apply {
         foreground = JBUI.CurrentTheme.Link.Foreground.ENABLED
@@ -200,8 +217,11 @@ class WorkPackageDetailPanel(
         }
         idLabel.text = "${workPackage.typeTitle.orEmpty()}  ${workPackage.presentableId}".trim()
         showSubject(workPackage)
-        statusLink.text = workPackage.statusTitle ?: "?"
-        statusLink.isEnabled = details.canEdit
+        statusBadge.text = workPackage.statusTitle ?: "?"
+        statusBadge.color = details.statusColor
+        statusBadge.icon = if (details.canEdit) AllIcons.General.ChevronDown else null
+        statusBadge.cursor = if (details.canEdit) Cursor.getPredefinedCursor(Cursor.HAND_CURSOR) else Cursor.getDefaultCursor()
+        statusBadge.toolTipText = if (details.canEdit) OpenProjectBundle.message("detail.status.change") else null
         attributeLine.text = listOf("assignee", "priority", "project", "updatedAt")
             .mapNotNull { WorkPackageCells.text(workPackage, it).takeIf(String::isNotBlank) }
             .joinToString("  ·  ")
@@ -224,7 +244,7 @@ class WorkPackageDetailPanel(
             border = JBUI.Borders.empty(10, 14)
             add(idLabel)
             add(subjectRow)
-            add(row(JBLabel(OpenProjectBundle.message("detail.status")), statusLink, attributeLine, activeBadge).apply {
+            add(row(JBLabel(OpenProjectBundle.message("detail.status")), statusBadge, attributeLine, activeBadge).apply {
                 border = JBUI.Borders.emptyTop(4)
             })
             add(row(JBLabel(OpenProjectBundle.message("detail.description")).apply { font = JBFont.h4().asBold() }, descriptionEditLink).apply {
@@ -257,7 +277,11 @@ class WorkPackageDetailPanel(
     /** Left-aligned components with a gap after each (no leading gap, unlike FlowLayout's hgap); wraps when narrow. */
     private fun row(vararg components: JComponent): JPanel = JPanel(WrapLayout(FlowLayout.LEFT, 0, 0)).apply {
         isOpaque = false
-        components.forEach { add(it.apply { border = JBUI.Borders.emptyRight(12) }) }
+        // Gaps as spacers: the components keep their own borders (the status badge paints its padding).
+        components.forEach {
+            add(it)
+            add(Box.createRigidArea(Dimension(JBUI.scale(12), 0)))
+        }
     }
 
     private fun showSubject(workPackage: WorkPackage) {
@@ -314,8 +338,11 @@ class WorkPackageDetailPanel(
     private fun chooseStatus(anchor: JComponent) {
         perform {
             val statuses = controller.allowedStatuses()
+            val colors = controller.details.value?.statusColors.orEmpty()
             withContext(Dispatchers.EDT) {
-                choose(anchor, statuses) { status -> perform { controller.update { it.link("status", status.href) } } }
+                choose(anchor, statuses, color = { it.id?.toLongOrNull()?.let(colors::get) }) { status ->
+                    perform { controller.update { it.link("status", status.href) } }
+                }
             }
         }
     }
@@ -339,9 +366,9 @@ class WorkPackageDetailPanel(
         }
     }
 
-    private fun choose(anchor: JComponent, options: List<HalLink>, onChosen: (HalLink) -> Unit) {
+    private fun choose(anchor: JComponent, options: List<HalLink>, color: (HalLink) -> Color? = { null }, onChosen: (HalLink) -> Unit) {
         JBPopupFactory.getInstance().createPopupChooserBuilder(options)
-            .setRenderer(textListCellRenderer { it?.title ?: it?.href.orEmpty() })
+            .setRenderer(swatchListRenderer<HalLink>({ it.title ?: it.href.orEmpty() }, color))
             .setNamerForFiltering { it.title.orEmpty() }
             .setItemChosenCallback(onChosen)
             .createPopup()

@@ -1,0 +1,560 @@
+{
+ "_type": "Collection",
+ "total": 55,
+ "count": 7,
+ "_embedded": {
+  "elements": [
+   {
+    "_type": "QueryFilterInstanceSchema",
+    "_dependencies": [
+     {
+      "_type": "SchemaDependency",
+      "on": "operator",
+      "dependencies": {
+       "/api/v3/queries/operators/%3D": {
+        "values": {
+         "type": "[]User",
+         "name": "Values",
+         "required": true,
+         "hasDefault": false,
+         "writable": true,
+         "location": "_links",
+         "_links": {}
+        }
+       },
+       "/api/v3/queries/operators/%21": {
+        "values": {
+         "type": "[]User",
+         "name": "Values",
+         "required": true,
+         "hasDefault": false,
+         "writable": true,
+         "location": "_links",
+         "_links": {}
+        }
+       },
+       "/api/v3/queries/operators/%2A": {},
+       "/api/v3/queries/operators/%21%2A": {}
+      }
+     }
+    ],
+    "name": {
+     "type": "String",
+     "name": "Name",
+     "required": true,
+     "hasDefault": true,
+     "writable": false,
+     "options": {}
+    },
+    "filter": {
+     "type": "QueryFilter",
+     "name": "Filter",
+     "required": true,
+     "hasDefault": false,
+     "writable": true,
+     "location": "_links",
+     "_links": {}
+    },
+    "operator": {
+     "type": "QueryOperator",
+     "name": "Operator",
+     "required": true,
+     "hasDefault": false,
+     "writable": true,
+     "location": "_links",
+     "_links": {}
+    },
+    "_links": {
+     "self": {
+      "href": "/api/v3/queries/filter_instance_schemas/assignee"
+     }
+    }
+   },
+   {
+    "_type": "QueryFilterInstanceSchema",
+    "_dependencies": [
+     {
+      "_type": "SchemaDependency",
+      "on": "operator",
+      "dependencies": {
+       "/api/v3/queries/operators/%3Ct%2B": {
+        "values": {
+         "type": "[1]Integer",
+         "name": "Values",
+         "required": true,
+         "hasDefault": false,
+         "writable": true,
+         "location": "_links",
+         "_links": {}
+        }
+       },
+       "/api/v3/queries/operators/%3Et%2B": {
+        "values": {
+         "type": "[1]Integer",
+         "name": "Values",
+         "required": true,
+         "hasDefault": false,
+         "writable": true,
+         "location": "_links",
+         "_links": {}
+        }
+       },
+       "/api/v3/queries/operators/t%2B": {
+        "values": {
+         "type": "[1]Integer",
+         "name": "Values",
+         "required": true,
+         "hasDefault": false,
+         "writable": true,
+         "location": "_links",
+         "_links": {}
+        }
+       },
+       "/api/v3/queries/operators/t": {},
+       "/api/v3/queries/operators/w": {},
+       "/api/v3/queries/operators/%3Et-": {
+        "values": {
+         "type": "[1]Integer",
+         "name": "Values",
+         "required": true,
+         "hasDefault": false,
+         "writable": true,
+         "location": "_links",
+         "_links": {}
+        }
+       },
+       "/api/v3/queries/operators/%3Ct-": {
+        "values": {
+         "type": "[1]Integer",
+         "name": "Values",
+         "required": true,
+         "hasDefault": false,
+         "writable": true,
+         "location": "_links",
+         "_links": {}
+        }
+       },
+       "/api/v3/queries/operators/t-": {
+        "values": {
+         "type": "[1]Integer",
+         "name": "Values",
+         "required": true,
+         "hasDefault": false,
+         "writable": true,
+         "location": "_links",
+         "_links": {}
+        }
+       },
+       "/api/v3/queries/operators/%3Dd": {
+        "values": {
+         "type": "[1]Date",
+         "name": "Values",
+         "required": true,
+         "hasDefault": false,
+         "writable": true,
+         "location": "_links",
+         "_links": {}
+        }
+       },
+       "/api/v3/queries/operators/%3C%3Ed": {
+        "values": {
+         "type": "[2]Date",
+         "name": "Values",
+         "required": true,
+         "hasDefault": false,
+         "writable": true,
+         "location": "_links",
+         "_links": {}
+        }
+       },
+       "/api/v3/queries/operators/%21%2A": {}
+      }
+     }
+    ],
+    "name": {
+     "type": "String",
+     "name": "Name",
+     "required": true,
+     "hasDefault": true,
+     "writable": false,
+     "options": {}
+    },
+    "filter": {
+     "type": "QueryFilter",
+     "name": "Filter",
+     "required": true,
+     "hasDefault": false,
+     "writable": true,
+     "location": "_links",
+     "_links": {}
+    },
+    "operator": {
+     "type": "QueryOperator",
+     "name": "Operator",
+     "required": true,
+     "hasDefault": false,
+     "writable": true,
+     "location": "_links",
+     "_links": {}
+    },
+    "_links": {
+     "self": {
+      "href": "/api/v3/queries/filter_instance_schemas/dueDate"
+     }
+    }
+   },
+   {
+    "_type": "QueryFilterInstanceSchema",
+    "_dependencies": [
+     {
+      "_type": "SchemaDependency",
+      "on": "operator",
+      "dependencies": {
+       "/api/v3/queries/operators/o": {},
+       "/api/v3/queries/operators/%3D": {
+        "values": {
+         "type": "[]Status",
+         "name": "Values",
+         "required": true,
+         "hasDefault": false,
+         "writable": true,
+         "location": "_links",
+         "_links": {}
+        }
+       },
+       "/api/v3/queries/operators/c": {},
+       "/api/v3/queries/operators/%21": {
+        "values": {
+         "type": "[]Status",
+         "name": "Values",
+         "required": true,
+         "hasDefault": false,
+         "writable": true,
+         "location": "_links",
+         "_links": {}
+        }
+       },
+       "/api/v3/queries/operators/%2A": {}
+      }
+     }
+    ],
+    "name": {
+     "type": "String",
+     "name": "Name",
+     "required": true,
+     "hasDefault": true,
+     "writable": false,
+     "options": {}
+    },
+    "filter": {
+     "type": "QueryFilter",
+     "name": "Filter",
+     "required": true,
+     "hasDefault": false,
+     "writable": true,
+     "location": "_links",
+     "_links": {}
+    },
+    "operator": {
+     "type": "QueryOperator",
+     "name": "Operator",
+     "required": true,
+     "hasDefault": false,
+     "writable": true,
+     "location": "_links",
+     "_links": {}
+    },
+    "_links": {
+     "self": {
+      "href": "/api/v3/queries/filter_instance_schemas/status"
+     }
+    }
+   },
+   {
+    "_type": "QueryFilterInstanceSchema",
+    "_dependencies": [
+     {
+      "_type": "SchemaDependency",
+      "on": "operator",
+      "dependencies": {
+       "/api/v3/queries/operators/~": {
+        "values": {
+         "type": "[1]String",
+         "name": "Values",
+         "required": true,
+         "hasDefault": false,
+         "writable": true,
+         "location": "_links",
+         "_links": {}
+        }
+       },
+       "/api/v3/queries/operators/%21~": {
+        "values": {
+         "type": "[1]String",
+         "name": "Values",
+         "required": true,
+         "hasDefault": false,
+         "writable": true,
+         "location": "_links",
+         "_links": {}
+        }
+       }
+      }
+     }
+    ],
+    "name": {
+     "type": "String",
+     "name": "Name",
+     "required": true,
+     "hasDefault": true,
+     "writable": false,
+     "options": {}
+    },
+    "filter": {
+     "type": "QueryFilter",
+     "name": "Filter",
+     "required": true,
+     "hasDefault": false,
+     "writable": true,
+     "location": "_links",
+     "_links": {}
+    },
+    "operator": {
+     "type": "QueryOperator",
+     "name": "Operator",
+     "required": true,
+     "hasDefault": false,
+     "writable": true,
+     "location": "_links",
+     "_links": {}
+    },
+    "_links": {
+     "self": {
+      "href": "/api/v3/queries/filter_instance_schemas/subject"
+     }
+    }
+   },
+   {
+    "_type": "QueryFilterInstanceSchema",
+    "_dependencies": [
+     {
+      "_type": "SchemaDependency",
+      "on": "operator",
+      "dependencies": {
+       "/api/v3/queries/operators/%3D": {
+        "values": {
+         "type": "[]Type",
+         "name": "Values",
+         "required": true,
+         "hasDefault": false,
+         "writable": true,
+         "location": "_links",
+         "_links": {}
+        }
+       },
+       "/api/v3/queries/operators/%21": {
+        "values": {
+         "type": "[]Type",
+         "name": "Values",
+         "required": true,
+         "hasDefault": false,
+         "writable": true,
+         "location": "_links",
+         "_links": {}
+        }
+       }
+      }
+     }
+    ],
+    "name": {
+     "type": "String",
+     "name": "Name",
+     "required": true,
+     "hasDefault": true,
+     "writable": false,
+     "options": {}
+    },
+    "filter": {
+     "type": "QueryFilter",
+     "name": "Filter",
+     "required": true,
+     "hasDefault": false,
+     "writable": true,
+     "location": "_links",
+     "_links": {}
+    },
+    "operator": {
+     "type": "QueryOperator",
+     "name": "Operator",
+     "required": true,
+     "hasDefault": false,
+     "writable": true,
+     "location": "_links",
+     "_links": {}
+    },
+    "_links": {
+     "self": {
+      "href": "/api/v3/queries/filter_instance_schemas/type"
+     }
+    }
+   },
+   {
+    "_type": "QueryFilterInstanceSchema",
+    "_dependencies": [
+     {
+      "_type": "SchemaDependency",
+      "on": "operator",
+      "dependencies": {
+       "/api/v3/queries/operators/%3Et-": {
+        "values": {
+         "type": "[1]Integer",
+         "name": "Values",
+         "required": true,
+         "hasDefault": false,
+         "writable": true,
+         "location": "_links",
+         "_links": {}
+        }
+       },
+       "/api/v3/queries/operators/%3Ct-": {
+        "values": {
+         "type": "[1]Integer",
+         "name": "Values",
+         "required": true,
+         "hasDefault": false,
+         "writable": true,
+         "location": "_links",
+         "_links": {}
+        }
+       },
+       "/api/v3/queries/operators/t-": {
+        "values": {
+         "type": "[1]Integer",
+         "name": "Values",
+         "required": true,
+         "hasDefault": false,
+         "writable": true,
+         "location": "_links",
+         "_links": {}
+        }
+       },
+       "/api/v3/queries/operators/t": {},
+       "/api/v3/queries/operators/w": {},
+       "/api/v3/queries/operators/%3Dd": {
+        "values": {
+         "type": "[1]DateTime",
+         "name": "Values",
+         "required": true,
+         "hasDefault": false,
+         "writable": true,
+         "location": "_links",
+         "_links": {}
+        }
+       },
+       "/api/v3/queries/operators/%3C%3Ed": {
+        "values": {
+         "type": "[2]DateTime",
+         "name": "Values",
+         "required": true,
+         "hasDefault": false,
+         "writable": true,
+         "location": "_links",
+         "_links": {}
+        }
+       }
+      }
+     }
+    ],
+    "name": {
+     "type": "String",
+     "name": "Name",
+     "required": true,
+     "hasDefault": true,
+     "writable": false,
+     "options": {}
+    },
+    "filter": {
+     "type": "QueryFilter",
+     "name": "Filter",
+     "required": true,
+     "hasDefault": false,
+     "writable": true,
+     "location": "_links",
+     "_links": {}
+    },
+    "operator": {
+     "type": "QueryOperator",
+     "name": "Operator",
+     "required": true,
+     "hasDefault": false,
+     "writable": true,
+     "location": "_links",
+     "_links": {}
+    },
+    "_links": {
+     "self": {
+      "href": "/api/v3/queries/filter_instance_schemas/updatedAt"
+     }
+    }
+   },
+   {
+    "_type": "QueryFilterInstanceSchema",
+    "_dependencies": [
+     {
+      "_type": "SchemaDependency",
+      "on": "operator",
+      "dependencies": {
+       "/api/v3/queries/operators/%2A%2A": {
+        "values": {
+         "type": "[1]String",
+         "name": "Values",
+         "required": true,
+         "hasDefault": false,
+         "writable": true,
+         "location": "_links",
+         "_links": {}
+        }
+       }
+      }
+     }
+    ],
+    "name": {
+     "type": "String",
+     "name": "Name",
+     "required": true,
+     "hasDefault": true,
+     "writable": false,
+     "options": {}
+    },
+    "filter": {
+     "type": "QueryFilter",
+     "name": "Filter",
+     "required": true,
+     "hasDefault": false,
+     "writable": true,
+     "location": "_links",
+     "_links": {}
+    },
+    "operator": {
+     "type": "QueryOperator",
+     "name": "Operator",
+     "required": true,
+     "hasDefault": false,
+     "writable": true,
+     "location": "_links",
+     "_links": {}
+    },
+    "_links": {
+     "self": {
+      "href": "/api/v3/queries/filter_instance_schemas/search"
+     }
+    }
+   }
+  ]
+ },
+ "_links": {
+  "self": {
+   "href": "/api/v3/queries/filter_instance_schemas"
+  }
+ }
+}

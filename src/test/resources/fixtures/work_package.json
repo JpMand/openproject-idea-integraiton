@@ -1,0 +1,387 @@
+{
+ "derivedStartDate": null,
+ "derivedDueDate": null,
+ "hasProjectAttributes": false,
+ "_embedded": {
+  "attachments": {
+   "_type": "Collection",
+   "total": 0,
+   "count": 0,
+   "_embedded": {
+    "elements": []
+   },
+   "_links": {
+    "self": {
+     "href": "/api/v3/work_packages/24971/attachments"
+    }
+   }
+  },
+  "relations": {
+   "_type": "Collection",
+   "total": 0,
+   "count": 0,
+   "_embedded": {
+    "elements": []
+   },
+   "_links": {
+    "self": {
+     "href": "/api/v3/work_packages/24971/relations"
+    }
+   }
+  },
+  "type": {
+   "_type": "Type",
+   "id": 6,
+   "name": "Feature",
+   "color": "#6BB234",
+   "position": 6,
+   "isDefault": false,
+   "isMilestone": false,
+   "createdAt": "2013-11-13T13:11:21.933Z",
+   "updatedAt": "2026-08-27T08:12:08.243Z",
+   "_links": {
+    "self": {
+     "href": "/api/v3/types/6",
+     "title": "Feature"
+    }
+   }
+  },
+  "priority": {
+   "_type": "Priority",
+   "id": 4,
+   "name": "Medium",
+   "position": 2,
+   "color": "#51CF66",
+   "isDefault": true,
+   "isActive": true,
+   "_links": {
+    "self": {
+     "href": "/api/v3/priorities/4",
+     "title": "Medium"
+    }
+   }
+  },
+  "project": {
+   "favorited": false,
+   "_type": "Project",
+   "id": 1534,
+   "identifier": "AGILE",
+   "name": "Stream agile",
+   "active": true,
+   "public": true,
+   "description": {
+    "format": "markdown",
+    "raw": "**Purpose of this project**  \nThis project focuses on further improving OpenProject&#x27;s support for agile methodologies (Scrum, Kanban, SAFe).\n\n**Product vision**  \nHere you can find a detailed vision for agile way of working within OpenProject.  \nBlog article: [https://www.openproject.org/blog/future-of-agile-work/](https://www.openproject.org/blog/future-of-agile-work/)&nbsp;\n\nVideo: [https://www.youtube.com/watch?v=1hNBAhBHpHk](https://www.youtube.com/watch?v=1hNBAhBHpHk) \n\n**Project goals**\n\n*   Better support for agile artefacts and ceremonies (backlog grooming, sprint planning, retrospectives)\n    \n    *   Sprint scheduling, start and completion (incl. sprint status)\n        \n    *   Improved backlog view\n        \n    *   Automated backlog (showing per default all work packages from the project, except closed and rejected work packages)\n        \n*   Further improvements for agile boards aligned with agile principles\n    \n    *   Swimlanes\n        \n    *   Quick filters\n        \n    *   Status mapping\n        \n    *   Automated sprint boards\n        \n*   Establish agile reports to measure team health and maturity in order to boost continuous improvements\n    \n    *   burnup charts\n        \n    *   burndown charts\n        \n    *   velocity charts\n        \n    *   number of cards planned, added, completed",
+    "html": "<p class=\"op-uc-p\"><strong>Purpose of this project</strong><br>\nThis project focuses on further improving OpenProject's support for agile methodologies (Scrum, Kanban, SAFe).</p>\n<p class=\"op-uc-p\"><strong>Product vision</strong><br>\nHere you can find a detailed vision for agile way of working within OpenProject.<br>\nBlog article: <a href=\"https://www.openproject.org/blog/future-of-agile-work/\" rel=\"noopener noreferrer nofollow\" target=\"_top\" class=\"op-uc-link\">https://www.openproject.org/blog/future-of-agile-work/</a> </p>\n<p class=\"op-uc-p\">Video: <a href=\"https://www.youtube.com/watch?v=1hNBAhBHpHk\" rel=\"noopener noreferrer nofollow\" target=\"_top\" class=\"op-uc-link\">https://www.youtube.com/watch?v=1hNBAhBHpHk</a> </p>\n<p class=\"op-uc-p\"><strong>Project goals</strong></p>\n<ul class=\"op-uc-list\">\n<li class=\"op-uc-list--item\">\n<p class=\"op-uc-p\">Better support for agile artefacts and ceremonies (backlog grooming, sprint planning, retrospectives)</p>\n<ul class=\"op-uc-list\">\n<li class=\"op-uc-list--item\">\n<p class=\"op-uc-p\">Sprint scheduling, start and completion (incl. sprint status)</p>\n</li>\n<li class=\"op-uc-list--item\">\n<p class=\"op-uc-p\">Improved backlog view</p>\n</li>\n<li class=\"op-uc-list--item\">\n<p class=\"op-uc-p\">Automated backlog (showing per default all work packages from the project, except closed and rejected work packages)</p>\n</li>\n</ul>\n</li>\n<li class=\"op-uc-list--item\">\n<p class=\"op-uc-p\">Further improvements for agile boards aligned with agile principles</p>\n<ul class=\"op-uc-list\">\n<li class=\"op-uc-list--item\">\n<p class=\"op-uc-p\">Swimlanes</p>\n</li>\n<li class=\"op-uc-list--item\">\n<p class=\"op-uc-p\">Quick filters</p>\n</li>\n<li class=\"op-uc-list--item\">\n<p class=\"op-uc-p\">Status mapping</p>\n</li>\n<li class=\"op-uc-list--item\">\n<p class=\"op-uc-p\">Automated sprint boards</p>\n</li>\n</ul>\n</li>\n<li class=\"op-uc-list--item\">\n<p class=\"op-uc-p\">Establish agile reports to measure team health and maturity in order to boost continuous improvements</p>\n<ul class=\"op-uc-list\">\n<li class=\"op-uc-list--item\">\n<p class=\"op-uc-p\">burnup charts</p>\n</li>\n<li class=\"op-uc-list--item\">\n<p class=\"op-uc-p\">burndown charts</p>\n</li>\n<li class=\"op-uc-list--item\">\n<p class=\"op-uc-p\">velocity charts</p>\n</li>\n<li class=\"op-uc-list--item\">\n<p class=\"op-uc-p\">number of cards planned, added, completed</p>\n</li>\n</ul>\n</li>\n</ul>"
+   },
+   "createdAt": "2025-10-19T10:43:14.886Z",
+   "updatedAt": "2026-11-03T14:34:43.909Z",
+   "statusExplanation": {
+    "format": "markdown",
+    "raw": "The backlog and sprints page are continuously being improved with each version; providing stronger support for agile-oriented teams.\n\n**Since version 17.9**\n\n*   A search box and filters are now available in the Backlogs view to support backlog refinement and sprint planning.\n    \n\n**Since version 17.8**\n\n*   Changes to Backlog buckets are now recorded under the Activity tab\n    \n\n**Since version 17.7**\n\n*   It&#x27;s now possible to add existing work packages to a sprint, backlog bucket or backlog inbox.\n    \n*   Multi-select for **All sprints** and **All backlog buckets** filters.\n    \n*   Multiple active sprints as an Enterprise add-on\n    \n\n————————\n\n**On future releases:**\n\nVersion 18.0 is scheduled for release on **12.02.2026**, introducing new and improved agile reporting features.\n\nA [**blogpost**](https://www.openproject.org/blog/openproject-agile-reporting/) and a [**video**](https://www.youtube.com/watch?v=2FpGM6i40j8) on the future of agile reporting have also been published to inform users&#x27; on what&#x27;s coming next and to build anticipation.",
+    "html": "<p class=\"op-uc-p\">The backlog and sprints page are continuously being improved with each version; providing stronger support for agile-oriented teams.</p>\n<p class=\"op-uc-p\"><strong>Since version 17.9</strong></p>\n<ul class=\"op-uc-list\">\n<li class=\"op-uc-list--item\">A search box and filters are now available in the Backlogs view to support backlog refinement and sprint planning.</li>\n</ul>\n<p class=\"op-uc-p\"><strong>Since version 17.8</strong></p>\n<ul class=\"op-uc-list\">\n<li class=\"op-uc-list--item\">Changes to Backlog buckets are now recorded under the Activity tab</li>\n</ul>\n<p class=\"op-uc-p\"><strong>Since version 17.7</strong></p>\n<ul class=\"op-uc-list\">\n<li class=\"op-uc-list--item\">\n<p class=\"op-uc-p\">It's now possible to add existing work packages to a sprint, backlog bucket or backlog inbox.</p>\n</li>\n<li class=\"op-uc-list--item\">\n<p class=\"op-uc-p\">Multi-select for <strong>All sprints</strong> and <strong>All backlog buckets</strong> filters.</p>\n</li>\n<li class=\"op-uc-list--item\">\n<p class=\"op-uc-p\">Multiple active sprints as an Enterprise add-on</p>\n</li>\n</ul>\n<p class=\"op-uc-p\">————————</p>\n<p class=\"op-uc-p\"><strong>On future releases:</strong></p>\n<p class=\"op-uc-p\">Version 18.0 is scheduled for release on <strong>12.02.2026</strong>, introducing new and improved agile reporting features.</p>\n<p class=\"op-uc-p\">A <a href=\"https://www.openproject.org/blog/openproject-agile-reporting/\" rel=\"noopener noreferrer nofollow\" target=\"_top\" class=\"op-uc-link\"><strong>blogpost</strong></a> and a <a href=\"https://www.youtube.com/watch?v=2FpGM6i40j8\" rel=\"noopener noreferrer nofollow\" target=\"_top\" class=\"op-uc-link\"><strong>video</strong></a> on the future of agile reporting have also been published to inform users' on what's coming next and to build anticipation.</p>"
+   },
+   "customField397": "https://community.openproject.org/projects/stream-jira-agile-replacement/work_packages?query_id=7850",
+   "_links": {
+    "self": {
+     "href": "/api/v3/projects/1534",
+     "title": "Stream agile"
+    },
+    "workPackages": {
+     "href": "/api/v3/workspaces/1534/work_packages"
+    },
+    "storages": [],
+    "categories": {
+     "href": "/api/v3/workspaces/1534/categories"
+    },
+    "versions": {
+     "href": "/api/v3/workspaces/1534/versions"
+    },
+    "types": {
+     "href": "/api/v3/workspaces/1534/types"
+    },
+    "schema": {
+     "href": "/api/v3/workspaces/schema"
+    },
+    "status": {
+     "href": "/api/v3/project_statuses/on_track",
+     "title": "On track"
+    },
+    "customField352": {
+     "title": "Rosanna Sibora",
+     "href": "/api/v3/users/99542"
+    },
+    "customField353": {
+     "title": "Jens Ulferts",
+     "href": "/api/v3/users/87"
+    },
+    "customField388": [
+     {
+      "title": "OP Dev Polaris Team",
+      "href": "/api/v3/groups/99376"
+     },
+     {
+      "title": "Jens Ulferts",
+      "href": "/api/v3/users/87"
+     }
+    ],
+    "customField389": [
+     {
+      "title": "Julia Racsko",
+      "href": "/api/v3/users/100056"
+     }
+    ],
+    "customField427": {
+     "title": "Ivana Šugić",
+     "href": "/api/v3/users/77197"
+    },
+    "ancestors": [
+     {
+      "href": "/api/v3/projects/14",
+      "title": "OpenProject"
+     },
+     {
+      "href": "urn:openproject-org:api:v3:undisclosed",
+      "title": "Undisclosed - The ancestor is invisible because of lacking permissions."
+     },
+     {
+      "href": "urn:openproject-org:api:v3:undisclosed",
+      "title": "Undisclosed - The ancestor is invisible because of lacking permissions."
+     }
+    ],
+    "projectStorages": {
+     "href": "/api/v3/project_storages?filters=%5B%7B%22projectId%22%3A%7B%22operator%22%3A%22%3D%22%2C%22values%22%3A%5B%221534%22%5D%7D%7D%5D"
+    },
+    "parent": {
+     "href": "urn:openproject-org:api:v3:undisclosed",
+     "title": "Undisclosed - The parent is invisible because of lacking permissions."
+    }
+   }
+  },
+  "status": {
+   "_type": "Status",
+   "id": 1,
+   "name": "new",
+   "isClosed": false,
+   "color": "#C3FAE8",
+   "isDefault": true,
+   "isReadonly": false,
+   "excludedFromTotals": false,
+   "defaultDoneRatio": 0,
+   "position": 1,
+   "_links": {
+    "self": {
+     "href": "/api/v3/statuses/1",
+     "title": "new"
+    }
+   }
+  },
+  "author": {
+   "_type": "User",
+   "id": 41693,
+   "name": "Victor Calvo",
+   "avatar": "https://secure.gravatar.com/avatar/a0fed29c63f5d98af793a348e2ba8ad0?default=404&secure=true",
+   "customField505": null,
+   "customField518": null,
+   "_links": {
+    "self": {
+     "href": "/api/v3/users/41693",
+     "title": "Victor Calvo"
+    },
+    "showUser": {
+     "href": "/users/41693",
+     "type": "text/html"
+    },
+    "customField502": {
+     "href": null,
+     "title": null
+    },
+    "customField503": [],
+    "customField504": []
+   }
+  },
+  "targetVersions": [],
+  "observedInVersions": [],
+  "customActions": [
+   {
+    "_type": "CustomAction",
+    "name": "Assign to me",
+    "description": "Assign this ticket to you",
+    "_links": {
+     "executeImmediately": {
+      "href": "/api/v3/custom_actions/141/execute",
+      "title": "Execute Assign to me",
+      "method": "post"
+     },
+     "self": {
+      "href": "/api/v3/custom_actions/141",
+      "title": "Assign to me"
+     }
+    }
+   }
+  ]
+ },
+ "_type": "WorkPackage",
+ "id": 24971,
+ "displayId": "AGILE-1",
+ "lockVersion": 29,
+ "subject": "Backlogs should include tasks from subprojects",
+ "description": {
+  "format": "markdown",
+  "raw": "It would be great if task from subprojects included in a version of a project appear in the backlogs module.\n\nWe have a project with a common SPRINT version for our Dev Team, who is working in different projects (which are subjproject of this one) and we want to use the taskboard as a common for that sprint.\n\nDo you see it useful (or another way to accomplish that)?",
+  "html": "<p class=\"op-uc-p\">It would be great if task from subprojects included in a version of a project appear in the backlogs module.</p>\n<p class=\"op-uc-p\">We have a project with a common SPRINT version for our Dev Team, who is working in different projects (which are subjproject of this one) and we want to use the taskboard as a common for that sprint.</p>\n<p class=\"op-uc-p\">Do you see it useful (or another way to accomplish that)?</p>"
+ },
+ "scheduleManually": true,
+ "startDate": null,
+ "dueDate": null,
+ "estimatedTime": null,
+ "derivedEstimatedTime": null,
+ "derivedRemainingTime": null,
+ "duration": null,
+ "ignoreNonWorkingDays": true,
+ "percentageDone": null,
+ "derivedPercentageDone": null,
+ "createdAt": "2017-04-06T12:35:55.081Z",
+ "updatedAt": "2026-08-17T13:56:57.246Z",
+ "readonly": false,
+ "position": 1,
+ "storyPoints": 1,
+ "customField387": null,
+ "customField123": null,
+ "customField124": null,
+ "customField130": 19,
+ "customField134": null,
+ "customField354": null,
+ "customField108": false,
+ "_links": {
+  "attachments": {
+   "href": "/api/v3/work_packages/24971/attachments"
+  },
+  "prepareAttachment": {
+   "href": "/api/v3/work_packages/24971/attachments/prepare",
+   "method": "post"
+  },
+  "schema": {
+   "href": "/api/v3/work_packages/schemas/1534-6"
+  },
+  "availableRelationCandidates": {
+   "href": "/api/v3/work_packages/24971/available_relation_candidates",
+   "title": "Potential work packages to relate to"
+  },
+  "activities": {
+   "href": "/api/v3/work_packages/24971/activities"
+  },
+  "relations": {
+   "href": "/api/v3/work_packages/24971/relations"
+  },
+  "previewMarkup": {
+   "href": "/api/v3/render/markdown?context=/api/v3/work_packages/24971",
+   "method": "post"
+  },
+  "category": {
+   "href": null
+  },
+  "type": {
+   "href": "/api/v3/types/6",
+   "title": "Feature"
+  },
+  "priority": {
+   "href": "/api/v3/priorities/4",
+   "title": "Medium"
+  },
+  "projectPhaseDefinition": {
+   "href": null
+  },
+  "status": {
+   "href": "/api/v3/statuses/1",
+   "title": "new"
+  },
+  "author": {
+   "href": "/api/v3/users/41693",
+   "title": "Victor Calvo"
+  },
+  "responsible": {
+   "href": null
+  },
+  "assignee": {
+   "href": null
+  },
+  "targetVersions": [],
+  "observedInVersions": [],
+  "github": {
+   "href": "/work_packages/24971/tabs/github",
+   "title": "github"
+  },
+  "github_pull_requests": {
+   "href": "/api/v3/work_packages/24971/github_pull_requests",
+   "title": "GitHub pull requests"
+  },
+  "gitlab_merge_requests": {
+   "href": "/api/v3/work_packages/24971/gitlab_merge_requests",
+   "title": "Gitlab merge requests"
+  },
+  "gitlab_issues": {
+   "href": "/api/v3/work_packages/24971/gitlab_issues",
+   "title": "Gitlab Issues"
+  },
+  "fileLinks": {
+   "href": "/api/v3/work_packages/24971/file_links"
+  },
+  "customField517": [],
+  "customField129": {
+   "href": null,
+   "title": null
+  },
+  "customField136": {
+   "href": null,
+   "title": null
+  },
+  "customField102": [],
+  "customField338": [],
+  "customField339": {
+   "href": null,
+   "title": null
+  },
+  "customField426": {
+   "href": null,
+   "title": null
+  },
+  "customField473": [],
+  "customField270": [
+   {
+    "title": "OP Dev Polaris Team",
+    "href": "/api/v3/groups/99376"
+   }
+  ],
+  "customField429": [],
+  "customField514": {
+   "href": null,
+   "title": null
+  },
+  "customField519": {
+   "href": null,
+   "title": null
+  },
+  "self": {
+   "href": "/api/v3/work_packages/24971",
+   "title": "Backlogs should include tasks from subprojects"
+  },
+  "ancestors": [],
+  "project": {
+   "href": "/api/v3/projects/1534",
+   "title": "Stream agile"
+  },
+  "parent": {
+   "href": null
+  },
+  "budget": {
+   "href": null
+  },
+  "customActions": [
+   {
+    "href": "/api/v3/custom_actions/141",
+    "title": "Assign to me"
+   }
+  ]
+ }
+}

@@ -1,19 +1,86 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.github.jpmand.openprojectideaintegraiton</id>
-    <name>openproject-idea-integraiton</name>
+    <id>com.github.jpmand.openproject.idea</id>
+    <name>OpenProject</name>
     <vendor>jpmand</vendor>
     <description><![CDATA[
-        <p><b>openproject-idea-integraiton</b> is a repository that provides a pure template to make it easier to create a new plugin project.</p>
-        <p>The main goal of this template is to speed up the setup phase of plugin development for both new and experienced developers by preconfiguring the project scaffold and CI, linking to the proper documentation pages, and keeping everything organized.</p>
+        <p>Work with <a href="https://www.openproject.org">OpenProject</a> work packages without leaving the IDE.</p>
+        <ul>
+            <li>An <b>OpenProject</b> task server for <i>Tools | Tasks &amp; Contexts</i>: open, switch and close work packages as tasks, and log time.</li>
+            <li>An <b>OpenProject</b> tool window with work package lists: configurable columns, sorting, search, quick filters
+                (project, type, status, priority, assignee) and the full set of OpenProject filters, each list in its own tab.</li>
+            <li>Work package preview next to the list and work package tabs with description, properties, activity,
+                relations and files, all editable.</li>
+        </ul>
+        <p>Requires the <i>Issue Trackers</i> plugin. Configure the server in <i>Settings | Tools | Tasks | Servers</i> with an OpenProject API token.</p>
     ]]></description>
 
-    <depends>com.intellij.modules.platform</depends>
+    <dependencies>
+        <plugin id="com.intellij.modules.platform"/>
+        <plugin id="com.intellij.tasks"/>
+        <module name="intellij.platform.tasks"/>
+        <module name="intellij.platform.tasks.impl"/>
+        <module name="intellij.libraries.ktor.client"/>
+    </dependencies>
 
-    <resource-bundle>messages.MyBundle</resource-bundle>
+    <resource-bundle>messages.OpenProjectBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.jpmand.openprojectideaintegraiton.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
-        <postStartupActivity implementation="com.github.jpmand.openprojectideaintegraiton.startup.MyProjectActivity" />
+        <notificationGroup id="OpenProject" displayType="BALLOON" key="notification.group.name"/>
+        <tasks.repositoryType implementation="com.github.jpmand.openproject.idea.tasks.OpenProjectRepositoryType"/>
+
+        <toolWindow id="OpenProject" anchor="bottom" canCloseContents="true" icon="/icons/toolWindowOpenProject.svg"
+                    factoryClass="com.github.jpmand.openproject.idea.ui.toolwindow.OpenProjectToolWindowFactory"/>
+        <statusBarWidgetFactory id="OpenProject.ActiveWorkPackage"
+                                implementation="com.github.jpmand.openproject.idea.ui.ActiveWorkPackageWidgetFactory"/>
     </extensions>
+
+    <actions resource-bundle="messages.OpenProjectBundle">
+        <action id="OpenProject.NewListTab" class="com.github.jpmand.openproject.idea.actions.NewWorkPackageListAction"
+                icon="AllIcons.General.Add"/>
+        <action id="OpenProject.OpenActiveWorkPackage" class="com.github.jpmand.openproject.idea.actions.OpenActiveWorkPackageAction"/>
+        <action id="OpenProject.LogTime" class="com.github.jpmand.openproject.idea.actions.LogTimeAction"/>
+        <action id="OpenProject.OpenOnTheRight" class="com.github.jpmand.openproject.idea.actions.OpenOnTheRightAction"
+                icon="AllIcons.Actions.PreviewDetailsVertically"/>
+        <action id="OpenProject.OpenInNewTab" class="com.github.jpmand.openproject.idea.actions.OpenInNewTabAction"
+                icon="AllIcons.Actions.OpenNewTab"/>
+        <action id="OpenProject.OpenInBrowser" class="com.github.jpmand.openproject.idea.actions.OpenWorkPackageInBrowserAction"
+                icon="AllIcons.General.Web"/>
+        <action id="OpenProject.CopyLink" class="com.github.jpmand.openproject.idea.actions.CopyWorkPackageLinkAction"
+                icon="AllIcons.Actions.Copy"/>
+        <action id="OpenProject.StartWorking" class="com.github.jpmand.openproject.idea.actions.StartWorkingAction"
+                icon="AllIcons.Actions.Execute"/>
+        <action id="OpenProject.Refresh" class="com.github.jpmand.openproject.idea.actions.RefreshAction"/>
+
+        <group id="OpenProject.ToolsMenu" popup="true" icon="/icons/openproject.svg">
+            <reference ref="OpenProject.OpenActiveWorkPackage"/>
+            <reference ref="OpenProject.LogTime"/>
+            <add-to-group group-id="ToolsMenu" anchor="after" relative-to-action="tasks.group"/>
+        </group>
+        <group id="OpenProject.TaskActions">
+            <separator/>
+            <reference ref="OpenProject.OpenActiveWorkPackage"/>
+            <reference ref="OpenProject.LogTime"/>
+            <add-to-group group-id="task.actions" anchor="last"/>
+        </group>
+        <group id="OpenProject.WorkPackageToolbar">
+            <reference ref="OpenProject.Refresh"/>
+            <separator/>
+            <reference ref="OpenProject.StartWorking"/>
+            <reference ref="OpenProject.LogTime"/>
+            <separator/>
+            <reference ref="OpenProject.OpenInBrowser"/>
+            <reference ref="OpenProject.CopyLink"/>
+        </group>
+        <group id="OpenProject.WorkPackagePopup">
+            <reference ref="OpenProject.OpenOnTheRight"/>
+            <reference ref="OpenProject.OpenInNewTab"/>
+            <separator/>
+            <reference ref="OpenProject.StartWorking"/>
+            <reference ref="OpenProject.LogTime"/>
+            <separator/>
+            <reference ref="OpenProject.OpenInBrowser"/>
+            <reference ref="OpenProject.CopyLink"/>
+        </group>
+    </actions>
 </idea-plugin>

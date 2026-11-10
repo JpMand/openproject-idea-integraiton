@@ -1,0 +1,1673 @@
+{
+ "_type": "WorkPackageCollection",
+ "total": 6193,
+ "count": 50,
+ "pageSize": 50,
+ "offset": 1,
+ "_embedded": {
+  "elements": [
+   {
+    "derivedStartDate": null,
+    "derivedDueDate": null,
+    "hasProjectAttributes": false,
+    "_type": "WorkPackage",
+    "id": 24971,
+    "displayId": "AGILE-1",
+    "lockVersion": 29,
+    "subject": "Backlogs should include tasks from subprojects",
+    "description": {
+     "format": "markdown",
+     "raw": "It would be great if task from subprojects included in a version of a project appear in the backlogs module.\n\nWe have a project with a common SPRINT version for our Dev Team, who is working in different projects (which are subjproject of this one) and we want to use the taskboard as a common for that sprint.\n\nDo you see it useful (or another way to accomplish that)?",
+     "html": "<p class=\"op-uc-p\">It would be great if task from subprojects included in a version of a project appear in the backlogs module.</p>\n<p class=\"op-uc-p\">We have a project with a common SPRINT version for our Dev Team, who is working in different projects (which are subjproject of this one) and we want to use the taskboard as a common for that sprint.</p>\n<p class=\"op-uc-p\">Do you see it useful (or another way to accomplish that)?</p>"
+    },
+    "scheduleManually": true,
+    "startDate": null,
+    "dueDate": null,
+    "estimatedTime": null,
+    "derivedEstimatedTime": null,
+    "derivedRemainingTime": null,
+    "duration": null,
+    "ignoreNonWorkingDays": true,
+    "percentageDone": null,
+    "derivedPercentageDone": null,
+    "createdAt": "2017-04-06T12:35:55.081Z",
+    "updatedAt": "2026-08-17T13:56:57.246Z",
+    "readonly": false,
+    "position": 1,
+    "storyPoints": 1,
+    "customField354": null,
+    "customField108": false,
+    "customField123": null,
+    "customField124": null,
+    "customField134": null,
+    "customField130": 19,
+    "customField387": null,
+    "customField400": null,
+    "customField401": null,
+    "customField403": null,
+    "customField114": null,
+    "_links": {
+     "attachments": {
+      "href": "/api/v3/work_packages/24971/attachments"
+     },
+     "prepareAttachment": {
+      "href": "/api/v3/work_packages/24971/attachments/prepare",
+      "method": "post"
+     },
+     "schema": {
+      "href": "/api/v3/work_packages/schemas/1534-6"
+     },
+     "availableRelationCandidates": {
+      "href": "/api/v3/work_packages/24971/available_relation_candidates",
+      "title": "Potential work packages to relate to"
+     },
+     "activities": {
+      "href": "/api/v3/work_packages/24971/activities"
+     },
+     "relations": {
+      "href": "/api/v3/work_packages/24971/relations"
+     },
+     "previewMarkup": {
+      "href": "/api/v3/render/markdown?context=/api/v3/work_packages/24971",
+      "method": "post"
+     },
+     "category": {
+      "href": null
+     },
+     "type": {
+      "href": "/api/v3/types/6",
+      "title": "Feature"
+     },
+     "priority": {
+      "href": "/api/v3/priorities/4",
+      "title": "Medium"
+     },
+     "projectPhaseDefinition": {
+      "href": null
+     },
+     "status": {
+      "href": "/api/v3/statuses/1",
+      "title": "new"
+     },
+     "author": {
+      "href": "/api/v3/users/41693",
+      "title": "Victor Calvo"
+     },
+     "responsible": {
+      "href": null
+     },
+     "assignee": {
+      "href": null
+     },
+     "targetVersions": [],
+     "observedInVersions": [],
+     "github": {
+      "href": "/work_packages/24971/tabs/github",
+      "title": "github"
+     },
+     "github_pull_requests": {
+      "href": "/api/v3/work_packages/24971/github_pull_requests",
+      "title": "GitHub pull requests"
+     },
+     "gitlab_merge_requests": {
+      "href": "/api/v3/work_packages/24971/gitlab_merge_requests",
+      "title": "Gitlab merge requests"
+     },
+     "gitlab_issues": {
+      "href": "/api/v3/work_packages/24971/gitlab_issues",
+      "title": "Gitlab Issues"
+     },
+     "fileLinks": {
+      "href": "/api/v3/work_packages/24971/file_links"
+     },
+     "customField517": [],
+     "customField136": {
+      "href": null,
+      "title": null
+     },
+     "customField429": [],
+     "customField129": {
+      "href": null,
+      "title": null
+     },
+     "customField102": [],
+     "customField426": {
+      "href": null,
+      "title": null
+     },
+     "customField339": {
+      "href": null,
+      "title": null
+     },
+     "customField473": [],
+     "customField338": [],
+     "customField514": {
+      "href": null,
+      "title": null
+     },
+     "customField270": [
+      {
+       "title": "OP Dev Polaris Team",
+       "href": "/api/v3/groups/99376"
+      }
+     ],
+     "customField519": {
+      "href": null,
+      "title": null
+     },
+     "self": {
+      "href": "/api/v3/work_packages/24971",
+      "title": "Backlogs should include tasks from subprojects"
+     },
+     "ancestors": [],
+     "project": {
+      "href": "/api/v3/projects/1534",
+      "title": "Stream agile"
+     },
+     "parent": {
+      "href": null
+     },
+     "budget": {
+      "href": null
+     },
+     "customActions": [
+      {
+       "href": "/api/v3/custom_actions/141",
+       "title": "Assign to me"
+      }
+     ]
+    }
+   },
+   {
+    "derivedStartDate": null,
+    "derivedDueDate": null,
+    "hasProjectAttributes": false,
+    "_type": "WorkPackage",
+    "id": 28107,
+    "displayId": "AGILE-2",
+    "lockVersion": 25,
+    "subject": "Tasks from different projects in one shared version to be shown | cross-project backlogs",
+    "description": {
+     "format": "markdown",
+     "raw": "# Description\n\n**as** an OpenProject user  \n**I want** to have an overview on all tasks included in a (global) sprint/version, independent in which project they are residing  \n**so that** the team managing multiple smaller projects, has a global view on the status of the version.\n\n# Current behavior\n\n*   A version/sprint can be created in a project, and shared with all projects. _\\[as expected\\]_\n*   Tasks/Stories from other projects can be assigned to this version. _\\[as expected\\]_\n\n**In Backlogs**\n\n*   The versions are shown, including originating from other projects _\\[as expected\\]_\n*   In the taskboard: only tasks from current project are shown _\\[request to be changed\\]_\n*   In the burndown chart: only tasks from current project are shown _\\[request to be changed\\]_\n\n**In Roadmap**\n\n*   The version is shown. _\\[as expected\\]_\n*   If the version is originating from another project; the project\\_name is integrated in the version name. _\\[as expected\\]_\n*   The total number of open / closed tasks are shown (across all projects) _\\[as expected\\]_\n*   The “related workpackages” only lists the tasks from the current selected project, instead of all included in the sprint _\\[request to be changed\\]_\n*   When following link “x open”; the overview in Workpackages is opened in the project where the version is originating from. Only tasks of that project are in the overview _\\[request to be changed\\]_\n\n<img class=\"op-uc-image op-uc-image_inline\" data-original-src=\"openproject.png\" src=\"/api/v3/attachments/13818/content\" alt=\"\">\n\n# Acceptance criteria\n\n**In Backlogs**\n\n*   In the taskboard: all tasks in the version are shown _\\[Priority 1\\]_\n\n# Nice to have\n\n**In Backlogs**\n\n*   In the burndown chart: all tasks in the version are shown _\\[Priority 2\\]_\n\n**In Roadmap**\n\n*   The “related workpackages” list of all tasks, with a reference to the originating project (name before / after workpackage number and name) _\\[Priority 3\\]_\n*   When following link “x open”; an overview of all tasks in the version is shown. _\\[Priority 4\\]_\n\n# References (similar requests)\n\n*   A similar request. Differing from the request though; I do not see a full list of workpackages in the roadmap (as per screenshot above): https://community.openproject.com/projects/openproject/work\\_packages/17189/activity.\n*   A discussion on the forum describing the request: https://community.openproject.com/topics/3236  \n    Althought there seemed to be some support for the idea, the linked Pull Request is still on hold? https://github.com/finnlabs/openproject-backlogs/pull/233 This pull request is only focussing on subprojects though…\n*   A similar request, focussed on sharing across subprojects, which is still a limitation which I do not see the need for. https://community.openproject.com/projects/plugin-backlogs/work\\_packages/22319/activity\n*   A similar request. also focussed on subprojects only: https://community.openproject.com/projects/plugin-backlogs/work\\_packages/24971/activity\n*   A request to remove limiting project\\\\\\_id in the selection criteria of the overview; which might enable the requested functionality?: https://community.openproject.com/projects/plugin-backlogs/workpackages/24038/activity  \n    I tried the suggested hack, without success though, which might be related to the fact that the tasks are from different projects (not only subproject-relationship).\n\n# Next steps\n\n*   I highly value your efforts and the Openproject software and hope by bringing this together, the software can be enhanced even further. I do think this is a key feature.\n*   I am not a programmer, so not able to dig in this myself. I will post a Bounty to create a Pull Request for this additional feature.",
+     "html": "<h1 id=\"op-frag-description\" class=\"op-uc-h1\">\n<a href=\"#op-frag-description\" aria-hidden=\"true\" rel=\"noopener noreferrer nofollow\" class=\"op-uc-link_permalink icon-link op-uc-link\"></a>Description</h1>\n<p class=\"op-uc-p\"><strong>as</strong> an OpenProject user<br>\n<strong>I want</strong> to have an overview on all tasks included in a (global) sprint/version, independent in which project they are residing<br>\n<strong>so that</strong> the team managing multiple smaller projects, has a global view on the status of the version.</p>\n<h1 id=\"op-frag-current-behavior\" class=\"op-uc-h1\">\n<a href=\"#op-frag-current-behavior\" aria-hidden=\"true\" rel=\"noopener noreferrer nofollow\" class=\"op-uc-link_permalink icon-link op-uc-link\"></a>Current behavior</h1>\n<ul class=\"op-uc-list\">\n<li class=\"op-uc-list--item\">A version/sprint can be created in a project, and shared with all projects. <em>[as expected]</em>\n</li>\n<li class=\"op-uc-list--item\">Tasks/Stories from other projects can be assigned to this version. <em>[as expected]</em>\n</li>\n</ul>\n<p class=\"op-uc-p\"><strong>In Backlogs</strong></p>\n<ul class=\"op-uc-list\">\n<li class=\"op-uc-list--item\">The versions are shown, including originating from other projects <em>[as expected]</em>\n</li>\n<li class=\"op-uc-list--item\">In the taskboard: only tasks from current project are shown <em>[request to be changed]</em>\n</li>\n<li class=\"op-uc-list--item\">In the burndown chart: only tasks from current project are shown <em>[request to be changed]</em>\n</li>\n</ul>\n<p class=\"op-uc-p\"><strong>In Roadmap</strong></p>\n<ul class=\"op-uc-list\">\n<li class=\"op-uc-list--item\">The version is shown. <em>[as expected]</em>\n</li>\n<li class=\"op-uc-list--item\">If the version is originating from another project; the project_name is integrated in the version name. <em>[as expected]</em>\n</li>\n<li class=\"op-uc-list--item\">The total number of open / closed tasks are shown (across all projects) <em>[as expected]</em>\n</li>\n<li class=\"op-uc-list--item\">The “related workpackages” only lists the tasks from the current selected project, instead of all included in the sprint <em>[request to be changed]</em>\n</li>\n<li class=\"op-uc-list--item\">When following link “x open”; the overview in Workpackages is opened in the project where the version is originating from. Only tasks of that project are in the overview <em>[request to be changed]</em>\n</li>\n</ul>\n<figure class=\"op-uc-figure\"><div class=\"op-uc-figure--content\"><img src=\"/api/v3/attachments/13818/content\" alt=\"\" class=\"op-uc-image\"></div></figure>\n<h1 id=\"op-frag-acceptance-criteria\" class=\"op-uc-h1\">\n<a href=\"#op-frag-acceptance-criteria\" aria-hidden=\"true\" rel=\"noopener noreferrer nofollow\" class=\"op-uc-link_permalink icon-link op-uc-link\"></a>Acceptance criteria</h1>\n<p class=\"op-uc-p\"><strong>In Backlogs</strong></p>\n<ul class=\"op-uc-list\">\n<li class=\"op-uc-list--item\">In the taskboard: all tasks in the version are shown <em>[Priority 1]</em>\n</li>\n</ul>\n<h1 id=\"op-frag-nice-to-have\" class=\"op-uc-h1\">\n<a href=\"#op-frag-nice-to-have\" aria-hidden=\"true\" rel=\"noopener noreferrer nofollow\" class=\"op-uc-link_permalink icon-link op-uc-link\"></a>Nice to have</h1>\n<p class=\"op-uc-p\"><strong>In Backlogs</strong></p>\n<ul class=\"op-uc-list\">\n<li class=\"op-uc-list--item\">In the burndown chart: all tasks in the version are shown <em>[Priority 2]</em>\n</li>\n</ul>\n<p class=\"op-uc-p\"><strong>In Roadmap</strong></p>\n<ul class=\"op-uc-list\">\n<li class=\"op-uc-list--item\">The “related workpackages” list of all tasks, with a reference to the originating project (name before / after workpackage number and name) <em>[Priority 3]</em>\n</li>\n<li class=\"op-uc-list--item\">When following link “x open”; an overview of all tasks in the version is shown. <em>[Priority 4]</em>\n</li>\n</ul>\n<h1 id=\"op-frag-references-similar-requests\" class=\"op-uc-h1\">\n<a href=\"#op-frag-references-similar-requests\" aria-hidden=\"true\" rel=\"noopener noreferrer nofollow\" class=\"op-uc-link_permalink icon-link op-uc-link\"></a>References (similar requests)</h1>\n<ul class=\"op-uc-list\">\n<li class=\"op-uc-list--item\">A similar request. Differing from the request though; I do not see a full list of workpackages in the roadmap (as per screenshot above): <a href=\"https://community.openproject.com/projects/openproject/work_packages/17189/activity\" class=\"op-uc-link\" rel=\"noopener noreferrer nofollow\" target=\"_top\">https://community.openproject.com/projects/openproject/work_packages/17189/activity</a>.</li>\n<li class=\"op-uc-list--item\">A discussion on the forum describing the request: <a href=\"https://community.openproject.com/topics/3236\" class=\"op-uc-link\" rel=\"noopener noreferrer nofollow\" target=\"_top\">https://community.openproject.com/topics/3236</a><br>\nAlthought there seemed to be some support for the idea, the linked Pull Request is still on hold? <a href=\"https://github.com/finnlabs/openproject-backlogs/pull/233\" class=\"op-uc-link\" rel=\"noopener noreferrer nofollow\" target=\"_top\">https://github.com/finnlabs/openproject-backlogs/pull/233</a> This pull request is only focussing on subprojects though…</li>\n<li class=\"op-uc-list--item\">A similar request, focussed on sharing across subprojects, which is still a limitation which I do not see the need for. <a href=\"https://community.openproject.com/projects/plugin-backlogs/work_packages/22319/activity\" class=\"op-uc-link\" rel=\"noopener noreferrer nofollow\" target=\"_top\">https://community.openproject.com/projects/plugin-backlogs/work_packages/22319/activity</a>\n</li>\n<li class=\"op-uc-list--item\">A similar request. also focussed on subprojects only: <a href=\"https://community.openproject.com/projects/plugin-backlogs/work_packages/24971/activity\" class=\"op-uc-link\" rel=\"noopener noreferrer nofollow\" target=\"_top\">https://community.openproject.com/projects/plugin-backlogs/work_packages/24971/activity</a>\n</li>\n<li class=\"op-uc-list--item\">A request to remove limiting project\\_id in the selection criteria of the overview; which might enable the requested functionality?: <a href=\"https://community.openproject.com/projects/plugin-backlogs/workpackages/24038/activity\" class=\"op-uc-link\" rel=\"noopener noreferrer nofollow\" target=\"_top\">https://community.openproject.com/projects/plugin-backlogs/workpackages/24038/activity</a><br>\nI tried the suggested hack, without success though, which might be related to the fact that the tasks are from different projects (not only subproject-relationship).</li>\n</ul>\n<h1 id=\"op-frag-next-steps\" class=\"op-uc-h1\">\n<a href=\"#op-frag-next-steps\" aria-hidden=\"true\" rel=\"noopener noreferrer nofollow\" class=\"op-uc-link_permalink icon-link op-uc-link\"></a>Next steps</h1>\n<ul class=\"op-uc-list\">\n<li class=\"op-uc-list--item\">I highly value your efforts and the Openproject software and hope by bringing this together, the software can be enhanced even further. I do think this is a key feature.</li>\n<li class=\"op-uc-list--item\">I am not a programmer, so not able to dig in this myself. I will post a Bounty to create a Pull Request for this additional feature.</li>\n</ul>"
+    },
+    "scheduleManually": true,
+    "startDate": null,
+    "dueDate": null,
+    "estimatedTime": null,
+    "derivedEstimatedTime": null,
+    "derivedRemainingTime": null,
+    "duration": null,
+    "ignoreNonWorkingDays": true,
+    "percentageDone": null,
+    "derivedPercentageDone": null,
+    "createdAt": "2018-07-26T21:38:36.056Z",
+    "updatedAt": "2026-08-17T13:56:57.458Z",
+    "readonly": false,
+    "position": 106,
+    "storyPoints": 3,
+    "customField354": null,
+    "customField108": true,
+    "customField123": null,
+    "customField124": null,
+    "customField134": null,
+    "customField130": 9,
+    "customField387": null,
+    "customField400": null,
+    "customField401": null,
+    "customField403": null,
+    "customField114": null,
+    "_links": {
+     "attachments": {
+      "href": "/api/v3/work_packages/28107/attachments"
+     },
+     "prepareAttachment": {
+      "href": "/api/v3/work_packages/28107/attachments/prepare",
+      "method": "post"
+     },
+     "schema": {
+      "href": "/api/v3/work_packages/schemas/1534-6"
+     },
+     "availableRelationCandidates": {
+      "href": "/api/v3/work_packages/28107/available_relation_candidates",
+      "title": "Potential work packages to relate to"
+     },
+     "activities": {
+      "href": "/api/v3/work_packages/28107/activities"
+     },
+     "relations": {
+      "href": "/api/v3/work_packages/28107/relations"
+     },
+     "previewMarkup": {
+      "href": "/api/v3/render/markdown?context=/api/v3/work_packages/28107",
+      "method": "post"
+     },
+     "category": {
+      "href": null
+     },
+     "type": {
+      "href": "/api/v3/types/6",
+      "title": "Feature"
+     },
+     "priority": {
+      "href": "/api/v3/priorities/4",
+      "title": "Medium"
+     },
+     "projectPhaseDefinition": {
+      "href": null
+     },
+     "status": {
+      "href": "/api/v3/statuses/1",
+      "title": "new"
+     },
+     "author": {
+      "href": "/api/v3/users/47008",
+      "title": "Hartwin Leen"
+     },
+     "responsible": {
+      "href": null
+     },
+     "assignee": {
+      "href": null
+     },
+     "targetVersions": [
+      {
+       "href": "/api/v3/versions/26",
+       "title": "Wish List"
+      }
+     ],
+     "observedInVersions": [],
+     "github": {
+      "href": "/work_packages/28107/tabs/github",
+      "title": "github"
+     },
+     "github_pull_requests": {
+      "href": "/api/v3/work_packages/28107/github_pull_requests",
+      "title": "GitHub pull requests"
+     },
+     "gitlab_merge_requests": {
+      "href": "/api/v3/work_packages/28107/gitlab_merge_requests",
+      "title": "Gitlab merge requests"
+     },
+     "gitlab_issues": {
+      "href": "/api/v3/work_packages/28107/gitlab_issues",
+      "title": "Gitlab Issues"
+     },
+     "fileLinks": {
+      "href": "/api/v3/work_packages/28107/file_links"
+     },
+     "customField517": [],
+     "customField136": {
+      "href": null,
+      "title": null
+     },
+     "customField429": [],
+     "customField129": {
+      "href": null,
+      "title": null
+     },
+     "customField102": [],
+     "customField426": {
+      "href": null,
+      "title": null
+     },
+     "customField339": {
+      "href": null,
+      "title": null
+     },
+     "customField473": [],
+     "customField338": [],
+     "customField514": {
+      "href": null,
+      "title": null
+     },
+     "customField270": [
+      {
+       "title": "OP Dev Polaris Team",
+       "href": "/api/v3/groups/99376"
+      }
+     ],
+     "customField519": {
+      "href": null,
+      "title": null
+     },
+     "self": {
+      "href": "/api/v3/work_packages/28107",
+      "title": "Tasks from different projects in one shared version to be shown | cross-project backlogs"
+     },
+     "ancestors": [],
+     "project": {
+      "href": "/api/v3/projects/1534",
+      "title": "Stream agile"
+     },
+     "parent": {
+      "href": null
+     },
+     "budget": {
+      "href": null
+     },
+     "customActions": [
+      {
+       "href": "/api/v3/custom_actions/141",
+       "title": "Assign to me"
+      }
+     ]
+    }
+   },
+   {
+    "derivedStartDate": null,
+    "derivedDueDate": null,
+    "hasProjectAttributes": false,
+    "_type": "WorkPackage",
+    "id": 30480,
+    "displayId": "AGILE-3",
+    "lockVersion": 44,
+    "subject": "Automatic sorting board view x",
+    "description": {
+     "format": "markdown",
+     "raw": "Currently there is only manual sorting the board view. There should be a way to switch to automatic sorting similar to the list.\n\n**As** an OpenProject user\n\n**I want to** be able to sort cards in a list in the boards module automatically\n\n**so that** the most important cards are on top of the list (e.g. highest priority, highest value for custom field X (e.g. votes), most logged time, ...).  \n  \n  \n\n### Acceptance criteria\n\nBy using the menu (three dots) on top of the list I can access a dropdown field to choose whch attribute I want to sort by. Additionally, there&#39;s an option to choose/change if the sorting should be ascending or descending.\n\n<figure class=\"image\"><img src=\"/api/v3/attachments/19475/content\"></figure>\n\nExample/inspiration from Trello: https://trellocards.com/TCO/wp-content/uploads/2019/10/list-sorting.jpg",
+     "html": "<p class=\"op-uc-p\">Currently there is only manual sorting the board view. There should be a way to switch to automatic sorting similar to the list.</p>\n<p class=\"op-uc-p\"><strong>As</strong> an OpenProject user</p>\n<p class=\"op-uc-p\"><strong>I want to</strong> be able to sort cards in a list in the boards module automatically</p>\n<p class=\"op-uc-p\"><strong>so that</strong> the most important cards are on top of the list (e.g. highest priority, highest value for custom field X (e.g. votes), most logged time, ...).</p>\n<h3 id=\"op-frag-acceptance-criteria\" class=\"op-uc-h3\">\n<a href=\"#op-frag-acceptance-criteria\" aria-hidden=\"true\" rel=\"noopener noreferrer nofollow\" class=\"op-uc-link_permalink icon-link op-uc-link\"></a>Acceptance criteria</h3>\n<p class=\"op-uc-p\">By using the menu (three dots) on top of the list I can access a dropdown field to choose whch attribute I want to sort by. Additionally, there's an option to choose/change if the sorting should be ascending or descending.</p>\n<figure class=\"image op-uc-figure\"><div class=\"op-uc-figure--content\"><img src=\"/api/v3/attachments/19475/content\" class=\"op-uc-image\"></div></figure>\n<p class=\"op-uc-p\">Example/inspiration from Trello: <a href=\"https://trellocards.com/TCO/wp-content/uploads/2019/10/list-sorting.jpg\" class=\"op-uc-link\" rel=\"noopener noreferrer nofollow\" target=\"_top\">https://trellocards.com/TCO/wp-content/uploads/2019/10/list-sorting.jpg</a></p>"
+    },
+    "scheduleManually": true,
+    "startDate": null,
+    "dueDate": null,
+    "estimatedTime": null,
+    "derivedEstimatedTime": null,
+    "derivedRemainingTime": null,
+    "duration": null,
+    "ignoreNonWorkingDays": true,
+    "percentageDone": null,
+    "derivedPercentageDone": null,
+    "createdAt": "2019-07-03T15:59:01.257Z",
+    "updatedAt": "2026-08-25T18:35:36.212Z",
+    "readonly": false,
+    "position": 119,
+    "storyPoints": 3,
+    "customField354": null,
+    "customField108": true,
+    "customField123": null,
+    "customField124": null,
+    "customField134": null,
+    "customField130": 23,
+    "customField387": null,
+    "customField400": null,
+    "customField401": null,
+    "customField403": null,
+    "customField114": null,
+    "_links": {
+     "attachments": {
+      "href": "/api/v3/work_packages/30480/attachments"
+     },
+     "prepareAttachment": {
+      "href": "/api/v3/work_packages/30480/attachments/prepare",
+      "method": "post"
+     },
+     "schema": {
+      "href": "/api/v3/work_packages/schemas/1534-6"
+     },
+     "availableRelationCandidates": {
+      "href": "/api/v3/work_packages/30480/available_relation_candidates",
+      "title": "Potential work packages to relate to"
+     },
+     "activities": {
+      "href": "/api/v3/work_packages/30480/activities"
+     },
+     "relations": {
+      "href": "/api/v3/work_packages/30480/relations"
+     },
+     "previewMarkup": {
+      "href": "/api/v3/render/markdown?context=/api/v3/work_packages/30480",
+      "method": "post"
+     },
+     "category": {
+      "href": null
+     },
+     "type": {
+      "href": "/api/v3/types/6",
+      "title": "Feature"
+     },
+     "priority": {
+      "href": "/api/v3/priorities/4",
+      "title": "Medium"
+     },
+     "projectPhaseDefinition": {
+      "href": null
+     },
+     "status": {
+      "href": "/api/v3/statuses/1",
+      "title": "new"
+     },
+     "author": {
+      "href": "/api/v3/users/3",
+      "title": "Niels Lindenthal"
+     },
+     "responsible": {
+      "href": null
+     },
+     "assignee": {
+      "href": null
+     },
+     "targetVersions": [
+      {
+       "href": "/api/v3/versions/26",
+       "title": "Wish List"
+      }
+     ],
+     "observedInVersions": [],
+     "github": {
+      "href": "/work_packages/30480/tabs/github",
+      "title": "github"
+     },
+     "github_pull_requests": {
+      "href": "/api/v3/work_packages/30480/github_pull_requests",
+      "title": "GitHub pull requests"
+     },
+     "gitlab_merge_requests": {
+      "href": "/api/v3/work_packages/30480/gitlab_merge_requests",
+      "title": "Gitlab merge requests"
+     },
+     "gitlab_issues": {
+      "href": "/api/v3/work_packages/30480/gitlab_issues",
+      "title": "Gitlab Issues"
+     },
+     "fileLinks": {
+      "href": "/api/v3/work_packages/30480/file_links"
+     },
+     "customField517": [],
+     "customField136": {
+      "href": null,
+      "title": null
+     },
+     "customField429": [],
+     "customField129": {
+      "href": null,
+      "title": null
+     },
+     "customField102": [],
+     "customField426": {
+      "href": null,
+      "title": null
+     },
+     "customField339": {
+      "href": null,
+      "title": null
+     },
+     "customField473": [],
+     "customField338": [],
+     "customField514": {
+      "href": null,
+      "title": null
+     },
+     "customField270": [
+      {
+       "title": "OP Dev Polaris Team",
+       "href": "/api/v3/groups/99376"
+      }
+     ],
+     "customField519": {
+      "href": null,
+      "title": null
+     },
+     "self": {
+      "href": "/api/v3/work_packages/30480",
+      "title": "Automatic sorting board view x"
+     },
+     "ancestors": [],
+     "project": {
+      "href": "/api/v3/projects/1534",
+      "title": "Stream agile"
+     },
+     "parent": {
+      "href": null
+     },
+     "budget": {
+      "href": null
+     },
+     "customActions": [
+      {
+       "href": "/api/v3/custom_actions/141",
+       "title": "Assign to me"
+      }
+     ]
+    }
+   }
+  ],
+  "schemas": {
+   "_type": "Collection",
+   "total": 5,
+   "count": 1,
+   "_embedded": {
+    "elements": [
+     {
+      "_attributeGroups": [
+       {
+        "_type": "WorkPackageFormAttributeGroup",
+        "name": "Planning",
+        "attributes": [
+         "date",
+         "priority",
+         "targetVersions",
+         "sprint",
+         "backlogBucket",
+         "customField130",
+         "customField338",
+         "customField339",
+         "customField519"
+        ]
+       },
+       {
+        "_type": "WorkPackageFormChildrenQueryGroup",
+        "name": "OPEN POINTS / FEEDBACK",
+        "relationType": "parent",
+        "_embedded": {
+         "query": {
+          "_type": "Query",
+          "starred": false,
+          "id": 9289,
+          "name": "Embedded table: OPEN POINTS",
+          "createdAt": "2026-08-27T07:25:07.980Z",
+          "updatedAt": "2026-08-27T07:25:07.980Z",
+          "filters": [
+           {
+            "_type": "TypeQueryFilter",
+            "name": "Type",
+            "_links": {
+             "schema": {
+              "href": "/api/v3/queries/filter_instance_schemas/type"
+             },
+             "filter": {
+              "href": "/api/v3/queries/filters/type",
+              "title": "Type"
+             },
+             "operator": {
+              "href": "/api/v3/queries/operators/%3D",
+              "title": "is (OR)"
+             },
+             "values": [
+              {
+               "href": "/api/v3/types/148",
+               "title": "Open Point"
+              },
+              {
+               "href": "/api/v3/types/149",
+               "title": "Feedback"
+              }
+             ]
+            }
+           },
+           {
+            "_type": "ParentQueryFilter",
+            "name": "Parent",
+            "_links": {
+             "schema": {
+              "href": "/api/v3/queries/filter_instance_schemas/parent"
+             },
+             "filter": {
+              "href": "/api/v3/queries/filters/parent",
+              "title": "Parent"
+             },
+             "operator": {
+              "href": "/api/v3/queries/operators/%3D",
+              "title": "is (OR)"
+             },
+             "values": [
+              {
+               "href": "/api/v3/work_packages/{id}",
+               "title": null,
+               "templated": true
+              }
+             ]
+            }
+           }
+          ],
+          "includeSubprojects": true,
+          "sums": false,
+          "public": false,
+          "hidden": true,
+          "timelineVisible": false,
+          "showHierarchies": false,
+          "timelineZoomLevel": "auto",
+          "timelineLabels": {},
+          "timestamps": [
+           "PT0S"
+          ],
+          "highlightingMode": "inline",
+          "_links": {
+           "self": {
+            "href": "/api/v3/queries/9289",
+            "title": "Embedded table: OPEN POINTS"
+           },
+           "project": {
+            "href": null
+           },
+           "results": {
+            "href": "/api/v3/work_packages?columns%5B%5D=id&columns%5B%5D=subject&columns%5B%5D=status&columns%5B%5D=customField347&filters=%5B%7B%22type%22%3A%7B%22operator%22%3A%22%3D%22%2C%22values%22%3A%5B%22148%22%2C%22149%22%5D%7D%7D%2C%7B%22parent%22%3A%7B%22operator%22%3A%22%3D%22%2C%22values%22%3A%5B%22%7Bid%7D%22%2C%22templated%22%5D%7D%7D%5D&includeSubprojects=true&offset=1&pageSize=50&showHierarchies=false&showSums=false&sortBy=%5B%5B%22id%22%2C%22asc%22%5D%5D"
+           },
+           "schema": {
+            "href": "/api/v3/queries/schema"
+           },
+           "update": {
+            "href": "/api/v3/queries/9289/form",
+            "method": "post"
+           },
+           "icalUrl": {
+            "href": "/api/v3/queries/9289/ical_url",
+            "method": "post"
+           },
+           "user": {
+            "href": "/api/v3/users/5436",
+            "title": "System"
+           },
+           "sortBy": [
+            {
+             "href": "/api/v3/queries/sort_bys/id-asc",
+             "title": "ID (Ascending)"
+            }
+           ],
+           "groupBy": {
+            "href": null,
+            "title": null
+           },
+           "columns": [
+            {
+             "href": "/api/v3/queries/columns/id",
+             "title": "ID"
+            },
+            {
+             "href": "/api/v3/queries/columns/subject",
+             "title": "Subject"
+            },
+            {
+             "href": "/api/v3/queries/columns/status",
+             "title": "Status"
+            },
+            {
+             "href": "/api/v3/queries/columns/customField347",
+             "title": "Decision"
+            }
+           ],
+           "highlightedAttributes": [
+            {
+             "href": "/api/v3/queries/columns/status",
+             "title": "Status"
+            },
+            {
+             "href": "/api/v3/queries/columns/priority",
+             "title": "Priority"
+            },
+            {
+             "href": "/api/v3/queries/columns/dueDate",
+             "title": "Finish date"
+            }
+           ]
+          }
+         }
+        },
+        "_links": {
+         "query": {
+          "href": "/api/v3/queries/9289",
+          "title": "Embedded table: OPEN POINTS"
+         }
+        }
+       },
+       {
+        "_type": "WorkPackageFormChildrenQueryGroup",
+        "name": "Features and Chunks",
+        "relationType": "parent",
+        "_embedded": {
+         "query": {
+          "_type": "Query",
+          "starred": false,
+          "id": 9291,
+          "name": "Embedded table: Features and Chunks",
+          "createdAt": "2026-08-27T08:12:08.224Z",
+          "updatedAt": "2026-08-27T08:12:08.224Z",
+          "filters": [
+           {
+            "_type": "TypeQueryFilter",
+            "name": "Type",
+            "_links": {
+             "schema": {
+              "href": "/api/v3/queries/filter_instance_schemas/type"
+             },
+             "filter": {
+              "href": "/api/v3/queries/filters/type",
+              "title": "Type"
+             },
+             "operator": {
+              "href": "/api/v3/queries/operators/%3D",
+              "title": "is (OR)"
+             },
+             "values": [
+              {
+               "href": "/api/v3/types/70",
+               "title": "Implementation"
+              },
+              {
+               "href": "/api/v3/types/6",
+               "title": "Feature"
+              },
+              {
+               "href": "/api/v3/types/173",
+               "title": "Design Task"
+              }
+             ]
+            }
+           },
+           {
+            "_type": "ParentQueryFilter",
+            "name": "Parent",
+            "_links": {
+             "schema": {
+              "href": "/api/v3/queries/filter_instance_schemas/parent"
+             },
+             "filter": {
+              "href": "/api/v3/queries/filters/parent",
+              "title": "Parent"
+             },
+             "operator": {
+              "href": "/api/v3/queries/operators/%3D",
+              "title": "is (OR)"
+             },
+             "values": [
+              {
+               "href": "/api/v3/work_packages/{id}",
+               "title": null,
+               "templated": true
+              }
+             ]
+            }
+           }
+          ],
+          "includeSubprojects": true,
+          "sums": false,
+          "public": false,
+          "hidden": true,
+          "timelineVisible": false,
+          "showHierarchies": false,
+          "timelineZoomLevel": "auto",
+          "timelineLabels": {},
+          "timestamps": [
+           "PT0S"
+          ],
+          "highlightingMode": "inline",
+          "_links": {
+           "self": {
+            "href": "/api/v3/queries/9291",
+            "title": "Embedded table: Features and Chunks"
+           },
+           "project": {
+            "href": null
+           },
+           "results": {
+            "href": "/api/v3/work_packages?columns%5B%5D=id&columns%5B%5D=subject&columns%5B%5D=type&columns%5B%5D=status&columns%5B%5D=assignee&columns%5B%5D=targetVersions&columns%5B%5D=spentTime&filters=%5B%7B%22type%22%3A%7B%22operator%22%3A%22%3D%22%2C%22values%22%3A%5B%2270%22%2C%226%22%2C%22173%22%5D%7D%7D%2C%7B%22parent%22%3A%7B%22operator%22%3A%22%3D%22%2C%22values%22%3A%5B%22%7Bid%7D%22%2C%22templated%22%5D%7D%7D%5D&includeSubprojects=true&offset=1&pageSize=50&showHierarchies=false&showSums=false&sortBy=%5B%5B%22id%22%2C%22asc%22%5D%5D"
+           },
+           "schema": {
+            "href": "/api/v3/queries/schema"
+           },
+           "update": {
+            "href": "/api/v3/queries/9291/form",
+            "method": "post"
+           },
+           "icalUrl": {
+            "href": "/api/v3/queries/9291/ical_url",
+            "method": "post"
+           },
+           "user": {
+            "href": "/api/v3/users/5436",
+            "title": "System"
+           },
+           "sortBy": [
+            {
+             "href": "/api/v3/queries/sort_bys/id-asc",
+             "title": "ID (Ascending)"
+            }
+           ],
+           "groupBy": {
+            "href": null,
+            "title": null
+           },
+           "columns": [
+            {
+             "href": "/api/v3/queries/columns/id",
+             "title": "ID"
+            },
+            {
+             "href": "/api/v3/queries/columns/subject",
+             "title": "Subject"
+            },
+            {
+             "href": "/api/v3/queries/columns/type",
+             "title": "Type"
+            },
+            {
+             "href": "/api/v3/queries/columns/status",
+             "title": "Status"
+            },
+            {
+             "href": "/api/v3/queries/columns/assignee",
+             "title": "Assignee"
+            },
+            {
+             "href": "/api/v3/queries/columns/targetVersions",
+             "title": "Target versions"
+            },
+            {
+             "href": "/api/v3/queries/columns/spentTime",
+             "title": "Spent time"
+            }
+           ],
+           "highlightedAttributes": [
+            {
+             "href": "/api/v3/queries/columns/status",
+             "title": "Status"
+            },
+            {
+             "href": "/api/v3/queries/columns/priority",
+             "title": "Priority"
+            },
+            {
+             "href": "/api/v3/queries/columns/dueDate",
+             "title": "Finish date"
+            }
+           ]
+          }
+         }
+        },
+        "_links": {
+         "query": {
+          "href": "/api/v3/queries/9291",
+          "title": "Embedded table: Features and Chunks"
+         }
+        }
+       },
+       {
+        "_type": "WorkPackageFormChildrenQueryGroup",
+        "name": "Bugs and other work packages",
+        "relationType": "parent",
+        "_embedded": {
+         "query": {
+          "_type": "Query",
+          "starred": false,
+          "id": 8190,
+          "name": "Embedded table: Bugs and other work packages",
+          "createdAt": "2026-04-28T07:37:57.848Z",
+          "updatedAt": "2026-04-28T07:37:57.848Z",
+          "filters": [
+           {
+            "_type": "TypeQueryFilter",
+            "name": "Type",
+            "_links": {
+             "schema": {
+              "href": "/api/v3/queries/filter_instance_schemas/type"
+             },
+             "filter": {
+              "href": "/api/v3/queries/filters/type",
+              "title": "Type"
+             },
+             "operator": {
+              "href": "/api/v3/queries/operators/%21",
+              "title": "is not"
+             },
+             "values": [
+              {
+               "href": "/api/v3/types/8",
+               "title": "Epic"
+              },
+              {
+               "href": "/api/v3/types/148",
+               "title": "Open Point"
+              },
+              {
+               "href": "/api/v3/types/6",
+               "title": "Feature"
+              },
+              {
+               "href": "/api/v3/types/70",
+               "title": "Implementation"
+              }
+             ]
+            }
+           },
+           {
+            "_type": "ParentQueryFilter",
+            "name": "Parent",
+            "_links": {
+             "schema": {
+              "href": "/api/v3/queries/filter_instance_schemas/parent"
+             },
+             "filter": {
+              "href": "/api/v3/queries/filters/parent",
+              "title": "Parent"
+             },
+             "operator": {
+              "href": "/api/v3/queries/operators/%3D",
+              "title": "is (OR)"
+             },
+             "values": [
+              {
+               "href": "/api/v3/work_packages/{id}",
+               "title": null,
+               "templated": true
+              }
+             ]
+            }
+           }
+          ],
+          "includeSubprojects": true,
+          "sums": false,
+          "public": false,
+          "hidden": true,
+          "timelineVisible": false,
+          "showHierarchies": false,
+          "timelineZoomLevel": "auto",
+          "timelineLabels": {},
+          "timestamps": [
+           "PT0S"
+          ],
+          "highlightingMode": "inline",
+          "_links": {
+           "self": {
+            "href": "/api/v3/queries/8190",
+            "title": "Embedded table: Bugs and other work packages"
+           },
+           "project": {
+            "href": null
+           },
+           "results": {
+            "href": "/api/v3/work_packages?columns%5B%5D=id&columns%5B%5D=type&columns%5B%5D=subject&columns%5B%5D=status&columns%5B%5D=assignee&columns%5B%5D=targetVersions&columns%5B%5D=spentTime&columns%5B%5D=customField429&filters=%5B%7B%22type%22%3A%7B%22operator%22%3A%22%21%22%2C%22values%22%3A%5B%228%22%2C%22148%22%2C%226%22%2C%2270%22%5D%7D%7D%2C%7B%22parent%22%3A%7B%22operator%22%3A%22%3D%22%2C%22values%22%3A%5B%22%7Bid%7D%22%2C%22templated%22%5D%7D%7D%5D&includeSubprojects=true&offset=1&pageSize=50&showHierarchies=false&showSums=false&sortBy=%5B%5B%22targetVersions%22%2C%22asc%22%5D%2C%5B%22priority%22%2C%22desc%22%5D%2C%5B%22status%22%2C%22desc%22%5D%5D"
+           },
+           "schema": {
+            "href": "/api/v3/queries/schema"
+           },
+           "update": {
+            "href": "/api/v3/queries/8190/form",
+            "method": "post"
+           },
+           "icalUrl": {
+            "href": "/api/v3/queries/8190/ical_url",
+            "method": "post"
+           },
+           "user": {
+            "href": "/api/v3/users/5436",
+            "title": "System"
+           },
+           "sortBy": [
+            {
+             "href": "/api/v3/queries/sort_bys/targetVersions-asc",
+             "title": "Target versions (Ascending)"
+            },
+            {
+             "href": "/api/v3/queries/sort_bys/priority-desc",
+             "title": "Priority (Descending)"
+            },
+            {
+             "href": "/api/v3/queries/sort_bys/status-desc",
+             "title": "Status (Descending)"
+            }
+           ],
+           "groupBy": {
+            "href": null,
+            "title": null
+           },
+           "columns": [
+            {
+             "href": "/api/v3/queries/columns/id",
+             "title": "ID"
+            },
+            {
+             "href": "/api/v3/queries/columns/type",
+             "title": "Type"
+            },
+            {
+             "href": "/api/v3/queries/columns/subject",
+             "title": "Subject"
+            },
+            {
+             "href": "/api/v3/queries/columns/status",
+             "title": "Status"
+            },
+            {
+             "href": "/api/v3/queries/columns/assignee",
+             "title": "Assignee"
+            },
+            {
+             "href": "/api/v3/queries/columns/targetVersions",
+             "title": "Target versions"
+            },
+            {
+             "href": "/api/v3/queries/columns/spentTime",
+             "title": "Spent time"
+            },
+            {
+             "href": "/api/v3/queries/columns/customField429",
+             "title": "Module"
+            }
+           ],
+           "highlightedAttributes": [
+            {
+             "href": "/api/v3/queries/columns/status",
+             "title": "Status"
+            },
+            {
+             "href": "/api/v3/queries/columns/priority",
+             "title": "Priority"
+            },
+            {
+             "href": "/api/v3/queries/columns/dueDate",
+             "title": "Finish date"
+            }
+           ]
+          }
+         }
+        },
+        "_links": {
+         "query": {
+          "href": "/api/v3/queries/8190",
+          "title": "Embedded table: Bugs and other work packages"
+         }
+        }
+       },
+       {
+        "_type": "WorkPackageFormAttributeGroup",
+        "name": "Technical Details",
+        "attributes": [
+         "customField429",
+         "customField514",
+         "customField108",
+         "customField426"
+        ]
+       },
+       {
+        "_type": "WorkPackageFormAttributeGroup",
+        "name": "Details",
+        "attributes": [
+         "customField354",
+         "customField387",
+         "customField134"
+        ]
+       },
+       {
+        "_type": "WorkPackageFormAttributeGroup",
+        "name": "People",
+        "attributes": [
+         "assignee",
+         "responsible",
+         "customField517",
+         "customField270",
+         "customField136",
+         "customField102",
+         "customField129",
+         "customField473"
+        ]
+       },
+       {
+        "_type": "WorkPackageFormAttributeGroup",
+        "name": "Estimates and progress",
+        "attributes": [
+         "customField123",
+         "customField124",
+         "estimatedTime",
+         "laborCosts",
+         "spentTime"
+        ]
+       }
+      ],
+      "_type": "Schema",
+      "_dependencies": [],
+      "lockVersion": {
+       "type": "Integer",
+       "name": "Lock version",
+       "required": true,
+       "hasDefault": false,
+       "writable": false,
+       "options": {}
+      },
+      "id": {
+       "type": "Integer",
+       "name": "ID",
+       "required": true,
+       "hasDefault": false,
+       "writable": false,
+       "options": {}
+      },
+      "subject": {
+       "type": "String",
+       "name": "Subject",
+       "required": true,
+       "hasDefault": false,
+       "writable": false,
+       "minLength": 1,
+       "maxLength": 255,
+       "options": {}
+      },
+      "description": {
+       "type": "Formattable",
+       "name": "Description",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "options": {}
+      },
+      "duration": {
+       "type": "Duration",
+       "name": "Duration",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "options": {}
+      },
+      "scheduleManually": {
+       "type": "Boolean",
+       "name": "Manual scheduling",
+       "required": false,
+       "hasDefault": true,
+       "writable": false,
+       "options": {}
+      },
+      "ignoreNonWorkingDays": {
+       "type": "Boolean",
+       "name": "Ignore non working days",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "options": {}
+      },
+      "startDate": {
+       "type": "Date",
+       "name": "Start date",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "options": {}
+      },
+      "dueDate": {
+       "type": "Date",
+       "name": "Finish date",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "options": {}
+      },
+      "derivedStartDate": {
+       "type": "Date",
+       "name": "Derived start date",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "options": {}
+      },
+      "derivedDueDate": {
+       "type": "Date",
+       "name": "Derived finish date",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "options": {}
+      },
+      "estimatedTime": {
+       "type": "Duration",
+       "name": "Work",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "attributeGroup": "Estimates and progress",
+       "options": {}
+      },
+      "derivedEstimatedTime": {
+       "type": "Duration",
+       "name": "Total work",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "options": {}
+      },
+      "remainingTime": {
+       "type": "Duration",
+       "name": "Remaining work",
+       "required": false,
+       "hasDefault": false,
+       "writable": true,
+       "options": {}
+      },
+      "derivedRemainingTime": {
+       "type": "Duration",
+       "name": "Total remaining work",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "options": {}
+      },
+      "percentageDone": {
+       "type": "Integer",
+       "name": "% Complete",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "options": {}
+      },
+      "derivedPercentageDone": {
+       "type": "Integer",
+       "name": "Total % complete",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "options": {}
+      },
+      "readonly": {
+       "type": "Boolean",
+       "name": "Read only",
+       "required": false,
+       "hasDefault": true,
+       "writable": false,
+       "options": {}
+      },
+      "createdAt": {
+       "type": "DateTime",
+       "name": "Created on",
+       "required": true,
+       "hasDefault": false,
+       "writable": false,
+       "options": {}
+      },
+      "updatedAt": {
+       "type": "DateTime",
+       "name": "Updated on",
+       "required": true,
+       "hasDefault": false,
+       "writable": false,
+       "options": {}
+      },
+      "author": {
+       "type": "User",
+       "name": "Author",
+       "required": true,
+       "hasDefault": false,
+       "writable": false,
+       "options": {},
+       "location": "_links"
+      },
+      "project": {
+       "type": "Project",
+       "name": "Project",
+       "required": true,
+       "hasDefault": false,
+       "writable": false,
+       "location": "_links",
+       "_links": {}
+      },
+      "parent": {
+       "type": "WorkPackage",
+       "name": "Parent",
+       "required": false,
+       "hasDefault": false,
+       "writable": true,
+       "location": "_links",
+       "_links": {}
+      },
+      "assignee": {
+       "type": "User",
+       "name": "Assignee",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "attributeGroup": "People",
+       "location": "_links",
+       "_links": {}
+      },
+      "responsible": {
+       "type": "User",
+       "name": "Accountable",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "attributeGroup": "People",
+       "location": "_links",
+       "_links": {}
+      },
+      "type": {
+       "type": "Type",
+       "name": "Type",
+       "required": true,
+       "hasDefault": false,
+       "writable": false,
+       "location": "_links",
+       "_links": {}
+      },
+      "status": {
+       "type": "Status",
+       "name": "Status",
+       "required": true,
+       "hasDefault": true,
+       "writable": false,
+       "location": "_links",
+       "_links": {}
+      },
+      "category": {
+       "type": "Category",
+       "name": "Category",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "location": "_links",
+       "_links": {}
+      },
+      "targetVersions": {
+       "type": "[]Version",
+       "name": "Target versions",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "attributeGroup": "Planning",
+       "options": {
+        "multiple": true
+       },
+       "location": "_links",
+       "_links": {}
+      },
+      "observedInVersions": {
+       "type": "[]Version",
+       "name": "Observed in versions",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "location": "_links",
+       "_links": {}
+      },
+      "priority": {
+       "type": "Priority",
+       "name": "Priority",
+       "required": true,
+       "hasDefault": true,
+       "writable": false,
+       "attributeGroup": "Planning",
+       "location": "_links",
+       "_links": {}
+      },
+      "overallCosts": {
+       "type": "String",
+       "name": "Overall costs",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "options": {}
+      },
+      "laborCosts": {
+       "type": "String",
+       "name": "Labor costs",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "attributeGroup": "Estimates and progress",
+       "options": {}
+      },
+      "materialCosts": {
+       "type": "String",
+       "name": "Unit costs",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "options": {}
+      },
+      "costsByType": {
+       "type": "Collection",
+       "name": "Spent units",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "options": {}
+      },
+      "position": {
+       "type": "Integer",
+       "name": "Position",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "options": {}
+      },
+      "storyPoints": {
+       "type": "Integer",
+       "name": "Story Points",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "options": {}
+      },
+      "customField517": {
+       "type": "[]User",
+       "name": "Product manager",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "attributeGroup": "People",
+       "location": "_links",
+       "_links": {}
+      },
+      "customField354": {
+       "type": "Link",
+       "name": "Pull preview",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "attributeGroup": "Details",
+       "regularExpression": "https://[^/\\s]+?\\.(?:pullpreview\\.com|my\\.preview\\.run|my\\.opf\\.run)",
+       "options": {
+        "rtl": null
+       }
+      },
+      "customField136": {
+       "type": "User",
+       "name": "Designer",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "attributeGroup": "People",
+       "location": "_links",
+       "_links": {}
+      },
+      "customField108": {
+       "type": "Boolean",
+       "name": "Requires doc change",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "attributeGroup": "Technical Details",
+       "options": {
+        "rtl": null
+       }
+      },
+      "customField429": {
+       "type": "[]CustomField::Hierarchy::Item",
+       "name": "Module",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "attributeGroup": "Technical Details",
+       "location": "_links",
+       "_links": {}
+      },
+      "customField129": {
+       "type": "User",
+       "name": "Signed off by",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "attributeGroup": "People",
+       "location": "_links",
+       "_links": {}
+      },
+      "customField102": {
+       "type": "[]User",
+       "name": "Ordered by",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "attributeGroup": "People",
+       "location": "_links",
+       "_links": {}
+      },
+      "customField123": {
+       "type": "Float",
+       "name": "PD (min)",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "attributeGroup": "Estimates and progress",
+       "options": {
+        "rtl": null
+       }
+      },
+      "customField124": {
+       "type": "Float",
+       "name": "PD (max)",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "attributeGroup": "Estimates and progress",
+       "options": {
+        "rtl": null
+       }
+      },
+      "customField426": {
+       "type": "CustomField::Hierarchy::Item",
+       "name": "Enterprise plan",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "attributeGroup": "Technical Details",
+       "location": "_links",
+       "_links": {}
+      },
+      "customField339": {
+       "type": "CustomOption",
+       "name": "Roadmap",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "attributeGroup": "Planning",
+       "location": "_links",
+       "_links": {}
+      },
+      "customField134": {
+       "type": "Boolean",
+       "name": "Accessibility",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "attributeGroup": "Details",
+       "options": {
+        "rtl": null
+       }
+      },
+      "customField473": {
+       "type": "[]CustomField::Hierarchy::Item",
+       "name": "Interest by",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "attributeGroup": "People",
+       "location": "_links",
+       "_links": {}
+      },
+      "customField130": {
+       "type": "Integer",
+       "name": "Votes",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "attributeGroup": "Planning",
+       "options": {
+        "rtl": null
+       }
+      },
+      "customField338": {
+       "type": "[]CustomOption",
+       "name": "List",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "attributeGroup": "Planning",
+       "location": "_links",
+       "_links": {}
+      },
+      "customField514": {
+       "type": "CustomOption",
+       "name": "Feature Flag",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "attributeGroup": "Technical Details",
+       "location": "_links",
+       "_links": {}
+      },
+      "customField387": {
+       "type": "Link",
+       "name": "Mockups",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "attributeGroup": "Details",
+       "regularExpression": "https://.*?\\.figma\\.com",
+       "options": {
+        "rtl": null
+       }
+      },
+      "customField270": {
+       "type": "[]User",
+       "name": "Developers",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "attributeGroup": "People",
+       "location": "_links",
+       "_links": {}
+      },
+      "customField519": {
+       "type": "CustomField::Hierarchy::Item",
+       "name": "Relevance",
+       "required": false,
+       "hasDefault": false,
+       "writable": false,
+       "attributeGroup": "Planning",
+       "location": "_links",
+       "_links": {}
+      },
+      "_links": {
+       "self": {
+        "href": "/api/v3/work_packages/schemas/1534-6"
+       },
+       "attachments": {
+        "href": null
+       }
+      }
+     }
+    ]
+   },
+   "_links": {
+    "self": {
+     "href": "/api/v3/work_packages/schemas?filters=%5B%7Bid%3A+%7Boperator%3A+%22%3D%22%2C+values%3A+%5B%221534-6%22%2C+%221534-8%22%2C+%221534-21%22%2C+%221534-30%22%2C+%221534-1%22%5D%7D%7D%5D"
+    }
+   }
+  }
+ },
+ "_links": {
+  "self": {
+   "href": "/api/v3/work_packages?filters=%5B%7B%22status%22%3A%7B%22operator%22%3A%22o%22%2C%22values%22%3A%5B%22%22%5D%7D%7D%5D&includeSubprojects=true&offset=1&pageSize=50&showHierarchies=true&showSums=false&sortBy=%5B%5B%22id%22%2C%22asc%22%5D%5D"
+  },
+  "jumpTo": {
+   "href": "/api/v3/work_packages?filters=%5B%7B%22status%22%3A%7B%22operator%22%3A%22o%22%2C%22values%22%3A%5B%22%22%5D%7D%7D%5D&includeSubprojects=true&offset=%7Boffset%7D&pageSize=50&showHierarchies=true&showSums=false&sortBy=%5B%5B%22id%22%2C%22asc%22%5D%5D",
+   "templated": true
+  },
+  "changeSize": {
+   "href": "/api/v3/work_packages?filters=%5B%7B%22status%22%3A%7B%22operator%22%3A%22o%22%2C%22values%22%3A%5B%22%22%5D%7D%7D%5D&includeSubprojects=true&offset=1&pageSize=%7Bsize%7D&showHierarchies=true&showSums=false&sortBy=%5B%5B%22id%22%2C%22asc%22%5D%5D",
+   "templated": true
+  },
+  "nextByOffset": {
+   "href": "/api/v3/work_packages?filters=%5B%7B%22status%22%3A%7B%22operator%22%3A%22o%22%2C%22values%22%3A%5B%22%22%5D%7D%7D%5D&includeSubprojects=true&offset=2&pageSize=50&showHierarchies=true&showSums=false&sortBy=%5B%5B%22id%22%2C%22asc%22%5D%5D"
+  },
+  "schemas": {
+   "href": "/api/v3/work_packages/schemas?filters=%5B%7Bid%3A+%7Boperator%3A+%22%3D%22%2C+values%3A+%5B%221534-6%22%2C+%221534-8%22%2C+%221534-21%22%2C+%221534-30%22%2C+%221534-1%22%5D%7D%7D%5D"
+  }
+ }
+}

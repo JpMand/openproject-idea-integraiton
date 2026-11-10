@@ -3,5 +3,24 @@
 # openproject-idea-integraiton Changelog
 
 ## [Unreleased]
+### Changed
+- Work package lists and work packages open in the new OpenProject tool window (bottom) instead of editor tabs: a row click previews the work package next to the list, "Open in New Tab" opens it in a tab (properties left, activity/relations/files right), "Open as New Tab" and "+" open more lists
+- Quick filter dropdowns (project, type, status, priority, assignee) above the list
+- New lists, "Reset" and saved queries without a project filter use the project configured for the task server
+- Removed the "Work Packages…" action (the tool window replaces it)
+- "% Complete" and "Total % complete" columns show a progress bar behind the value, and 0% when the work package has none
+- "Spent time" cells turn red when more time was spent than the work (possible overtime); the tooltip shows both
+- Statuses in their OpenProject colors: status cells of the list, the Status filter dropdowns, and a status badge in the work package preview and tab
+- The list scrolls horizontally when its columns do not fit; columns keep a minimum width for percentages, durations and dates
+- Supports IntelliJ IDEA 2026.1 and later (no until-build); the Plugin Verifier checks the latest 2026.1, 2026.2 and 2026.3 releases
+
 ### Added
 - Initial scaffold created from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)
+- Build setup for IntelliJ IDEA 2026.2 and 2026.3, depending on the "Issue Trackers" (Tasks) plugin
+- OpenProject API v3 client (HAL+JSON) on the IDE-bundled Ktor client and kotlinx.serialization
+- Integration tests against OpenProject in Docker (scripts/openproject-it.sh)
+- "OpenProject" task server for Tools | Tasks & Contexts: search (open/closed, assigned to me, project, saved query), state changes and time tracking
+- Work package list and work package editor tabs (restored after restart), Log Time dialog, active task tracking and actions in Tools | OpenProject
+- Work package table: configurable columns (drag, Configure View), header sorting, search, open/closed and "assigned to me" quick filters, filter bar with all server filters, saved queries, paging, active task banner
+- Work package page: edit subject, status, description (Markdown with preview), assignee and priority; activity with comments; relations (add/remove); files (upload incl. drag & drop, download, open, delete); conflict detection
+- Status bar widget showing the active task's work package; "Configure Server…" links on missing server or rejected API token

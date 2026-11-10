@@ -34,7 +34,7 @@ class ConfigureViewDialog(
     private val sortRows = (0 until 3).map { position ->
         val current = initial.sortBy.getOrNull(position)
         val column = ComboBox(DefaultComboBoxModel(sortable.toTypedArray())).apply {
-            renderer = textListCellRenderer(OpenProjectBundle.message("configure.sort.none")) { metadata.columnTitle(it) }
+            renderer = textListCellRenderer { it?.let(metadata::columnTitle) ?: OpenProjectBundle.message("configure.sort.none") }
             selectedItem = current?.attribute?.takeIf { it in sortable }
         }
         val direction = ComboBox(arrayOf(true, false)).apply {

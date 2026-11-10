@@ -27,7 +27,7 @@ logging use them.
 
 ## Requirements
 
-- IntelliJ IDEA 2026.2 or 2026.3 (any edition).
+- IntelliJ IDEA 2026.1 or later (any edition).
 - The **Issue Trackers** plugin (`com.intellij.tasks`), which provides *Tasks & Contexts*. It is no longer bundled
   with the IDE: install it from <kbd>Settings</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd>.
 - **OpenProject 15 or later**. Features that depend on the server version (for example time entries on 15/16 versus
@@ -72,10 +72,10 @@ the time spent from it also logs the time in OpenProject. The *Log Time* dialog 
 
 ```shell
 ./gradlew test                                      # unit and platform tests (IntelliJ IDEA 2026.2.3)
-./gradlew test -PplatformVersion=263.7307.112       # the same against the IntelliJ IDEA 2026.3 RC
-./gradlew verifyPlugin                              # Plugin Verifier on 2026.2.3 and the 2026.3 RC
+./gradlew test -PplatformVersion=2026.1.5.1         # the same against IntelliJ IDEA 2026.1 (or e.g. 2026.3)
+./gradlew verifyPlugin                              # Plugin Verifier on the latest 2026.1, 2026.2 and 2026.3 releases
 ./gradlew runIde                                    # sandbox IDE (2026.2.3) with Issue Trackers installed
-./gradlew runIdeRc                                  # sandbox IDE on the 2026.3 RC
+./gradlew runIde -PplatformVersion=2026.3           # sandbox IDE on another release
 ```
 
 ### Integration tests
@@ -86,7 +86,7 @@ The integration tests run against a real OpenProject in Docker:
 scripts/openproject-it.sh test                      # start OpenProject 17, create an API token, run the tests
 OP_IMAGE=openproject/openproject:15 OP_PORT=8081 OP_CONTAINER=op-it15 \
   scripts/openproject-it.sh test                    # the same against OpenProject 15
-scripts/openproject-it.sh test -PplatformVersion=263.7307.112   # extra arguments go to Gradle
+scripts/openproject-it.sh test -PplatformVersion=2026.1.5.1     # extra arguments go to Gradle
 scripts/openproject-it.sh down                      # remove the container
 ```
 

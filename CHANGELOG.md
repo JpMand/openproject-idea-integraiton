@@ -12,6 +12,7 @@
 - "Spent time" cells turn red when more time was spent than the work (possible overtime); the tooltip shows both
 - Statuses in their OpenProject colors: status cells of the list, the Status filter dropdowns, and a status badge in the work package preview and tab
 - The list scrolls horizontally when its columns do not fit; columns keep a minimum width for percentages, durations and dates
+- Supports IntelliJ IDEA 2026.1 and later (no until-build); the Plugin Verifier checks the latest 2026.1, 2026.2 and 2026.3 releases
 
 ### Added
 - Initial scaffold created from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)

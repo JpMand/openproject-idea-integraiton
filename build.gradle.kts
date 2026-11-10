@@ -8,7 +8,7 @@ plugins {
     id("org.jetbrains.changelog")
 }
 
-/** Maps an IDE version ("2026.2.3") or build number ("263.7307.112") to its branch number (262, 263). */
+/** Maps an IDE version ("2026.2.3") or build number ("263.7307.200") to its branch number (262, 263). */
 fun platformBranchOf(version: String): Int {
     val parts = version.substringBefore('-').split('.')
     return if (parts[0].length == 4) "${parts[0].takeLast(2)}${parts[1]}".toInt() else parts[0].toInt()
@@ -17,10 +17,10 @@ fun platformBranchOf(version: String): Int {
 val platformVersion = providers.gradleProperty("platformVersion").get()
 val platformBranch = platformBranchOf(platformVersion)
 
-// "Issue Trackers" (com.intellij.tasks) is unbundled since 2026.2 and published per IDE branch.
-val tasksPluginVersion = providers.gradleProperty("tasksPluginVersion")
+// "Issue Trackers" (com.intellij.tasks) is bundled up to 2026.1; since 2026.2 it is published per IDE branch.
+val tasksPluginVersion: String? = providers.gradleProperty("tasksPluginVersion")
     .orElse(providers.gradleProperty("tasksPluginVersion.$platformBranch"))
-    .get()
+    .orNull
 
 dependencies {
     testImplementation("junit:junit:4.13.2")
@@ -31,7 +31,11 @@ dependencies {
     intellijPlatform {
         intellijIdea(platformVersion)
 
-        plugin("com.intellij.tasks", tasksPluginVersion)
+        if (platformBranch >= 262) {
+            plugin("com.intellij.tasks", requireNotNull(tasksPluginVersion) { "No tasksPluginVersion.$platformBranch in gradle.properties" })
+        } else {
+            bundledPlugin("com.intellij.tasks")
+        }
         if (platformBranch >= 263) {
             // 2026.3 moved the Tasks modules into a bundled plugin.
             bundledPlugin("com.intellij.platform.tasks")
@@ -50,7 +54,8 @@ intellijPlatform {
     pluginConfiguration {
         ideaVersion {
             sinceBuild = providers.gradleProperty("pluginSinceBuild")
-            untilBuild = providers.gradleProperty("pluginUntilBuild")
+            // No until-build: the plugin stays installable on newer IDE releases.
+            untilBuild = provider { null }
         }
     }
 
@@ -88,19 +93,6 @@ tasks {
             testLogging {
                 events("passed", "skipped", "failed")
                 showStandardStreams = true
-            }
-        }
-    }
-}
-
-intellijPlatformTesting {
-    runIde {
-        // Manual checks against the IntelliJ IDEA 2026.3 RC: ./gradlew runIdeRc
-        register("runIdeRc") {
-            type = IntelliJPlatformType.IntellijIdea
-            version = providers.gradleProperty("rcPlatformVersion")
-            plugins {
-                plugin("com.intellij.tasks", providers.gradleProperty("tasksPluginVersion.263").get())
             }
         }
     }
